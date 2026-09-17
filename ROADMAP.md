@@ -1,6 +1,6 @@
 # BREAKMASS Roadmap
 
-Status as of v0.12.0 (2026-09-17). `NOTES.md` holds the long-form design history; this file is the short "where are we and what next" view.
+Status as of v0.13.0 (2026-09-17). `NOTES.md` holds the long-form design history; this file is the short "where are we and what next" view.
 
 ## What exists (v0.11.x baseline)
 
@@ -28,7 +28,7 @@ Status as of v0.12.0 (2026-09-17). `NOTES.md` holds the long-form design history
 - Seam crumbs (one-to-four voxel chips along partition seams) still appear with every archetype. Absorb them into the neighbouring shard in the kernel.
 - Archetype weights are first-pass numbers tuned in Node on solid blocks. Real buildings are hollow shells with floors; watch how `shear` and `buckle` read on the district towers and retune from screenshots.
 - Twist on loose bodies is a pure angular-velocity drive. It should also load torsion into the neighbours of a held anchored piece (twisting a beam should stress the wall it sits in).
-- `updateGameHUD` runs every frame and touches eight DOM nodes; cheap, but once the score layer lands it should update on change only.
+- ~~`updateGameHUD` runs every frame and touches eight DOM nodes; cheap, but once the score layer lands it should update on change only.~~ Done in 0.13.0: it now caches last-written values and only touches the DOM on change, and runs unconditionally during normal play instead of only while Settings > Performance & tests was open.
 - Rapier's `init` prints a deprecation warning about positional arguments. Harmless, but it will break on a future Rapier bump. Pass an options object when upgrading.
 - The contract HUD is hidden under 980 px width. Touch layouts have no objective readout at all.
 - No `og-image` regeneration on content change; `tools/og-shot.mjs` is manual.
@@ -37,16 +37,16 @@ Status as of v0.12.0 (2026-09-17). `NOTES.md` holds the long-form design history
 
 Engine architecture is frozen unless a regression forces it. The next work makes people want to keep screwing around with the destruction.
 
-1. **Readable, juicy destruction.** Cause and effect, not more particles. Concrete cracks and chips before separating, supports groan before failing, metal crunches sharper, brittle materials shed smaller pieces, heavy impacts thud. A 100 to 200 ms stress pulse around the failing region so the player sees where the structure gave way.
+1. **Readable, juicy destruction. DONE (0.13.0).** Supports groan before failing, a camera-facing stress pulse marks where a structure gave way, collapse and impact sounds are material-aware (metal/concrete/timber), catastrophic impacts layer an extra bass hit.
 2. **Fracture archetypes.** Same voxel kernel, different partition weighting chosen by geometry and material: walls shear into slabs, towers buckle vertically, floors pancake, concrete corners spall, beams snap into long sections. Kills the remaining procedural-cube look.
-3. **God Hand as the signature mechanic.** Wheel is reach, Shift peels, X throws. Add twist (secondary input, corkscrew the top of a tower until supports shear) and crush (middle mouse, pull nearby voxels toward the grip and compact or break them). No gun number seven.
-4. **Destruction score, stupid simple.** WRECKAGE $2.4M, CHAIN x7, BIGGEST IMPACT 18.2 MN, STRUCTURE COLLAPSE, TOTAL MASS MOVED 312 t. Reasons to try ridiculous things without ruining the sandbox.
-5. **Demolition contracts.** Tiny scenarios on the same sandbox: tower with God Hand only, $1M with one thrown object, three buildings in one chain, bridge without explosives, water tank through the warehouse. Optional, instantly restartable, no dialogue, no campaign.
+3. **God Hand as the signature mechanic. DONE (0.13.0 pass 2).** Wheel is reach, Shift peels, X throws, twist and crush from 0.12.0 now read as real feedback: dust/chips shear off while torsion charges, a rising creak, a visible seam burst and a stronger corkscrew on rip, an inward dust implosion on every crush, and the grip halo actually pulses on both.
+4. **Destruction score, stupid simple. DONE (0.13.0).** WRECKAGE, CHAIN, BIGGEST IMPACT (honest J/kJ/MJ units), MASS MOVED, COLLAPSES, all in the existing demolition contract box. Two new contracts: "Tower, hands only" and "Three drums, one chain".
+5. **Demolition contracts.** Two shipped in 0.13.0 (above); the rest of the tiny-scenario list (bridge without explosives, water tank through the warehouse, etc.) is still open. Optional, instantly restartable, no dialogue, no campaign.
 6. **Rubble God becomes a real mode.** Maximum strength, aggressive failure, huge explosions, absurd bomb rain, forgiving budgets. Sandbox keeps more structural integrity.
 7. **Noita direction, carefully.** Three active substances in localized volumes first: fuel spreads and ignites, water falls and pours through holes, fire propagates into flammable voxels and weakens them. Simulate near active regions only. Sand next if it works.
 8. **Scenes built around one gimmick each.** High-rise construction site with cranes and suspended loads. Refinery full of chain reactions. Hillside neighbourhood that tumbles downhill. A dam. A parking garage built to pancake. A shipyard with containers and gantries.
 
-**Done in 0.12.0:** God Hand twist and crush plus fracture archetypes (items 3 and 2), first pass. **Next up:** tune the archetypes on the real district, then the score layer (4), which turns the existing sandbox into a game without months of content.
+**Done in 0.12.0:** God Hand twist and crush plus fracture archetypes (items 3 and 2), first pass. **Done in 0.13.0:** juicy destruction feedback (1), God Hand twist/crush read (3, second pass), the destruction score plus two demolition contracts (4 and part of 5), fracture archetypes retuned on the real district (2), Rubble God as a real mode (6), and three measured main-thread perf cuts. **Next up:** the rest of the demolition contract list (5), then the Noita-direction active substances (7) and gimmick scenes (8).
 
 **Not next:** more conventional firearms, more menus, another giant district, physics rewrites, multiplayer.
 

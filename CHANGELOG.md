@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.13.0 (2026-09-17) God Hand feedback, destruction juice, a score, tuned fractures, Rubble God
+
+- **God Hand twist:** dust/chips kick off the shear plane while torsion charges on an anchored grab, and the creak's pitch rises with charge.
+- **God Hand twist:** the shear-rip commit now bursts visibly at the sheared seam and spins the freed piece harder (measured about 4.3 rad/s), so the corkscrew is unmistakable.
+- **God Hand crush:** every request (including the 0.42s pump repeat) throws a short inward dust implosion, and the crunch sound got heavier.
+- The grip halo now actually pulses on a twist rip or a crush hit (the snapFlash field existed but was never rendered before).
+- Added a brief camera-facing stress-pulse ring at the exact point a support fails or a structure whole-body-collapses, scaled by camera distance so it reads as a localized marker instead of a screen-filling disc.
+- Anchored structures now groan (creak sound) once their stress ratio passes about 0.8, well before the "SUPPORT FAILURE" toast, cooled down per-object so a sustained overload does not spam audio.
+- Collapse and fracture-impact sounds are now material-aware (sharper metal crunch, duller bass-heavy concrete thud, light timber clatter) picked by the dominant material (by volume) of the pieces that just broke.
+- Catastrophic impacts (impactDamage's own threshold) now layer an extra heavy bass hit on top of the material sound.
+- Added a five-line destruction score (WRECKAGE, CHAIN, BIGGEST IMPACT, MASS MOVED, COLLAPSES) to the existing bottom-left demolition contract box.
+- Added two new demolition contracts: "Tower, hands only" and "Three drums, one chain", both instantly restartable via Rebuild.
+- Fixed the demolition contract box (including the three original objectives) only refreshing while Settings > Performance & tests was open; it now updates during normal play.
+- **perf:** telemetry() builds its per-frame stats snapshot once instead of cloning it twice (Object.assign + frames.push now share one object).
+- **perf:** renderBodies() walks entities once per frame instead of twice (tower/bridge mission check folded into the lerp loop).
+- **perf:** effects() and updateGameHUD() only touch the DOM when a value actually changed since last frame, instead of writing every frame unconditionally.
+- QA: the twist test now measures and asserts the sheared piece's real angular velocity instead of only checking a torque impulse was requested; added a read-only `BREAKMASS.scoreDiagnostics` getter.
+- **Fracture archetypes tuned on the real district:** the kernel now reads hollow shells the way it reads solid blocks, so towers buckle into stacked sections, walls shear into slabs and floors pancake instead of drifting toward equal cubes. Added two hollow-shell cases (a five-floor tower and a warehouse) to the kernel test.
+- **Rubble God is a real mode now:** 10x pull, 2x impact, 4.5 m blast at 2.5x impulse, a 16-pellet shotgun, a 14-charge bomb rain at 40 ms spacing, rockets with a wider blast, supports that give way sooner (failure threshold 0.65 vs 1.0), and a 50 percent bigger rubble budget so more wreckage stays live. Sandbox keeps its exact old numbers as the controllable baseline; the preset summary text reflects whichever mode is active.
+- tools: added `stress-measure.mjs`, `profile-hotspots.mjs`, `verify-juice.mjs`, `score-check.mjs`, `twist-latch-check.mjs`, `archetype-district.mjs` and `rubblegod-check.mjs` for this round's receipts.
+
 ## 0.12.5 (2026-09-17) Hold-right drag look is back, plus a real gate
 
 - **Hold right mouse to look, like the original.** Release to stop. A quick right click (under 300 ms, barely moved) latches look on instead; click again or Escape releases. Raw mouse motion steers in every case; pointer lock is only a bonus when the browser grants it.

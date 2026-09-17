@@ -15,7 +15,7 @@
 #session-flags{position:fixed;left:50%;top:var(--edge);transform:translateX(-50%);z-index:4;display:flex;gap:5px;pointer-events:none}.session-flag{display:none;background:var(--panel);color:var(--gold);padding:6px 10px;font:11px var(--mono);border-radius:2px}.is-paused #paused-flag,.is-slow #slow-flag{display:block}
 #dock{position:fixed;bottom:var(--bottom);left:50%;transform:translateX(-50%);display:flex;gap:3px;background:var(--panel);padding:5px;border-radius:4px;box-shadow:var(--shadow);z-index:8;user-select:none}.tool{position:relative;width:66px;height:61px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1px solid transparent;background:transparent;border-radius:2px;padding:6px 3px 3px;color:var(--muted)}.tool svg{width:25px;height:25px}.tool span{display:block;font-size:10px;font-weight:600}.tool kbd{position:absolute;top:3px;left:5px;font-size:9px;opacity:.6}.tool:hover{background:var(--raised);color:var(--text)}.tool.selected{background:var(--gold);color:var(--on-gold);border-color:var(--gold)}.tool.selected:after{content:'';height:2px;width:18px;position:absolute;bottom:-6px;background:var(--gold)}
 #hint-wrap{position:fixed;bottom:calc(var(--bottom) + 85px);left:50%;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:7px;max-width:calc(100vw - 30px)}#tool-description{background:var(--panel);color:var(--muted);padding:6px 10px;font-size:11px;line-height:1.3;white-space:nowrap;border-radius:2px;pointer-events:none;overflow:hidden;text-overflow:ellipsis}#tune-tool{width:28px;height:28px;background:var(--panel);flex-shrink:0}#tune-tool svg{width:16px;height:16px}#target{position:fixed;bottom:calc(var(--bottom) + 124px);left:50%;transform:translateX(-50%);font:11px var(--mono);color:var(--text);pointer-events:none;white-space:nowrap;max-width:min(460px,80vw);overflow:hidden;text-overflow:ellipsis;background:var(--panel);border-radius:2px;z-index:4}#target:not(:empty){padding:5px 9px}#pull-meter{display:none;position:fixed;bottom:calc(var(--bottom) + 158px);left:50%;transform:translateX(-50%);width:170px;padding:7px 10px;background:var(--panel);z-index:5;pointer-events:none}.pulling #pull-meter{display:block}#pull-state{font:10px var(--mono);color:var(--gold)}.pull-track{height:3px;background:var(--line);margin-top:5px}.pull-track i{display:block;width:0;height:100%;background:var(--gold)}.pulling #target{display:none}
-#toast{position:fixed;bottom:calc(var(--bottom) + 176px);left:50%;transform:translateX(-50%);z-index:11;padding:8px 12px;border-left:3px solid var(--gold);background:var(--panel);color:var(--text);font-size:12px;max-width:min(460px,calc(100vw - 32px));width:max-content;pointer-events:none;opacity:0;transition:opacity .15s;line-height:1.35;box-shadow:var(--shadow)}#toast.visible{opacity:1}#status{display:none!important}#contract{position:fixed;left:var(--edge);bottom:var(--bottom);z-index:4;background:var(--panel);border-radius:3px;box-shadow:var(--shadow);padding:8px 10px 7px;font:11px var(--mono);color:var(--muted);user-select:none;pointer-events:none;min-width:200px}#objective-status{color:var(--gold);font-weight:700;letter-spacing:.5px;margin-bottom:5px;font-size:10px}.objective{display:flex;align-items:center;gap:7px;padding:2px 0;color:var(--text)}.objective small{margin-left:auto;padding-left:12px;color:var(--muted);font-size:9px;letter-spacing:.4px}.objective .check{width:10px;height:10px;border:1px solid var(--muted);border-radius:2px;flex-shrink:0}.objective.done{color:var(--muted);text-decoration:line-through}.objective.done .check{background:var(--gold);border-color:var(--gold)}#contract .session{display:flex;gap:14px;margin-top:6px;padding-top:6px;border-top:1px solid var(--line);font-size:10px}#contract .session b{color:var(--text)}@media (max-width:980px){#contract{display:none}}#crosshair{display:none;position:fixed;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border:1px solid #fff9;border-radius:50%;pointer-events:none;z-index:2}#crosshair:before,#crosshair:after{content:'';position:absolute;top:7px;left:4px;width:6px;height:1px;background:#fff}#crosshair:after{transform:rotate(90deg)}#hitmarker{position:fixed;left:50%;top:50%;pointer-events:none;opacity:0;z-index:3}#hitmarker i{position:absolute;width:8px;height:2px;background:var(--gold)}#hitmarker i:nth-child(1){transform:translate(-12px,-9px) rotate(45deg)}#hitmarker i:nth-child(2){transform:translate(4px,-9px) rotate(-45deg)}#hitmarker i:nth-child(3){transform:translate(-12px,7px) rotate(-45deg)}#hitmarker i:nth-child(4){transform:translate(4px,7px) rotate(45deg)}
+#toast{position:fixed;bottom:calc(var(--bottom) + 176px);left:50%;transform:translateX(-50%);z-index:11;padding:8px 12px;border-left:3px solid var(--gold);background:var(--panel);color:var(--text);font-size:12px;max-width:min(460px,calc(100vw - 32px));width:max-content;pointer-events:none;opacity:0;transition:opacity .15s;line-height:1.35;box-shadow:var(--shadow)}#toast.visible{opacity:1}#status{display:none!important}#contract{position:fixed;left:var(--edge);bottom:var(--bottom);z-index:4;background:var(--panel);border-radius:3px;box-shadow:var(--shadow);padding:8px 10px 7px;font:11px var(--mono);color:var(--muted);user-select:none;pointer-events:none;min-width:200px}#objective-status{color:var(--gold);font-weight:700;letter-spacing:.5px;margin-bottom:5px;font-size:10px}.objective{display:flex;align-items:center;gap:7px;padding:2px 0;color:var(--text)}.objective small{margin-left:auto;padding-left:12px;color:var(--muted);font-size:9px;letter-spacing:.4px}.objective .check{width:10px;height:10px;border:1px solid var(--muted);border-radius:2px;flex-shrink:0}.objective.done{color:var(--muted);text-decoration:line-through}.objective.done .check{background:var(--gold);border-color:var(--gold)}#contract .session{display:flex;gap:14px;margin-top:6px;padding-top:6px;border-top:1px solid var(--line);font-size:10px}#contract .session b{color:var(--text)}#contract .score{display:flex;flex-direction:column;gap:3px;margin-top:6px;padding-top:6px;border-top:1px solid var(--line);font-size:10px}#contract .score b{color:var(--gold);font-weight:700;margin-right:4px}@media (max-width:980px){#contract{display:none}}#crosshair{display:none;position:fixed;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);border:1px solid #fff9;border-radius:50%;pointer-events:none;z-index:2}#crosshair:before,#crosshair:after{content:'';position:absolute;top:7px;left:4px;width:6px;height:1px;background:#fff}#crosshair:after{transform:rotate(90deg)}#hitmarker{position:fixed;left:50%;top:50%;pointer-events:none;opacity:0;z-index:3}#hitmarker i{position:absolute;width:8px;height:2px;background:var(--gold)}#hitmarker i:nth-child(1){transform:translate(-12px,-9px) rotate(45deg)}#hitmarker i:nth-child(2){transform:translate(4px,-9px) rotate(-45deg)}#hitmarker i:nth-child(3){transform:translate(-12px,7px) rotate(-45deg)}#hitmarker i:nth-child(4){transform:translate(4px,7px) rotate(45deg)}
 .panel{display:none;position:fixed;top:calc(var(--edge) + 64px);right:var(--edge);width:320px;max-height:calc(100dvh - var(--edge) - var(--bottom) - 185px);background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:3px;z-index:10;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--line) transparent}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}.panel-head h2{font-size:15px;letter-spacing:-.25px;margin:0;font-weight:700}.panel-head .icon-button{width:28px;height:28px}.panel-head small{font:10px var(--mono);color:var(--muted)}.panel-foot{border-top:1px solid var(--line);padding:11px 16px;display:flex;justify-content:space-between;font:10px var(--mono);color:var(--muted)}.panel-foot a{text-decoration:none}.panel-foot a:hover{color:var(--gold)}.settings-open #inspector{display:block}.help-open #help-panel{display:block}.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);padding:0 12px}.tabs button{flex:1;padding:12px 5px 10px;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted);font-size:12px}.tabs button[aria-selected=true]{color:var(--gold);border-color:var(--gold)}.settings-page{padding:0 15px}.section{padding:15px 0;border-bottom:1px solid var(--line)}.section:last-child{border-bottom:0}.section h3,.section-label{font-size:11px;margin:0 0 12px;font-weight:600;color:var(--muted)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:24px;margin-bottom:11px;font-size:12px;line-height:1.4}.row:last-child{margin-bottom:0}.row>span{display:flex;align-items:center;justify-content:flex-end;gap:6px}.row output{font:10px var(--mono);width:36px;color:var(--muted);text-align:right}input[type=range]{width:100px;accent-color:var(--gold);cursor:ew-resize}input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:pointer;margin:0}select{background:var(--raised);color:var(--text);border:1px solid var(--line);padding:5px;max-width:125px;border-radius:2px;font-size:11px}.mini,.actions button,.text-button{background:var(--raised);color:var(--text);border:1px solid var(--line);border-radius:2px;min-height:34px;padding:8px 10px;font-size:11px;line-height:1.3}.mini:hover,.actions button:hover,.text-button:hover{border-color:var(--muted)}.mini.active{color:var(--gold);border-color:var(--gold)}.mini b{font:10px var(--mono);color:var(--gold);margin-right:4px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.actions .wide,.actions .one-leg{grid-column:1/-1}.actions .danger{color:var(--danger)}.actions .wide{display:flex;justify-content:space-between;align-items:center}.quiet{font-size:11px;color:var(--muted);line-height:1.5}.magnet-tip{font:10px/1.6 var(--mono);color:var(--muted);margin-top:8px;word-break:break-word}.detail-tip{display:none}.telemetry-open .detail-tip{display:block}.notice{font-size:10px;line-height:1.5;color:var(--muted);margin:10px 0;overflow-wrap:anywhere}.section details{padding-top:8px}summary{font-size:12px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}summary:after{content:'+';font:14px var(--mono);color:var(--muted)}details[open]>summary:after{content:'−'}details[open]>summary{margin-bottom:12px}.one-leg{width:100%}#grip-mode{display:none}#focus-tower{margin-top:4px}#bench-status{grid-column:1/-1;margin:0}#bench-run{color:var(--gold)}
 .perf-head{display:flex;align-items:center;justify-content:space-between;padding:16px 0 10px}.big{font:30px/1 var(--mono);letter-spacing:-1px}.unit{font:10px var(--mono);color:var(--muted);margin-left:4px}.smallnote{font:10px/1.6 var(--mono);text-align:right;color:var(--muted)}#graph{display:block;width:100%;height:45px}#run-state{font:10px var(--mono);color:var(--gold)}.stat{display:flex;justify-content:space-between;gap:10px;font:10px/1.9 var(--mono)}.stat span{color:var(--muted)}.stat strong{font-weight:400;white-space:nowrap}.sep{margin-top:7px;padding-top:7px;border-top:1px solid var(--line)}.extra-stats{display:none}.telemetry-open .extra-stats{display:block}#telemetry-toggle{width:100%;margin:10px 0;background:transparent;border:1px solid var(--line);padding:7px;color:var(--muted);font-size:11px}.perf-tools{padding-top:10px}
 #district-panel,#spawn-panel{left:var(--edge);right:auto;width:280px}.atlas-hidden #district-panel{display:none}body:not(.atlas-hidden) #district-panel{display:block}.spawn-open #spawn-panel{display:block}.spawn-open #district-panel{display:none}#atlas{width:100%;height:auto;display:block;cursor:crosshair}#district-name{padding:0;font-size:13px}#district-panel .map-preview{padding:12px}.zone-links{padding:0 12px 12px}.zone-links button{width:100%;display:flex;align-items:center;gap:10px;padding:11px 7px;text-align:left;background:none;color:var(--text);border:0;border-top:1px solid var(--line)}.zone-links button b{font:11px var(--mono);color:var(--muted)}.zone-links button span{font-size:12px;font-weight:600}.zone-links button em{font-style:normal;margin-left:auto;color:var(--muted)}.zone-links button small{display:none}.zone-links button:hover{background:var(--raised)}.zone-links button.selected{color:var(--gold)}.zone-links .whole{color:var(--muted)}.map-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:0 12px 12px}.map-actions small{font-size:10px;color:var(--muted)}.prop-links{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:12px}.prop-links button{background:var(--raised);border:1px solid var(--line);padding:10px 6px;min-height:83px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;font-size:11px}.prop-links button svg{width:30px;height:30px}.prop-links button:hover{border-color:var(--muted)}.prop-links button.selected{color:var(--gold);border-color:var(--gold)}.prop-links button:last-child{grid-column:1/-1;flex-direction:row;min-height:55px}.palette-hint{padding:0 13px 12px;font-size:11px;color:var(--muted)}.palette-hint b{color:var(--text)}#clear-spawned{margin:0 12px 12px;width:calc(100% - 24px)}
@@ -135,12 +135,12 @@ dl.bindings{font-size:14px;grid-template-columns:105px 1fr;gap:12px}dl.bindings 
 <button data-label="Voxel wrecking core" data-prop="boulder"><svg viewbox="0 0 40 40"><path d="M12 5h16v5h5v7h3v10h-5v7H9v-7H4V17h3v-7h5zM7 18h26M6 23h28"></path></svg><span>Wrecking core</span></button>
 <button data-label="Tall domino" data-prop="domino"><svg viewbox="0 0 40 40"><path d="M14 5h13v30H14zM14 11h13M14 26h13M17 6l-5 4v24h2"></path></svg><span>Domino</span></button>
 <button data-label="Heavy concrete slab" data-prop="slab"><svg viewbox="0 0 40 40"><path d="M6 12h28v22H6zM6 12l4-5h26v23l-2 4M6 16h28"></path></svg><span>Concrete slab</span></button>
-</div><div class="palette-hint"><b id="spawn-label">Crate</b> · Click to place<br/>Shift-click drops it from above.</div><button class="mini" id="clear-spawned">Clear spawned props</button></aside><aside aria-label="Settings" class="panel" id="inspector"><div class="panel-head"><h2>Settings</h2><button aria-label="Close settings" class="icon-button panel-close" data-close="settings" title="Close · Esc"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"></path></svg><span class="button-label">Close</span></button></div><details class="settings-fold" id="fold-play" open=""><summary>Controls &amp; powers</summary><div class="settings-page" id="page-play"><section class="section power-presets"><h3>How hard?</h3><div class="power-options" role="group" aria-label="Destruction power preset"><button data-power-preset="sandbox" aria-pressed="true" type="button"><b>Sandbox</b><span>Strong. Controllable.</span></button><button data-power-preset="rubble-god" aria-pressed="false" type="button"><b>Rubble God</b><span>Maximum disrespect.</span></button></div><p class="notice" id="power-summary" aria-live="polite">6× pull · 1.6× impact · 2.8 m blast</p></section><section class="section"><h3>Camera</h3><label class="row" for="camera-select">Camera mode<select id="camera-select"><option selected="" value="fly">Fly · WASD</option><option value="third">Third person</option></select></label><label class="row" for="fly-speed">Flight speed<span><input id="fly-speed" max="60" min="2" step="1" type="range" value="16"/><output id="fly-speed-value">16 m/s</output></span></label><p class="notice">WASD move · Space / Ctrl up / down.<br/>Hold right mouse to look. A quick right click locks look on; click again or Escape releases it.</p></section><section class="section"><h3>God hand</h3><label class="row" for="god-pull">Rip anchored objects<span><input checked="" id="god-pull" type="checkbox"/></span></label><label class="row" for="pull-strength">Pull strength<span><input id="pull-strength" max="12" min=".5" step=".1" type="range" value="6"/><output id="pull-strength-value">6.0×</output></span></label><label class="row" for="magnet-latch">Click to latch<span><input id="magnet-latch" type="checkbox"/></span></label><label class="row" for="edge-pan">Drag at screen edges<span><input checked="" id="edge-pan" type="checkbox"/></span></label><div id="grip-mode"></div><button class="mini" id="focus-tower">Try the water tower ↗</button></section><section class="section"><h3>Destruction</h3><label class="row" for="impact-scale">Impact damage<span><input id="impact-scale" max="2" min=".5" step=".1" type="range" value="1.6"/><output id="impact-value">1.6×</output></span></label><label class="row" for="radius">Blast radius<span><input id="radius" max="6" min="0.65" step=".05" type="range" value="2.8"/><output id="radius-value">2.8 m</output></span></label><label class="row" for="power">Blast impulse<span><input id="power" max="3" min="0" step=".1" type="range" value="1.5"/><output id="power-value">1.5×</output></span></label><details><summary>Structural rules</summary><label class="row" for="stress-toggle">Supports can fail<span><input checked="" id="stress-toggle" type="checkbox"/></span></label><label class="row" for="impact-toggle">Collisions break things<span><input checked="" id="impact-toggle" type="checkbox"/></span></label><label class="row" for="stress-view">Show weak sections<span><input id="stress-view" type="checkbox"/></span></label></details></section><section class="section"><h3>Sandbox</h3><div class="actions"><button class="mini" id="slow">¼ speed · T</button><button class="mini" id="jetpack">Jetpack · J</button><button class="mini" id="props-toggle">Spawn props · B</button><button class="mini" id="clear">Clear rubble</button><button class="wide danger" id="reset">Rebuild district <kbd>R</kbd></button></div></section></div></details><details class="settings-fold" id="fold-look"><summary>Appearance</summary><div class="settings-page" id="page-look"><section class="section"><h3>Appearance</h3><label class="row" for="theme-select">Theme<select id="theme-select"><option value="dark">Night</option><option value="light">Day</option></select></label><label class="row" for="match-world">Match world lighting<input checked="" id="match-world" type="checkbox"/></label><label class="row" for="show-hints">Tool hints<input checked="" id="show-hints" type="checkbox"/></label></section><section class="section"><h3>Video</h3><label class="row" for="quality">Render scale<span><select id="quality"><option value=".75">75%</option><option selected="" value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></span></label><label class="row" for="shadows">Shadows<span><input checked="" id="shadows" type="checkbox"/></span></label><label class="row" for="shake-toggle">Camera kick<span><input id="shake-toggle" type="checkbox"/></span></label></section><section class="section"><h3>Audio</h3><label class="row" for="sound">Sound effects<span><input checked="" id="sound" type="checkbox"/></span></label></section><section class="section"><h3>Capture</h3><div class="actions"><button class="" id="snapshot">Save image</button><button class="" id="fullscreen">Fullscreen</button><button class="wide" id="hide-hud">Hide HUD · H</button></div></section></div></details><details class="settings-fold" id="fold-stats"><summary>Performance &amp; tests</summary><div class="settings-page" id="page-stats"><div class="perf-head"><div><span class="big" id="fps">—</span><span class="unit">FPS</span></div><div class="smallnote"><span id="run-state">LIVE</span><br/><span id="frame-ms">—</span> ms / frame<br/><span id="resolution">—</span></div></div><canvas height="90" id="graph" width="540"></canvas><p class="notice" id="scene-count"></p><div class="stats"><div class="stat"><span>Solver</span><strong id="solver-mode">WORKER</strong></div><div class="stat"><span>Physics round trip</span><strong id="physics-trip">—</strong></div><div class="stat"><span>Query mirror / update</span><strong id="query-ms">—</strong></div><div class="stat"><span>Commit / frame</span><strong id="main-commit-ms">—</strong></div><div class="stat"><span>Force events → reads</span><strong id="contact-work">—</strong></div><div class="stat"><span>Material → physics boxes</span><strong id="collision-cover">—</strong></div><div class="stat"><span>Rubble budget</span><strong id="rubble-budget">—</strong></div><div class="stat"><span>Jam breaks / budget rescues</span><strong id="yank-breaks">0 / 0</strong></div><div class="stat"><span>Fuel splash ignitions</span><strong id="splash-arms">0</strong></div><div class="stat"><span>Physics / step</span><strong id="physics-ms">—</strong></div><div class="stat"><span>Worker / last edit</span><strong id="worker-ms">—</strong></div><div class="stat"><span>Commit / last edit</span><strong id="commit-ms">—</strong></div><div class="stat"><span>Edit latency / last</span><strong id="latency-ms">—</strong></div><div class="stat sep"><span>Bodies: awake / sleep</span><strong id="bodies">—</strong></div><div class="stat"><span>Colliders</span><strong id="colliders">—</strong></div><div class="stat"><span>Draws / triangles¹</span><strong id="draws">—</strong></div><div class="stat"><span>Solid voxels</span><strong id="voxels">—</strong></div><div class="stat"><span>In flight / queued</span><strong id="pending">0</strong></div></div><button class="mini" id="telemetry-toggle">More counters</button><div class="stats extra-stats"><div class="stat"><span>Edit chunks → visible batches</span><strong id="batch-count">—</strong></div><div class="stat"><span>Workers / queued jobs</span><strong id="worker-count">—</strong></div><div class="stat"><span>Stress / impact breaks</span><strong id="stress-count">0 / 0</strong></div><div class="stat"><span>Voxels removed</span><strong id="damage-count">0</strong></div><div class="stat"><span>Shatters / new solid pieces</span><strong id="fracture-count">0 / 0</strong></div><div class="stat"><span>Grip transfers / reanchors</span><strong id="grip-count">0 / 0</strong></div><div class="stat"><span>God-hand rips / broken bonds</span><strong id="rip-count">0 / 0</strong></div><div class="stat" title="Rocket hits / currently flying / expired without impact"><span>Rockets: hit / live / out</span><strong id="rocket-count">0 / 0 / 0</strong></div></div><div class="detail-tip"><div class="magnet-tip" id="pull-last"></div><div class="magnet-tip" id="impact-last"></div><div class="magnet-tip" id="rocket-last"></div></div><p class="notice">CPU timings · 60 Hz physics target.<br/>Rendering continues independently of the solver.</p><section class="section"><h3>Debug views</h3><label class="row" for="debug">Colliders<span><input id="debug" type="checkbox"/></span></label><label class="row" for="wire">Wireframe<span><input id="wire" type="checkbox"/></span></label></section><section class="section"><details><summary>Tests &amp; exports</summary><div class="actions"><button class="one-leg" id="one-leg">Leave one tower leg</button><button class="" id="cut-tower">Cut tower feet</button><button class="" id="cut-bridge">Cut bridge feet</button><button class="" id="step">Step physics</button><button class="" id="export">Export metrics</button><button class="one-leg" id="impact-test">Hard-slam test · rebuilds</button><button class="one-leg" id="impact-export">Export impact traces</button><p class="notice" id="impact-trace-status">No impact trace yet.</p><button class="one-leg" id="selftest">Run self-tests</button><button class="one-leg" id="bench-run">30s stress test · rebuilds</button><button class="one-leg" id="bench-save">Save stress report</button><p class="notice" id="bench-status">No test run yet.</p><button class="one-leg" id="qa-run">Automated gameplay QA · rebuilds</button><button class="one-leg" id="qa-save" disabled>Save QA report + screenshots</button><p class="notice" id="qa-status">No gameplay QA run yet.</p><details><summary>QA details</summary><pre id="qa-log" style="white-space:pre-wrap;font-size:12px;overflow-wrap:anywhere"></pre></details></div></details></section></div></details><footer class="panel-foot"><a href="https://trentsterling.com" rel="noopener noreferrer" target="_blank">Trent Sterling ↗</a><span>Breakmass 0.12.5</span><button class="text-button" id="about-link">About &amp; credits</button></footer></aside><aside aria-label="Help and About" class="panel" id="help-panel"><div class="panel-head"><h2>Help / About</h2><button aria-label="Close help" class="icon-button panel-close" data-close="help" title="Close · Esc"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"></path></svg><span class="button-label">Close</span></button></div><div class="help-content" id="help-controls">
+</div><div class="palette-hint"><b id="spawn-label">Crate</b> · Click to place<br/>Shift-click drops it from above.</div><button class="mini" id="clear-spawned">Clear spawned props</button></aside><aside aria-label="Settings" class="panel" id="inspector"><div class="panel-head"><h2>Settings</h2><button aria-label="Close settings" class="icon-button panel-close" data-close="settings" title="Close · Esc"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"></path></svg><span class="button-label">Close</span></button></div><details class="settings-fold" id="fold-play" open=""><summary>Controls &amp; powers</summary><div class="settings-page" id="page-play"><section class="section power-presets"><h3>How hard?</h3><div class="power-options" role="group" aria-label="Destruction power preset"><button data-power-preset="sandbox" aria-pressed="true" type="button"><b>Sandbox</b><span>Strong. Controllable.</span></button><button data-power-preset="rubble-god" aria-pressed="false" type="button"><b>Rubble God</b><span>Maximum disrespect.</span></button></div><p class="notice" id="power-summary" aria-live="polite">6× pull · 1.6× impact · 2.8 m blast</p></section><section class="section"><h3>Camera</h3><label class="row" for="camera-select">Camera mode<select id="camera-select"><option selected="" value="fly">Fly · WASD</option><option value="third">Third person</option></select></label><label class="row" for="fly-speed">Flight speed<span><input id="fly-speed" max="60" min="2" step="1" type="range" value="16"/><output id="fly-speed-value">16 m/s</output></span></label><p class="notice">WASD move · Space / Ctrl up / down.<br/>Hold right mouse to look. A quick right click locks look on; click again or Escape releases it.</p></section><section class="section"><h3>God hand</h3><label class="row" for="god-pull">Rip anchored objects<span><input checked="" id="god-pull" type="checkbox"/></span></label><label class="row" for="pull-strength">Pull strength<span><input id="pull-strength" max="12" min=".5" step=".1" type="range" value="6"/><output id="pull-strength-value">6.0×</output></span></label><label class="row" for="magnet-latch">Click to latch<span><input id="magnet-latch" type="checkbox"/></span></label><label class="row" for="edge-pan">Drag at screen edges<span><input checked="" id="edge-pan" type="checkbox"/></span></label><div id="grip-mode"></div><button class="mini" id="focus-tower">Try the water tower ↗</button></section><section class="section"><h3>Destruction</h3><label class="row" for="impact-scale">Impact damage<span><input id="impact-scale" max="2" min=".5" step=".1" type="range" value="1.6"/><output id="impact-value">1.6×</output></span></label><label class="row" for="radius">Blast radius<span><input id="radius" max="6" min="0.65" step=".05" type="range" value="2.8"/><output id="radius-value">2.8 m</output></span></label><label class="row" for="power">Blast impulse<span><input id="power" max="3" min="0" step=".1" type="range" value="1.5"/><output id="power-value">1.5×</output></span></label><details><summary>Structural rules</summary><label class="row" for="stress-toggle">Supports can fail<span><input checked="" id="stress-toggle" type="checkbox"/></span></label><label class="row" for="impact-toggle">Collisions break things<span><input checked="" id="impact-toggle" type="checkbox"/></span></label><label class="row" for="stress-view">Show weak sections<span><input id="stress-view" type="checkbox"/></span></label></details></section><section class="section"><h3>Sandbox</h3><div class="actions"><button class="mini" id="slow">¼ speed · T</button><button class="mini" id="jetpack">Jetpack · J</button><button class="mini" id="props-toggle">Spawn props · B</button><button class="mini" id="clear">Clear rubble</button><button class="wide danger" id="reset">Rebuild district <kbd>R</kbd></button></div></section></div></details><details class="settings-fold" id="fold-look"><summary>Appearance</summary><div class="settings-page" id="page-look"><section class="section"><h3>Appearance</h3><label class="row" for="theme-select">Theme<select id="theme-select"><option value="dark">Night</option><option value="light">Day</option></select></label><label class="row" for="match-world">Match world lighting<input checked="" id="match-world" type="checkbox"/></label><label class="row" for="show-hints">Tool hints<input checked="" id="show-hints" type="checkbox"/></label></section><section class="section"><h3>Video</h3><label class="row" for="quality">Render scale<span><select id="quality"><option value=".75">75%</option><option selected="" value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></span></label><label class="row" for="shadows">Shadows<span><input checked="" id="shadows" type="checkbox"/></span></label><label class="row" for="shake-toggle">Camera kick<span><input id="shake-toggle" type="checkbox"/></span></label></section><section class="section"><h3>Audio</h3><label class="row" for="sound">Sound effects<span><input checked="" id="sound" type="checkbox"/></span></label></section><section class="section"><h3>Capture</h3><div class="actions"><button class="" id="snapshot">Save image</button><button class="" id="fullscreen">Fullscreen</button><button class="wide" id="hide-hud">Hide HUD · H</button></div></section></div></details><details class="settings-fold" id="fold-stats"><summary>Performance &amp; tests</summary><div class="settings-page" id="page-stats"><div class="perf-head"><div><span class="big" id="fps">·</span><span class="unit">FPS</span></div><div class="smallnote"><span id="run-state">LIVE</span><br/><span id="frame-ms">·</span> ms / frame<br/><span id="resolution">·</span></div></div><canvas height="90" id="graph" width="540"></canvas><p class="notice" id="scene-count"></p><div class="stats"><div class="stat"><span>Solver</span><strong id="solver-mode">WORKER</strong></div><div class="stat"><span>Physics round trip</span><strong id="physics-trip">·</strong></div><div class="stat"><span>Query mirror / update</span><strong id="query-ms">·</strong></div><div class="stat"><span>Commit / frame</span><strong id="main-commit-ms">·</strong></div><div class="stat"><span>Force events → reads</span><strong id="contact-work">·</strong></div><div class="stat"><span>Material → physics boxes</span><strong id="collision-cover">·</strong></div><div class="stat"><span>Rubble budget</span><strong id="rubble-budget">·</strong></div><div class="stat"><span>Jam breaks / budget rescues</span><strong id="yank-breaks">0 / 0</strong></div><div class="stat"><span>Fuel splash ignitions</span><strong id="splash-arms">0</strong></div><div class="stat"><span>Physics / step</span><strong id="physics-ms">·</strong></div><div class="stat"><span>Worker / last edit</span><strong id="worker-ms">·</strong></div><div class="stat"><span>Commit / last edit</span><strong id="commit-ms">·</strong></div><div class="stat"><span>Edit latency / last</span><strong id="latency-ms">·</strong></div><div class="stat sep"><span>Bodies: awake / sleep</span><strong id="bodies">·</strong></div><div class="stat"><span>Colliders</span><strong id="colliders">·</strong></div><div class="stat"><span>Draws / triangles¹</span><strong id="draws">·</strong></div><div class="stat"><span>Solid voxels</span><strong id="voxels">·</strong></div><div class="stat"><span>In flight / queued</span><strong id="pending">0</strong></div></div><button class="mini" id="telemetry-toggle">More counters</button><div class="stats extra-stats"><div class="stat"><span>Edit chunks → visible batches</span><strong id="batch-count">·</strong></div><div class="stat"><span>Workers / queued jobs</span><strong id="worker-count">·</strong></div><div class="stat"><span>Stress / impact breaks</span><strong id="stress-count">0 / 0</strong></div><div class="stat"><span>Voxels removed</span><strong id="damage-count">0</strong></div><div class="stat"><span>Shatters / new solid pieces</span><strong id="fracture-count">0 / 0</strong></div><div class="stat"><span>Grip transfers / reanchors</span><strong id="grip-count">0 / 0</strong></div><div class="stat"><span>God-hand rips / broken bonds</span><strong id="rip-count">0 / 0</strong></div><div class="stat" title="Rocket hits / currently flying / expired without impact"><span>Rockets: hit / live / out</span><strong id="rocket-count">0 / 0 / 0</strong></div></div><div class="detail-tip"><div class="magnet-tip" id="pull-last"></div><div class="magnet-tip" id="impact-last"></div><div class="magnet-tip" id="rocket-last"></div></div><p class="notice">CPU timings · 60 Hz physics target.<br/>Rendering continues independently of the solver.</p><section class="section"><h3>Debug views</h3><label class="row" for="debug">Colliders<span><input id="debug" type="checkbox"/></span></label><label class="row" for="wire">Wireframe<span><input id="wire" type="checkbox"/></span></label></section><section class="section"><details><summary>Tests &amp; exports</summary><div class="actions"><button class="one-leg" id="one-leg">Leave one tower leg</button><button class="" id="cut-tower">Cut tower feet</button><button class="" id="cut-bridge">Cut bridge feet</button><button class="" id="step">Step physics</button><button class="" id="export">Export metrics</button><button class="one-leg" id="impact-test">Hard-slam test · rebuilds</button><button class="one-leg" id="impact-export">Export impact traces</button><p class="notice" id="impact-trace-status">No impact trace yet.</p><button class="one-leg" id="selftest">Run self-tests</button><button class="one-leg" id="bench-run">30s stress test · rebuilds</button><button class="one-leg" id="bench-save">Save stress report</button><p class="notice" id="bench-status">No test run yet.</p><button class="one-leg" id="qa-run">Automated gameplay QA · rebuilds</button><button class="one-leg" id="qa-save" disabled>Save QA report + screenshots</button><p class="notice" id="qa-status">No gameplay QA run yet.</p><details><summary>QA details</summary><pre id="qa-log" style="white-space:pre-wrap;font-size:12px;overflow-wrap:anywhere"></pre></details></div></details></section></div></details><footer class="panel-foot"><a href="https://trentsterling.com" rel="noopener noreferrer" target="_blank">Trent Sterling ↗</a><span>Breakmass 0.13.0</span><button class="text-button" id="about-link">About &amp; credits</button></footer></aside><aside aria-label="Help and About" class="panel" id="help-panel"><div class="panel-head"><h2>Help / About</h2><button aria-label="Close help" class="icon-button panel-close" data-close="help" title="Close · Esc"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"></path></svg><span class="button-label">Close</span></button></div><div class="help-content" id="help-controls">
 <section class="section help-start"><h3>Point. Pull. Wreck.</h3><p><strong>Move the mouse to aim.</strong> Hold right mouse to look around. A quick right click keeps look on; click again to get your cursor back. <kbd>Esc</kbd> always releases.</p></section>
 <section class="section"><h3>Move &amp; look</h3><div id="help"><div id="mode-tag">Free flight</div><div><b>WASD</b> fly · Space / Ctrl rise / descend</div><div><b>Hold right mouse</b> look · quick right click latches it</div></div></section>
 <section class="section"><h3>Break things</h3><dl class="bindings"><dt>1–3</dt><dd>Rifle, shotgun, rockets. Hold left to fire.</dd><dt>4 / 6</dt><dd>Blast / rapid bomb rain. Aim at a surface.</dd><dt>5</dt><dd>God hand. Hold left, grab a surface and pull.</dd><dt>Shift / X</dt><dd>Peel a section / throw the held piece.</dd><dt>Wheel / K</dt><dd>Grab reach / click-latch the God hand.</dd><dt>7 / 8</dt><dd>Chisel / props. Shift-click drops props from above.</dd></dl></section>
 <details class="section"><summary>More shortcuts</summary><dl class="bindings"><dt>V</dt><dd>Fly → Third person → Orbit.</dd><dt>M / B</dt><dd>World / props.</dd><dt>P / T</dt><dd>Pause / slow motion.</dd><dt>N / H</dt><dd>Day–night / hide HUD.</dd><dt>Tab / ?</dt><dd>Settings / this page.</dd><dt>G / J</dt><dd>Gravity shove / third-person jetpack.</dd><dt>R</dt><dd>Rebuild this scene (asks first).</dd><dt>Power chip</dt><dd>Sandbox ↔ Rubble God. Sliders remain available in Settings.</dd></dl></details>
-<section class="section" id="help-about"><h3 class="about-title">BREAKMASS</h3><p class="about-tagline">The city is ammunition.</p><h3>Made by Tront</h3><p>A single-player voxel destruction sandbox by <strong>Trent Sterling</strong>.</p><p class="credit-links"><a href="https://tront.xyz" rel="noopener noreferrer" target="_blank">More games ↗</a><a href="https://trentsterling.com" rel="noopener noreferrer" target="_blank">Portfolio ↗</a></p><p>Rendering: <a href="https://threejs.org" rel="noopener noreferrer" target="_blank">Three.js</a> · Physics: <a href="https://rapier.rs" rel="noopener noreferrer" target="_blank">Rapier</a>. Original procedural models and destruction code. Inspired by Teardown and Noita; not affiliated.</p><p class="quiet">Breakmass 0.12.5 · The city is ammunition.<br/>Keyboard and mouse recommended. Fly passes through walls. Older loose rubble uses cheap ground-only motion when the pile gets crowded; grab it to restore full collisions. No fluids or combustion simulation yet. Internet is needed for the pinned runtime libraries.</p></section></div></aside><div aria-live="polite" id="toast" role="status"></div><div id="pull-meter"><span id="pull-state">Pull to snap</span><div class="pull-track"><i id="pull-fill"></i></div></div><div id="target"></div><div id="hint-wrap"><div id="tool-description">Hold to fire · 1–8 switch tools</div><button aria-label="Tune this tool" class="icon-button" id="tune-tool" title="Tune this tool"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M3 6h8M15 6h6M3 18h3M10 18h11M11 3v6M7 15v6M3 12h13M20 12h1M17 9v6"></path></svg><span class="button-label">Tune</span></button></div><nav aria-label="Destruction tools" id="dock">
+<section class="section" id="help-about"><h3 class="about-title">BREAKMASS</h3><p class="about-tagline">The city is ammunition.</p><h3>Made by Tront</h3><p>A single-player voxel destruction sandbox by <strong>Trent Sterling</strong>.</p><p class="credit-links"><a href="https://tront.xyz" rel="noopener noreferrer" target="_blank">More games ↗</a><a href="https://trentsterling.com" rel="noopener noreferrer" target="_blank">Portfolio ↗</a></p><p>Rendering: <a href="https://threejs.org" rel="noopener noreferrer" target="_blank">Three.js</a> · Physics: <a href="https://rapier.rs" rel="noopener noreferrer" target="_blank">Rapier</a>. Original procedural models and destruction code. Inspired by Teardown and Noita; not affiliated.</p><p class="quiet">Breakmass 0.13.0 · The city is ammunition.<br/>Keyboard and mouse recommended. Fly passes through walls. Older loose rubble uses cheap ground-only motion when the pile gets crowded; grab it to restore full collisions. No fluids or combustion simulation yet. Internet is needed for the pinned runtime libraries.</p></section></div></aside><div aria-live="polite" id="toast" role="status"></div><div id="pull-meter"><span id="pull-state">Pull to snap</span><div class="pull-track"><i id="pull-fill"></i></div></div><div id="target"></div><div id="hint-wrap"><div id="tool-description">Hold to fire · 1–8 switch tools</div><button aria-label="Tune this tool" class="icon-button" id="tune-tool" title="Tune this tool"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M3 6h8M15 6h6M3 18h3M10 18h11M11 3v6M7 15v6M3 12h13M20 12h1M17 9v6"></path></svg><span class="button-label">Tune</span></button></div><nav aria-label="Destruction tools" id="dock">
 <button aria-label="Machine gun · 1" aria-pressed="false" class="tool" data-tool="4" title="Machine gun · 1"><svg viewbox="0 0 24 24"><path d="M2 8h15v6H2zM17 9h5v3h-5M5 14v6h4v-6M12 14v5h4v-5M8 8V5h5v3M1 9v6"></path></svg><div><span>Rifle</span><kbd>1</kbd></div></button>
 <button aria-label="Scattergun · 2 · 12 pellets" aria-pressed="false" class="tool" data-tool="5" title="Scattergun · 2 · 12 pellets"><svg viewbox="0 0 24 24"><path d="M2 8h18v4H9l-3 7H2l3-9M10 12v3h4v-3M20 7v6M23 5l-1 2M23 16l-1-2"></path></svg><div><span>Shotgun</span><kbd>2</kbd></div></button>
 <button aria-label="Rocket launcher · 3" aria-pressed="false" class="tool" data-tool="2" title="Rocket launcher · 3"><svg viewbox="0 0 24 24"><path d="M4 8h13l5 4-5 4H4zM4 9L1 6v12l3-3M8 16v4h4v-4M16 8v8"></path></svg><div><span>Rocket</span><kbd>3</kbd></div></button>
@@ -152,7 +152,9 @@ dl.bindings{font-size:14px;grid-template-columns:105px 1fr;gap:12px}dl.bindings 
 <div class="objective" id="goal-tower"><span class="check"></span> Topple the tank <small>OVERLOAD ITS LEGS</small></div>
 <div class="objective" id="goal-span"><span class="check"></span> Drop the span <small>REMOVE SUPPORTS</small></div>
 <div class="objective" id="goal-drums"><span class="check"></span> Ignite three drums <small id="drum-count">0/3</small></div>
-<div class="session"><span><b id="shot-count">0</b> SHOTS</span><span><b id="chain-count">—</b> BEST CHAIN</span></div></div><div id="status"><span id="status-left">0.25m voxels / worker meshing / compound bodies</span><span>THREE.JS + RAPIER · ORIGINAL PROCEDURAL SCENE · H TO HIDE</span></div><div id="loading"><div class="load-card"><div class="load-logo"><span aria-hidden="true" class="mass-mark"></span><h2>BREAKMASS</h2></div><p class="load-tagline">THE CITY IS AMMUNITION.</p><p id="load-message">Loading the district…</p><div class="bar"></div><a class="load-credit" href="https://tront.xyz" rel="noopener noreferrer" target="_blank">by Tront ↗</a><p id="load-error"></p><div class="load-actions"><button class="mini" hidden="" id="retry">Retry</button><button class="mini" hidden="" id="copy-error">Copy error</button></div><details hidden="" id="load-details"><summary>Startup details</summary><div class="notice" id="boot-details"></div></details></div></div>
+<div class="objective" id="goal-hands"><span class="check"></span> Tower, hands only <small>NO SHOTS FIRED</small></div>
+<div class="objective" id="goal-chain3"><span class="check"></span> Three drums, one chain <small>CHAIN ≥ 3</small></div>
+<div class="session"><span><b id="shot-count">0</b> SHOTS</span><span><b id="chain-count">·</b> BEST CHAIN</span></div><div class="score"><div><b id="score-wreckage">$0</b> WRECKAGE</div><div><b id="score-chain">·</b> CHAIN</div><div><b id="score-impact" title="Peak impact kinetic energy this session, half mass times speed squared, from the impact-damage profile. Joules-based, not a force.">·</b> BIGGEST IMPACT</div><div><b id="score-mass">0 t</b> MASS MOVED</div><div><b id="score-collapses">0</b> COLLAPSES</div></div></div><div id="status"><span id="status-left">0.25m voxels / worker meshing / compound bodies</span><span>THREE.JS + RAPIER · ORIGINAL PROCEDURAL SCENE · H TO HIDE</span></div><div id="loading"><div class="load-card"><div class="load-logo"><span aria-hidden="true" class="mass-mark"></span><h2>BREAKMASS</h2></div><p class="load-tagline">THE CITY IS AMMUNITION.</p><p id="load-message">Loading the district…</p><div class="bar"></div><a class="load-credit" href="https://tront.xyz" rel="noopener noreferrer" target="_blank">by Tront ↗</a><p id="load-error"></p><div class="load-actions"><button class="mini" hidden="" id="retry">Retry</button><button class="mini" hidden="" id="copy-error">Copy error</button></div><details hidden="" id="load-details"><summary>Startup details</summary><div class="notice" id="boot-details"></div></details></div></div>
 <dialog aria-labelledby="reset-title" id="confirm-reset"><h2 id="reset-title">Rebuild the district?</h2><p id="reset-explanation">This clears all destruction and spawned props.</p><form method="dialog"><button autofocus="" class="mini" value="cancel">Keep playing</button><button class="mini confirm" id="confirm-rebuild-button" value="rebuild">Rebuild</button></form></dialog>
 <script id="voxel-worker-source" type="text/plain">
 
@@ -427,9 +429,9 @@ function voxelKernel() {
     }
     const thinAxis=horizontalMin===ex?0:2,longAxis=horizontalMax===ex?0:2;
     const profile={
-      pancake:{axisBias:[.7,2.4,.7],slabChance:.6,target:[.25,.5],shearScale:.35,amplitudeScale:.6},
-      shear:{axisBias:[thinAxis===0?0:1.7,1,thinAxis===2?0:1.7],slabChance:.1,target:[.2,.5],shearScale:1.7,amplitudeScale:1.3},
-      buckle:{axisBias:[.55,2.2,.55],slabChance:.4,target:[.22,.55],shearScale:1.25,amplitudeScale:1},
+      pancake:{axisBias:[.7,2.4,.7],slabChance:.6,target:[.16,.6],shearScale:.35,amplitudeScale:.6},
+      shear:{axisBias:[thinAxis===0?0:1.7,1,thinAxis===2?0:1.7],slabChance:.1,target:[.15,.62],shearScale:1.7,amplitudeScale:1.3},
+      buckle:{axisBias:[.55,2.2,.55],slabChance:.4,target:[.15,.64],shearScale:1.25,amplitudeScale:1},
       snap:{axisBias:[longAxis===0?2.8:.35,.35,longAxis===2?2.8:.35],slabChance:.55,target:[.3,.4],shearScale:.5,amplitudeScale:.6},
       spall:{axisBias:[1,1,1],slabChance:.12,target:[.1,.25],shearScale:1.2,amplitudeScale:1.2},
       shatter:{axisBias:[1,1,1],slabChance:.16,target:[.22,.72],shearScale:1,amplitudeScale:1}
@@ -2071,7 +2073,7 @@ if(typeof module!=='undefined')module.exports=runBreakmassStress;
   const ranges=['pull-strength','impact-scale','radius','power'];
   const switches=['god-pull','stress-toggle','impact-toggle'];
   const defaults={'pull-strength':6,'impact-scale':1.6,radius:2.8,power:1.5,'god-pull':true,'stress-toggle':true,'impact-toggle':true};
-  const presets=Object.freeze({sandbox:Object.freeze({...defaults}),'rubble-god':Object.freeze({...defaults,'pull-strength':10,'impact-scale':2,radius:3.8,power:2.2})});
+  const presets=Object.freeze({sandbox:Object.freeze({...defaults}),'rubble-god':Object.freeze({...defaults,'pull-strength':10,'impact-scale':2,radius:4.5,power:2.5})});
   let attached=false,applying=false,current='sandbox';
   function values(){const out={};for(const id of ranges)out[id]=Number($(id).value);for(const id of switches)out[id]=$(id).checked;return out;}
   function classify(v){return Object.keys(presets).find(name=>Object.entries(presets[name]).every(([id,value])=>typeof value==='boolean'?v[id]===value:Math.abs(v[id]-value)<1e-6))||'custom';}
@@ -2084,6 +2086,7 @@ if(typeof module!=='undefined')module.exports=runBreakmassStress;
     document.querySelectorAll('[data-power-preset]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.powerPreset===current)));
     $('power-summary').textContent=v['pull-strength'].toFixed(1)+'× pull · '+v['impact-scale'].toFixed(1)+'× impact · '+v.radius.toFixed(1)+' m blast';
     $('power-value').textContent=v.power.toFixed(1)+'×';
+    if(current==='sandbox'||current==='rubble-god')window.BREAKMASS?.applyPreset?.(current);
   }
   function store(){try{localStorage.setItem(key,JSON.stringify({version:2,values:values()}));}catch(_){/* Private/opaque storage is optional. */}}
   function sanitize(input){
@@ -2170,7 +2173,17 @@ function createPoseClock(dt=1000/60){
 if(typeof module!=='undefined')module.exports={createFlyMotion,createPoseClock};
 </script><script>/* Bounded sandbox tuning, shared by live gameplay and regression tests. */
 function createSandboxTuning(){
-  const config=Object.freeze({blastRadius:2.8,blastPower:1.5,pullStrength:6,impactScale:1.6,shotgunInterval:.20,rainCount:10,rainInterval:.05,rainCooldown:.8,rainRadius:6.5,rainHeight:26,rainSpeed:36});
+  // Sandbox keys/values are identical to the single config object this replaces.
+  // shotgunPellets, failThreshold and budgetTarget are new: they name constants that
+  // used to be hardcoded elsewhere (12 pellets, ratio>1, the 384 rubble budget seed)
+  // so Rubble God can override them too. Sandbox's own numbers do not move.
+  const sandboxDefaults=Object.freeze({blastRadius:2.8,blastPower:1.5,pullStrength:6,impactScale:1.6,shotgunPellets:12,shotgunInterval:.20,rainCount:10,rainInterval:.05,rainCooldown:.8,rainRadius:6.5,rainHeight:26,rainSpeed:36,failThreshold:1,budgetTarget:384});
+  const presets=Object.freeze({
+    sandbox:sandboxDefaults,
+    'rubble-god':Object.freeze({...sandboxDefaults,blastRadius:4.5,blastPower:2.5,pullStrength:10,impactScale:2,shotgunPellets:16,rainCount:14,rainInterval:.04,rainCooldown:.6,failThreshold:.65,budgetTarget:576})
+  });
+  let currentName='sandbox',config=presets.sandbox;
+  function setPreset(name){if(presets[name]){currentName=name;config=presets[name];}return config;}
   function crushesFuel({speed,impulse,mass}){return Number.isFinite(speed)&&Number.isFinite(impulse)&&Number.isFinite(mass)&&mass>0&&speed>=2.15&&impulse/mass>=1.8;}
   function breach(hit,radius=config.blastRadius){
     if(!hit?.point||!hit?.normal)return null;
@@ -2184,7 +2197,7 @@ function createSandboxTuning(){
       return {origin:[point[0]+Math.cos(angle)*rad,point[1]+config.rainHeight,point[2]+Math.sin(angle)*rad],delay:i*config.rainInterval};
     });
   }
-  return {config,crushesFuel,breach,rainPlan};
+  return {get config(){return config},get preset(){return currentName},setPreset,presets,crushesFuel,breach,rainPlan};
 }
 if(typeof module!=='undefined')module.exports=createSandboxTuning;
 </script><script>/* Pointer-lock ownership is distinct from button/capture transport.
@@ -2422,25 +2435,29 @@ function createDamageQueue(){
 /* Soft, timing-driven capacity. Reaching a target degrades old small rubble;
  * it never cancels a weapon edit or refuses a held chunk. */
 function createAdaptiveBudget(){
-  let active=384,ema=0,samples=0,last=0;
-  return {get active(){return active;},get solveEMA(){return ema;},
+  let target=384,active=384,ema=0,samples=0,last=0;
+  return {get active(){return active;},get solveEMA(){return ema;},get target(){return target;},
     sample(ms,now){if(!Number.isFinite(ms)||ms<0)return;ema=samples++?ema*.92+ms*.08:ms;
       if(now-last<400||samples<12)return;last=now;
       if(ema<5)active=Math.min(4096,active+32);
       else if(ema>11)active=Math.max(128,Math.floor(active*.88));
-    },reset(){active=384;ema=0;samples=0;last=0;}
+    },reset(){active=target;ema=0;samples=0;last=0;},
+    // Loosening (a higher target) applies at once so a mid-game preset switch is felt
+    // immediately; tightening only lowers the ceiling, it never yanks rubble that is
+    // already allowed to stay active. reset() (Rebuild) always snaps to the target.
+    setTarget(next){if(!Number.isFinite(next)||next<=0)return;target=Math.round(next);if(active<target)active=target;}
   };
 }
 if(typeof module!=='undefined'){module.exports.createDamageQueue=createDamageQueue;module.exports.createAdaptiveBudget=createAdaptiveBudget;}
 </script>
 <script type="module">
 
-/* Breakmass v0.12.5 — independent voxel destruction / rigid-body experiment.
+/* Breakmass v0.13.0 — independent voxel destruction / rigid-body experiment.
  * THREE handles rendering; Rapier handles contacts, inertia, sleeping and CCD.
  * The original voxel kernel lives in a Worker. No third-party demo code/assets.
  */
 const $=id=>document.getElementById(id);
-window.BREAKMASS_BOOT={version:'0.12.5',protocol:location.protocol,workerType:'classic',stage:'libraries',userAgent:navigator.userAgent,errors:[]};
+window.BREAKMASS_BOOT={version:'0.13.0',protocol:location.protocol,workerType:'classic',stage:'libraries',userAgent:navigator.userAgent,errors:[]};
 function bootStage(stage,label){window.BREAKMASS_BOOT.stage=stage;if(label)$('load-message').textContent=label;}
 async function library(urls,label){
   let last;
@@ -2466,6 +2483,13 @@ async function boot(){
   const density=[0,650,950,1500,160,1300,300,1500,800,1000]; // Deliberate game densities, kg / m³.
   const toughness=[1,1,1.15,2.1,.8,2.45,.45,2.1,1,2.2];
   const colors=[0,0xb86147,0xd8cdb9,0x287f83,0xae7c42,0x48545a,0x8bb5b4,0xefbb49,0xb94836,0x34444a];
+  const WRECKAGE_PRICE=[0,8,8,55,20,55,20,55,8,55]; // $ per removed voxel, index-matched to colors/toughness above.
+  const SALVAGE_PER_KG=2.2; // $/kg for structural mass ripped from an anchored root; tuned to the voxel price scale.
+  function dustValue(dust,removedCount){
+    if(!dust||!dust.length||!removedCount)return 0;
+    let sum=0;for(let i=0;i<dust.length;i++)sum+=WRECKAGE_PRICE[dust[i][3]]||0;
+    return sum/dust.length*removedCount;
+  }
   const V=(x=0,y=0,z=0)=>new THREE.Vector3(x,y,z),Q=()=>new THREE.Quaternion();
   const scene=new THREE.Scene();scene.background=new THREE.Color(0xcbd7d3);scene.fog=new THREE.Fog(0xcbd7d3,135,300);
   const camera=new THREE.PerspectiveCamera(44,innerWidth/innerHeight,.08,420);
@@ -2539,6 +2563,14 @@ async function boot(){
   const tether=new THREE.Line(new THREE.BufferGeometry().setFromPoints([V(),V()]),new THREE.LineBasicMaterial({color:0xf1c976}));tether.visible=false;tether.frustumCulled=false;scene.add(tether);
   const gripHalo=new THREE.Mesh(new THREE.RingGeometry(.13,.19,24),new THREE.MeshBasicMaterial({color:0xf8cd68,transparent:true,opacity:.9,depthTest:false,depthWrite:false,side:THREE.DoubleSide}));
   gripHalo.visible=false;gripHalo.renderOrder=12;scene.add(gripHalo);
+  // Stress pulse: a brief camera-facing ring flashed at a failure/collapse centre
+  // so the player can read WHERE a structure gave way. Cosmetic only, one shot.
+  // Scaled by distance to camera (like gripHalo) so it reads as a localized
+  // marker up close instead of a screen-filling disc, and stays legible far away.
+  const stressPulseMat=new THREE.MeshBasicMaterial({color:0xff6a3c,transparent:true,opacity:0,depthTest:false,depthWrite:false,side:THREE.DoubleSide,toneMapped:false});
+  const stressPulse=new THREE.Mesh(new THREE.RingGeometry(.7,1,28),stressPulseMat);stressPulse.visible=false;stressPulse.renderOrder=13;stressPulse.frustumCulled=false;scene.add(stressPulse);
+  const STRESS_PULSE_DUR=.16;let stressPulseLife=0,stressPulseScale=1;
+  function triggerStressPulse(point,scale=1){stressPulse.position.copy(point);stressPulseLife=STRESS_PULSE_DUR;stressPulseScale=Math.max(.5,scale);}
   const tetherCool=new THREE.Color(0xf1c976),tetherHot=new THREE.Color(0xf05b32);
   const debugLines=new THREE.LineSegments(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({vertexColors:true,transparent:true,opacity:.75,depthTest:false}));debugLines.visible=false;debugLines.frustumCulled=false;debugLines.renderOrder=10;scene.add(debugLines);
   const particleColor=new THREE.Color();
@@ -2547,7 +2579,7 @@ async function boot(){
   let particles=[],projectiles=new Map(),entities=new Map(),bodyEntity=new Map(),initSpecs=new Map(),commitQueue=[],worker,world,events,player;
   let epoch=0,initialRemaining=0,ready=false,colliderCount=0,simTime=0,accumulator=0,paused=false,slow=false,singleStep=false,tool=3,thirdPerson=false,grab=null;
   let radius=sandbox.config.blastRadius,power=sandbox.config.blastPower,held=false,pointerInside=false,pointerNDC=new THREE.Vector2(0,0),lastShot=-10,toastUntil=0,debug=false,needsShadow=true;
-  let resetResolve=null,frames=[],physicsMs=0,lastWorkerMs=0,lastCommitMs=0,lastLatencyMs=0,totalRemoved=0,jobs=0,droppedTime=0,budgetRejects=0,lastDirty=0;
+  let resetResolve=null,frames=[],physicsMs=0,lastWorkerMs=0,lastCommitMs=0,lastLatencyMs=0,totalRemoved=0,jobs=0,droppedTime=0,budgetRejects=0,lastDirty=0,wreckageValue=0,massMoved=0,bestImpactEnergy=0;
   const stats={};
   const damageStats={surfaceCommits:0,settles:0,roughChips:0,maxQueue:0,latencies:[],maxLatencyMs:0};
   let impactSequence=0;
@@ -2579,7 +2611,7 @@ async function boot(){
     while(impactAudit.traces.length>256){const done=impactAudit.traces.findIndex(t=>!t.accepted||t.visibleAt||(t.status==='no-change'||t.status==='armed'));if(done<0)break;impactAudit.traces.splice(done,1);}
   }
   function impactReport(){
-    return {version:'0.12.5',scope:'Actual received contacts, admission reasons and first submitted fracture draw. CPU wall-clock timings; not GPU completion times.',
+    return {version:'0.13.0',scope:'Actual received contacts, admission reasons and first submitted fracture draw. CPU wall-clock timings; not GPU completion times.',
       accepted:impactAudit.accepted,hardBypasses:impactAudit.hardBypasses,rejected:impactAudit.rejected,reasons:{...impactAudit.reasons},traces:impactAudit.traces.map(t=>({...t}))};
   }
   const fuelEntities=new Map();
@@ -2600,7 +2632,7 @@ async function boot(){
   let godPull=true,pullStrength=sandbox.config.pullStrength,magnetRips=0,magnetBonds=0,lastPull=null;
   let grabTransfers=0,grabReanchors=0,lastGrabRelease='',grabSequence=0;
   const grabHistory=[];
-  let missionTower=false,missionBridge=false,lastImpactSound=-10,hitFlash=0,flashLife=0,testing=false;
+  let missionTower=false,missionBridge=false,lastImpactSound=-10,hitFlash=0,flashLife=0,testing=false,lastHitOpacity=-1,lastPulling=false;
   let tracers=[];const MAX_TRACERS=96;
   const toolKeys=[4,5,2,1,3,7,0,6];
   const tracerMesh=new THREE.InstancedMesh(cube,new THREE.MeshBasicMaterial({color:0xffe4a0,toneMapped:false}),MAX_TRACERS);
@@ -2682,7 +2714,7 @@ async function boot(){
     const desc=(dynamic&&!packet.lightweight?R.RigidBodyDesc.dynamic():R.RigidBodyDesc.fixed()).setTranslation(pos.x,pos.y,pos.z).setRotation(rotation);
     if(dynamic)desc.setLinearDamping(.08).setAngularDamping(.2).setCanSleep(true).setCcdEnabled(false);
     const body=world.createRigidBody(desc),group=new THREE.Group();group.position.copy(pos);group.quaternion.copy(rotation);scene.add(group);
-    const e={id:packet.id,name:(spec.name||'Detached voxel fragment').replace(/(?: \/ detached)+$/g,'').slice(0,85),kind:packet.kind||spec.kind||'structure',dims:packet.dims,count:packet.count,anchored:packet.anchored,body,group,chunks:new Map(),pending:false,queue:[],context:null,stress:packet.stress||null,failAt:Infinity,lightweight:!!packet.lightweight,compactCollision:!!spec.compactCollision,lightBorn:simTime,lightSettled:false,lightV:V(),lightW:V(),explosive:!!spec.explosive,fuse:spec.fuse??Infinity,fuelHp:spec.fuelHp??2,district:spec.district??0,runtime:!!spec.runtime,rootId:spec.rootId||spec.id||packet.id,impactAt:-10,born:simTime,prevP:pos.clone(),curP:pos.clone(),prevQ:rotation.clone(),curQ:rotation.clone()};
+    const e={id:packet.id,name:(spec.name||'Detached voxel fragment').replace(/(?: \/ detached)+$/g,'').slice(0,85),kind:packet.kind||spec.kind||'structure',dims:packet.dims,count:packet.count,anchored:packet.anchored,body,group,chunks:new Map(),pending:false,queue:[],context:null,stress:packet.stress||null,failAt:Infinity,creakAt:-Infinity,lightweight:!!packet.lightweight,compactCollision:!!spec.compactCollision,lightBorn:simTime,lightSettled:false,lightV:V(),lightW:V(),explosive:!!spec.explosive,fuse:spec.fuse??Infinity,fuelHp:spec.fuelHp??2,district:spec.district??0,runtime:!!spec.runtime,rootId:spec.rootId||spec.id||packet.id,impactAt:-10,born:simTime,prevP:pos.clone(),curP:pos.clone(),prevQ:rotation.clone(),curQ:rotation.clone()};
     entities.set(e.id,e);if(e.explosive)fuelEntities.set(e.id,e);bodyEntity.set(body.handle,e);replacePackets(e,prepare(packet.packets));syncBounds(e);return e;
   }
   function removeEntity(e,notify=true){
@@ -2923,6 +2955,7 @@ async function boot(){
     for(const f of admitted){
       const p=V(...f.shift).multiplyScalar(S).applyQuaternion(snap.q).add(snap.p);
       const child=mount(f,{name:f.kind==='chip'?'Ejected chip':e.name+' / detached',rootId:e.rootId,district:e.district,runtime:e.runtime,explosive:f.id===fuelCarrier,fuse:e.fuse,fuelHp:e.fuelHp},p,snap.q);inheritVelocity(child,snap);kick(child,center,ctx.radius||1,ctx.power||0);child.parentShift=f.shift;child.impactAt=e.impactAt;newEntities.push(child);
+      if(e.anchored&&f.kind==='structure'){const kg=child.body.mass();massMoved+=kg;wreckageValue+=kg*SALVAGE_PER_KG;}
       if(result.failure&&f.kind==='structure'){
         const bend=V(result.failure.com[0]-result.failure.center[0],0,result.failure.com[2]-result.failure.center[2]).applyQuaternion(snap.q);
         const torque=V(bend.z,0,-bend.x).clampLength(0,1).multiplyScalar(child.body.mass()*.3);child.body.applyTorqueImpulse(torque,true);
@@ -2951,23 +2984,42 @@ async function boot(){
     if(ctx.power&&entities.has(e.id))kick(e,center,ctx.radius||1,ctx.power);
     particlesAt(result.dust,snap,center,ctx.radius||1,ctx.power||.3);
     markImpactCommit(ctx.impactIds,result);
-    if(ctx.impactIds?.length&&result.fracture&&simTime-lastImpactSound>.09){sound('collapse');lastImpactSound=simTime;addShake(.16);}
-    lastWorkerMs=result.ms;lastDirty=result.dirty;lastCommitMs=performance.now()-start;lastLatencyMs=performance.now()-(ctx.sent||start);totalRemoved+=result.removed;jobs++;
+    if(ctx.impactIds?.length&&result.fracture&&simTime-lastImpactSound>.09){
+      sound(structural.length?'impact-'+dominantMaterialClass(structural):'collapse');
+      if(ctx.catastrophic)sound('collapse'); // extra heavy bass layer on a catastrophic hit
+      lastImpactSound=simTime;addShake(.16);
+    }
+    lastWorkerMs=result.ms;lastDirty=result.dirty;lastCommitMs=performance.now()-start;lastLatencyMs=performance.now()-(ctx.sent||start);totalRemoved+=result.removed;wreckageValue+=dustValue(result.dust,result.removed);jobs++;
     if(ctx.firstImpactAt){const latency=performance.now()-ctx.firstImpactAt;damageStats.latencies.push(latency);if(damageStats.latencies.length>256)damageStats.latencies.shift();damageStats.maxLatencyMs=Math.max(damageStats.maxLatencyMs,latency);}
     if(entities.has(e.id))syncBounds(e);
     world.propagateModifiedBodyPositionsToColliders();world.updateSceneQueries?.();
-    if(result.failure){stressFailures++;sound('collapse');addShake(.24);toast('SUPPORT FAILURE · '+e.name+' · '+Math.round(result.failure.ratio*100)+'% utilization',2.5)}
-    else if(!result.pull&&!ctx.impactIds?.length&&structural.some(f=>f.count>250)){sound('collapse');addShake(.14);toast('STRUCTURE RELEASED · '+e.name,2)}
+    if(result.failure){
+      stressFailures++;sound(structural.length?'impact-'+dominantMaterialClass(structural):'collapse');addShake(.24);
+      toast('SUPPORT FAILURE · '+e.name+' · '+Math.round(result.failure.ratio*100)+'% utilization',2.5);
+      triggerStressPulse(V(...result.failure.center).multiplyScalar(S).applyQuaternion(snap.q).add(snap.p),1);
+    }else if(!result.pull&&!ctx.impactIds?.length&&structural.some(f=>f.count>250)){
+      sound(structural.length?'impact-'+dominantMaterialClass(structural):'collapse');addShake(.14);
+      toast('STRUCTURE RELEASED · '+e.name,2);
+      // A settle-triggered release carries no edit centre (ctx.localCenter is
+      // only set on the cut that requested it), so `center` degrades to the
+      // parent's origin corner. The just-mounted pieces' own COM is a far
+      // better read on WHERE the structure actually let go.
+      triggerStressPulse(newEntities.length?newEntities.reduce((sum,c)=>sum.add(V().copy(c.body.worldCom())),V()).multiplyScalar(1/newEntities.length):center,1.5);
+    }
     trimLightRubble();
     flushQueued(e,newEntities);
     if(result.pull&&grab===liveGrip&&grab?.slingAfterRip&&!grab.entity.anchored)throwGrab();
   }
   function sumColliders(e){let n=0;for(const p of e.chunks.values())n+=p.colliders.length;return n}
   function setStress(e,value){
-    const was=e.stress?.ratio>1;e.stress=value||null;
-    if(e.anchored&&structuralFailure&&value?.ratio>1){
+    const failThreshold=sandbox.config.failThreshold;
+    const was=e.stress?.ratio>failThreshold;e.stress=value||null;
+    // Groan before the give-way: audible warning once ratio crosses ~0.8, cooled
+    // down so a sustained overload does not spam the noise synth every commit.
+    if(e.anchored&&structuralFailure&&value?.ratio>.8&&simTime-e.creakAt>1.6){e.creakAt=simTime;sound('creak');}
+    if(e.anchored&&structuralFailure&&value?.ratio>failThreshold){
       if(!Number.isFinite(e.failAt))e.failAt=simTime+Math.max(.2,.75/Math.sqrt(value.ratio));
-      if(!was){sound('creak');toast('OVERLOADED · '+e.name+' · support about to give',2)}
+      if(!was)toast('OVERLOADED · '+e.name+' · support about to give',2);
     }else e.failAt=Infinity;
   }
   function postEdit(e,op,amount=0,firstImpactAt=performance.now()){
@@ -2975,7 +3027,7 @@ async function boot(){
     const protectedCell=grab?.entity===e?[...grab.cell]:null;
     op={...op,protectCell:protectedCell,priority:op.type==='pull'?100:op.type==='settle'?(e.lastInputAt&&performance.now()-e.lastInputAt<1200?45:5):Math.max(op.priority||1,...cuts.map(c=>c.priority||1))};
     if(op.priority>=50)e.lastInputAt=performance.now();
-    e.context={pullSerial:op.type==='pull'?op.gripSerial:null,yankSerial:op.yankSerial??null,yankWitness:op.yankWitness??null,crushPoint:first.crushPoint??op.crushPoint??null,crushRadius:first.crushRadius??op.crushRadius??null,localCenter:first.center||op.center,radius:(first.radius||op.radius||1)*S,power:amount,scatterEnergy:Math.max(0,...cuts.map(c=>c.scatterEnergy||0)),sent:performance.now(),firstImpactAt,priority:op.priority,impactIds:op.impactIds?[...op.impactIds]:null};
+    e.context={pullSerial:op.type==='pull'?op.gripSerial:null,yankSerial:op.yankSerial??null,yankWitness:op.yankWitness??null,crushPoint:first.crushPoint??op.crushPoint??null,crushRadius:first.crushRadius??op.crushRadius??null,localCenter:first.center||op.center,radius:(first.radius||op.radius||1)*S,power:amount,scatterEnergy:Math.max(0,...cuts.map(c=>c.scatterEnergy||0)),sent:performance.now(),firstImpactAt,priority:op.priority,impactIds:op.impactIds?[...op.impactIds]:null,catastrophic:!!op.catastrophic};
     worker.postMessage({type:'edit',id:e.id,op});return true;
   }
   function dispatchNextEdit(e){
@@ -2990,7 +3042,7 @@ async function boot(){
     const chosen=damageQueue.take(e.queue);if(!chosen.length)return false;
     const ops=chosen.map(q=>q.op),surfaceOnly=ops.every(o=>o.type==='sphere'||o.type==='slice');
     const op=ops.length===1?{...ops[0]}:{type:'batch',ops};
-    op.surfaceOnly=surfaceOnly;op.chips=surfaceOnly?0:Math.min(3,Math.max(...chosen.map(q=>q.chips||0)));
+    op.surfaceOnly=surfaceOnly;op.chips=surfaceOnly?0:Math.min(3,Math.max(...chosen.map(q=>q.chips||0)));op.catastrophic=ops.some(o=>o.catastrophic);
     return postEdit(e,op,Math.max(...chosen.map(q=>q.amount||0)),Math.min(...chosen.map(q=>q.at)));
   }
   function requestEdit(e,op,amount=0){
@@ -3096,7 +3148,7 @@ async function boot(){
     const spawn=DISTRICT_LAYOUT.zones[Math.max(0,activeDistrict)].spawn;
     player.body.setTranslation(V(...spawn),true);player.prev.set(...spawn);player.cur.copy(player.prev);player.group.position.copy(player.cur);
     player.group.visible=thirdPerson;player.body.setEnabled(thirdPerson);
-    simTime=0;accumulator=0;totalRemoved=0;jobs=0;lastWorkerMs=lastCommitMs=lastLatencyMs=0;budgetRejects=0;frames=[];droppedTime=0;
+    simTime=0;accumulator=0;totalRemoved=0;jobs=0;lastWorkerMs=lastCommitMs=lastLatencyMs=0;budgetRejects=0;frames=[];droppedTime=0;wreckageValue=massMoved=bestImpactEnergy=0;
     const source=$('voxel-worker-source').textContent+`\nconst kernel=voxelKernel();self.onmessage=e=>{try{const result=kernel.handle(e.data);if(result)self.postMessage(result,kernel.transfers(result))}catch(error){self.postMessage({type:'error',id:e.data.id,message:error.message,stack:error.stack})}};`;
     worker=createVoxelPool(source,Math.min(6,Math.max(2,Math.floor((navigator.hardwareConcurrency||4)/2))));
     worker.onmessage=ev=>{if(thisEpoch!==epoch)return;const result=ev.data;if(result.type==='error'){runtimeFaults.push({kind:'voxel-worker',id:result.id,message:result.message});console.error(result);const e=entities.get(result.id);if(e)e.pending=false;toast('Voxel worker error: '+result.message,8);return}commitQueue.push(result)};
@@ -3349,7 +3401,7 @@ async function boot(){
     if(!ready||paused||inputSuspended||simTime-lastRain<sandbox.config.rainCooldown||rainQueue.length)return false;
     if(!hit){toast('Aim at the district to mark a strike.',2);return false;}
     rainQueue=sandbox.rainPlan(hit.point.toArray()).map(x=>({...x,due:simTime+x.delay}));lastRain=simTime;
-    toast('Bomb rain · 10 charges inbound',2);return true;
+    toast('Bomb rain · '+sandbox.config.rainCount+' charges inbound',2);return true;
   }
   function dispatchRain(){
     if(!rainQueue.length||rainQueue[0].due>simTime)return;
@@ -3462,7 +3514,10 @@ async function boot(){
         if(grab.twistRip){
           // The sheared section keeps corkscrewing: angular impulse about vertical.
           const dims=V(...e.dims).multiplyScalar(S),inertia=e.body.mass()*(dims.x*dims.x+dims.z*dims.z)/12;
-          e.body.applyTorqueImpulse(V(0,(grab.twistRip>0?1:-1)*inertia*2.6,0),true);economy.twistRips++;
+          e.body.applyTorqueImpulse(V(0,(grab.twistRip>0?1:-1)*inertia*4.4,0),true);economy.twistRips++;
+          const seam=grab.local.clone().applyQuaternion(Q().copy(e.body.rotation())).add(V().copy(e.body.translation()));
+          for(let i=0;i<16;i++){const angle=Math.random()*Math.PI*2,spd=2+Math.random()*4;cosmetic(seam,V(Math.cos(angle)*spd,1+Math.random()*2.5,Math.sin(angle)*spd),.05+Math.random()*.06,i%3?0xf2b554:0xffecd0,.22+Math.random()*.28);}
+          addShake(.1);
         }
       }
       grab.twistRip=0;
@@ -3488,7 +3543,11 @@ async function boot(){
     twistMouse=0;if(twistOverride)twist=twistOverride;twist=Math.max(-1,Math.min(1,twist));if(inputSuspended||paused)twist=0;twistInput=twist;
     if(twist&&e.anchored&&godPull&&!e.pending){
       g.twistCharge=Math.min(1,(g.twistCharge||0)+DT*Math.abs(twist)*(1.1+.12*pullStrength));
-      if(simTime-(g.twistCreak||0)>.32){g.twistCreak=simTime;sound('creak');addShake(.02);}
+      if(simTime-(g.twistDust||0)>.055){
+        g.twistDust=simTime;const shear=twistTangent(e,p,twist);
+        for(let i=0;i<2;i++)cosmetic(p.clone().addScaledVector(shear,(Math.random()-.5)*.35),shear.clone().multiplyScalar(2.1+Math.random()*1.3).add(V((Math.random()-.5)*.5,Math.random()*.6,(Math.random()-.5)*.5)),.028+Math.random()*.03,i?0xb7ad8c:0xead8a7,.22+Math.random()*.18);
+      }
+      if(simTime-(g.twistCreak||0)>.32){g.twistCreak=simTime;sound('creak',1+g.twistCharge*.6);addShake(.02);}
       if(g.twistCharge>=1)requestMagnetRip(false,twist);
     }else if(g.twistCharge>0)g.twistCharge=Math.max(0,g.twistCharge-DT*1.4);
     if(!e.anchored&&twist){
@@ -3582,17 +3641,19 @@ async function boot(){
     player.cur.copy(player.body.translation());
   }
   function renderBodies(alpha){
-    for(const e of entities.values())if(!e.anchored){e.group.position.lerpVectors(e.prevP,e.curP,alpha);e.group.quaternion.slerpQuaternions(e.prevQ,e.curQ,alpha)}
+    for(const e of entities.values())if(!e.anchored){
+      e.group.position.lerpVectors(e.prevP,e.curP,alpha);e.group.quaternion.slerpQuaternions(e.prevQ,e.curQ,alpha);
+      if(e.count>200){
+        if(e.rootId===2&&(e.curQ.x*e.curQ.x+e.curQ.z*e.curQ.z>.07||e.body.worldCom().y<4.2))missionTower=true;
+        if(e.rootId===3&&e.body.worldCom().y<2.3)missionBridge=true;
+      }
+    }
     for(const p of projectiles.values()){
       p.mesh.position.lerpVectors(p.prev,p.cur,alpha);p.mesh.userData.flame.scale.y=.8+.35*Math.sin(simTime*63);
       if(simTime-p.trailAt>.045){p.trailAt=simTime;cosmetic(p.mesh.position.clone().addScaledVector(p.direction,-.55),p.direction.clone().multiplyScalar(-1.5).add(V(0,.3,0)),.08,0xbcb5a0,.36,true);}
     }
     player.group.position.lerpVectors(player.prev,player.cur,alpha);
     player.weapon.position.z=.38-recoil*.11;player.weapon.rotation.x=thirdPerson?cam.pitch*.75:0;
-    for(const e of entities.values())if(!e.anchored&&e.count>200){
-      if(e.rootId===2&&(e.curQ.x*e.curQ.x+e.curQ.z*e.curQ.z>.07||e.body.worldCom().y<4.2))missionTower=true;
-      if(e.rootId===3&&e.body.worldCom().y<2.3)missionBridge=true;
-    }
   }
   function effects(dt){
     updateAimReticle();
@@ -3604,21 +3665,32 @@ async function boot(){
     }
     particles.length=write;particleMesh.count=write;if(write){particleMesh.instanceMatrix.needsUpdate=true;particleMesh.instanceColor.needsUpdate=true}
     drawTracers(dt);flashLife=Math.max(0,flashLife-dt);flashLight.intensity=flashLife*120;
-    hitFlash=Math.max(0,hitFlash-dt);$('hitmarker').style.opacity=String(Math.min(1,hitFlash*12));
+    if(stressPulseLife>0){stressPulseLife=Math.max(0,stressPulseLife-dt);const t=1-stressPulseLife/STRESS_PULSE_DUR,near=Math.max(.4,camera.position.distanceTo(stressPulse.position)*.045);stressPulse.quaternion.copy(camera.quaternion);stressPulse.scale.setScalar(near*stressPulseScale*(1+t*1.4));stressPulseMat.opacity=(1-t)*.85;stressPulse.visible=stressPulseLife>0;}else if(stressPulse.visible)stressPulse.visible=false;
+    hitFlash=Math.max(0,hitFlash-dt);const hitOpacity=Math.min(1,hitFlash*12);
+    if(hitOpacity!==lastHitOpacity){lastHitOpacity=hitOpacity;$('hitmarker').style.opacity=String(hitOpacity);}
     gripHalo.visible=!!grab;
-    $('pull-meter').classList.toggle('visible',!!grab&&(grab.entity.anchored||grab.charge>0||grab.twistCharge>0));document.body.classList.toggle('pulling',!!grab&&(grab.entity.anchored||grab.charge>0||grab.twistCharge>0));
+    const pulling=!!grab&&(grab.entity.anchored||grab.charge>0||grab.twistCharge>0);
+    if(pulling!==lastPulling){lastPulling=pulling;$('pull-meter').classList.toggle('visible',pulling);document.body.classList.toggle('pulling',pulling);}
     if(grab){
       const twisting=(grab.twistCharge||0)>(grab.charge||0),charge=Math.max(grab.charge||0,grab.twistCharge||0);
       $('pull-fill').style.width=(charge*100)+'%';$('pull-fill').style.transform='none';
       $('pull-state').textContent=inputSuspended?'Grip held':grab.entity.pending&&charge>=1?(twisting?'Shearing…':'Snapping…'):twisting?'Twist · '+Math.round(charge*100)+'%':charge>.02?'Pull · '+Math.round(charge*100)+'%':godPull?'Pull to snap':'Rip disabled';
       tether.material.color.copy(tetherCool).lerp(tetherHot,charge);gripHalo.material.color.copy(tether.material.color);
       const ray=pointerRay(),a=ray.origin.clone().addScaledVector(ray.direction,1.3),e=grab.entity,b=grab.local.clone().applyQuaternion(e.group.quaternion).add(e.group.position);
-      gripHalo.position.copy(b);gripHalo.quaternion.copy(camera.quaternion);gripHalo.scale.setScalar(Math.max(1,camera.position.distanceTo(b)*.015)*(1+charge*.4));
+      const flash=Math.max(0,(grab.snapFlash||0)-simTime);
+      gripHalo.position.copy(b);gripHalo.quaternion.copy(camera.quaternion);gripHalo.scale.setScalar(Math.max(1,camera.position.distanceTo(b)*.015)*(1+charge*.4+flash*2.6));gripHalo.material.opacity=Math.min(1,.9+flash*.4);
       const data=tether.geometry.attributes.position;data.setXYZ(0,a.x,a.y,a.z);data.setXYZ(1,b.x,b.y,b.z);data.needsUpdate=true;
     }
   }
+  const MATERIAL_CLASS={3:'metal',5:'metal',7:'metal',9:'metal',4:'timber'};
+  function dominantMaterialClass(fragments){
+    const vol=new Float64Array(10);
+    for(const f of fragments)for(const pk of f.packets||[]){const b=pk.boxes;for(let i=0;i+6<b.length;i+=7){const id=b[i+6]|0;if(id>=1&&id<=9)vol[id]+=b[i+3]*b[i+4]*b[i+5];}}
+    let bestId=0,bestVol=0;for(let id=1;id<=9;id++)if(vol[id]>bestVol){bestVol=vol[id];bestId=id;}
+    return MATERIAL_CLASS[bestId]||'concrete';
+  }
   let audio=null,noiseBuffer=null,master=null,voices=0;
-  function sound(type){
+  function sound(type,pitch=1){
     if(!$('sound').checked||voices>36)return;
     try{
       if(!audio){
@@ -3626,8 +3698,8 @@ async function boot(){
         noiseBuffer=audio.createBuffer(1,audio.sampleRate,audio.sampleRate);const a=noiseBuffer.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;
       }
       if(audio.state==='suspended')audio.resume();
-      const cfg={rifle:[.095,2400,.21,145],shotgun:[.24,1700,.4,85],blast:[.7,540,.55,48],launch:[.3,900,.28,95],collapse:[.48,750,.25,62],creak:[.3,1500,.07,180],cut:[.08,2500,.1,0],rip:[.28,2200,.33,78],grab:[.12,800,.06,130],crush:[.34,880,.36,56]}[type]||[.1,1200,.1,0];
-      const [duration,freq,volume,bass]=cfg,t=audio.currentTime;
+      const cfg={rifle:[.095,2400,.21,145],shotgun:[.24,1700,.4,85],blast:[.7,540,.55,48],launch:[.3,900,.28,95],collapse:[.48,750,.25,62],creak:[.3,1500,.07,180],cut:[.08,2500,.1,0],rip:[.28,2200,.33,78],grab:[.12,800,.06,130],crush:[.4,720,.44,40],'impact-metal':[.12,2600,.26,140],'impact-concrete':[.34,560,.32,50],'impact-timber':[.09,2000,.16,0]}[type]||[.1,1200,.1,0];
+      const [duration,freqBase,volume,bassBase]=cfg,freq=freqBase*pitch,bass=bassBase*pitch,t=audio.currentTime;
       const source=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();source.buffer=noiseBuffer;filter.type='lowpass';filter.frequency.setValueAtTime(freq,t);filter.frequency.exponentialRampToValueAtTime(Math.max(100,freq*.2),t+duration);
       gain.gain.setValueAtTime(volume,t);gain.gain.exponentialRampToValueAtTime(.001,t+duration);source.connect(filter).connect(gain).connect(master);voices++;
       source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();voices--};source.start(t,Math.random()*.2,duration);
@@ -3638,8 +3710,12 @@ async function boot(){
     let awake=0,sleeping=0,voxels=0,pending=0,chips=0,queued=0,lightRubble=0,activeRubble=0,analyticProjectiles=0;
     for(const p of projectiles.values())if(p.analytic)analyticProjectiles++;
     for(const e of entities.values()){if(e.lightweight)lightRubble++;if(!e.anchored&&!e.lightweight&&e.kind!=='chip')activeRubble++;voxels+=e.count;queued+=e.queue.length;if(e.pending)pending++;if(!e.anchored){if(e.lightweight?e.lightSettled:e.body.isSleeping())sleeping++;else awake++;if(e.kind==='chip')chips++}}
-    Object.assign(stats,{overflowFlights,analyticProjectiles,damagePipeline:{surfaceCommits:damageStats.surfaceCommits,settles:damageStats.settles,roughChips:damageStats.roughChips,maxQueue:damageStats.maxQueue,coalesced:damageQueue.coalesced,maxLatencyMs:damageStats.maxLatencyMs,lastLatencies:[...damageStats.latencies],voxelOldestMs:worker?.oldestMs||0},activeTarget:adaptiveBudget.active,solveEMA:adaptiveBudget.solveEMA,economy:{...economy},lightRubble,activeRubble,physicsMode,solverIterations,physicsError,physicsBusy:!!physics?.busy,solveMs:physicsMs,physicsRoundTripMs:physics?.stats.roundTripMs||0,physicsApplyMs:physics?.stats.applyMs||0,queryMs:physics?.stats.queryMs||0,physicsCommandMs:physics?.stats.commandMs||0,physicsEventMs:physics?.stats.eventMs||0,contactEvents:physics?.stats.rawEvents||0,manifoldReads:physics?.stats.manifoldReads||0,filteredSlowContacts:physics?.stats.slowRejected||0,contactPairDrops:physics?.stats.droppedPairs||0,commitFrameMs:latestCommitFrameMs,renderCpuMs:lastRenderCpuMs,rawColliderCount,godPull,pullStrength,magnetRips,magnetBonds,lastPull,grabCharge:grab?.charge||0,grabAnchored:!!grab?.entity.anchored,lastImpact,impactShatters,impactRegions,impactScale,rocketsFired,rocketHits,rocketExpired,lastRocket,worldObjects:entities.size,initialObjectCount,initialVoxelCount,workers:worker?.count||0,workerQueue:worker?.pending||0,sourceChunks,visibleSurfaces,spatialBins:sceneIndex.bins,spawnCount,slings,pulses,inputSuspended,captured:!!input?.state.owned,magnetLatch,jetpack,grabTransfers,grabReanchors,grabbedId:grab?.entity.id??null,lastGrabRelease,shots:shotCount,barrels:barrelsExploded,bestChain,stressFailures,impactFractures:fractures,queued,queuedDrops,simTime,frameMs,physicsMs,workerMs:lastWorkerMs,commitMs:lastCommitMs,editLatencyMs:lastLatencyMs,awake,sleeping,chips,colliderCount,voxels,pending,draws:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,jobs,removed:totalRemoved,dirtyChunks:lastDirty,droppedSimMs:droppedTime*1000,budgetRejects,projectiles:projectiles.size,mode:cameraMode,cameraPosition:camera.position.toArray(),rainPending:rainQueue.length,rainFired,lastBlast});
-    frames.push({...stats,t:performance.now()});if(frames.length>1800)frames.shift();
+    // Built once and reused for both `stats` (in place) and the `frames` history
+    // entry: the old code cloned this same ~90-key object a second time every
+    // frame via {...stats}. Field values and nesting are unchanged.
+    const entry={overflowFlights,analyticProjectiles,damagePipeline:{surfaceCommits:damageStats.surfaceCommits,settles:damageStats.settles,roughChips:damageStats.roughChips,maxQueue:damageStats.maxQueue,coalesced:damageQueue.coalesced,maxLatencyMs:damageStats.maxLatencyMs,lastLatencies:[...damageStats.latencies],voxelOldestMs:worker?.oldestMs||0},activeTarget:adaptiveBudget.active,solveEMA:adaptiveBudget.solveEMA,economy:{...economy},lightRubble,activeRubble,physicsMode,solverIterations,physicsError,physicsBusy:!!physics?.busy,solveMs:physicsMs,physicsRoundTripMs:physics?.stats.roundTripMs||0,physicsApplyMs:physics?.stats.applyMs||0,queryMs:physics?.stats.queryMs||0,physicsCommandMs:physics?.stats.commandMs||0,physicsEventMs:physics?.stats.eventMs||0,contactEvents:physics?.stats.rawEvents||0,manifoldReads:physics?.stats.manifoldReads||0,filteredSlowContacts:physics?.stats.slowRejected||0,contactPairDrops:physics?.stats.droppedPairs||0,commitFrameMs:latestCommitFrameMs,renderCpuMs:lastRenderCpuMs,rawColliderCount,godPull,pullStrength,magnetRips,magnetBonds,lastPull,grabCharge:grab?.charge||0,grabAnchored:!!grab?.entity.anchored,lastImpact,impactShatters,impactRegions,impactScale,rocketsFired,rocketHits,rocketExpired,lastRocket,worldObjects:entities.size,initialObjectCount,initialVoxelCount,workers:worker?.count||0,workerQueue:worker?.pending||0,sourceChunks,visibleSurfaces,spatialBins:sceneIndex.bins,spawnCount,slings,pulses,inputSuspended,captured:!!input?.state.owned,magnetLatch,jetpack,grabTransfers,grabReanchors,grabbedId:grab?.entity.id??null,lastGrabRelease,shots:shotCount,barrels:barrelsExploded,bestChain,stressFailures,impactFractures:fractures,queued,queuedDrops,simTime,frameMs,physicsMs,workerMs:lastWorkerMs,commitMs:lastCommitMs,editLatencyMs:lastLatencyMs,awake,sleeping,chips,colliderCount,voxels,pending,draws:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,jobs,removed:totalRemoved,dirtyChunks:lastDirty,droppedSimMs:droppedTime*1000,budgetRejects,projectiles:projectiles.size,mode:cameraMode,cameraPosition:camera.position.toArray(),rainPending:rainQueue.length,rainFired,lastBlast,t:performance.now()};
+    Object.assign(stats,entry);
+    frames.push(entry);if(frames.length>1800)frames.shift();
     return awake;
   }
   const graph=$('graph').getContext('2d');
@@ -3648,13 +3724,14 @@ async function boot(){
   }
   function displayStats(){
     drawAtlas();updateDebugGeometry();
+    if(!document.body.classList.contains('hidden-hud'))updateGameHUD();
     if(document.body.classList.contains('hidden-hud')||!document.body.classList.contains('settings-open')||!$('fold-stats').open)return;
     if(!window.BREAKMASS_SLAM_QA?.running){const trace=[...impactAudit.traces].reverse().find(t=>t.visibleAt);
       $('impact-trace-status').textContent=impactAudit.accepted+' accepted · '+impactAudit.hardBypasses+' hard-hit bypasses'+(trace?' · latest contact → fracture draw: '+trace.contactToVisibleMs.toFixed(1)+' ms':'');}
 
 
     const recent=frames.slice(-60),avg=recent.reduce((n,f)=>n+f.frameMs,0)/Math.max(1,recent.length);
-    $('fps').textContent=avg?Math.round(1000/avg):'—';$('frame-ms').textContent=avg.toFixed(1);
+    $('fps').textContent=avg?Math.round(1000/avg):'·';$('frame-ms').textContent=avg.toFixed(1);
     $('physics-ms').textContent=physicsMs.toFixed(2)+' ms';$('worker-ms').textContent=lastWorkerMs.toFixed(1)+' ms';$('commit-ms').textContent=lastCommitMs.toFixed(1)+' ms';$('latency-ms').textContent=lastLatencyMs.toFixed(1)+' ms';
     $('bodies').textContent=stats.awake+' / '+stats.sleeping;$('colliders').textContent=colliderCount+' · soft '+MAX_COLLIDERS;
     $('draws').textContent=stats.draws+' / '+(stats.triangles/1000).toFixed(1)+'k';$('voxels').textContent=(stats.voxels||0).toLocaleString();$('pending').textContent=(stats.pending||0)+' / '+(stats.queued||0);
@@ -3666,7 +3743,6 @@ async function boot(){
     $('fracture-count').textContent=impactShatters+' / '+impactRegions;
     $('resolution').textContent=renderer.domElement.width+' × '+renderer.domElement.height;
     $('status-left').textContent=S+'m voxels / '+stats.jobs+' edits / '+stats.chips+' physical chips / '+stats.dirtyChunks+' dirty chunks last edit';
-    updateGameHUD();
     $('scene-count').textContent=entities.size+' bodies / '+(stats.voxels||0).toLocaleString()+' voxels';
     $('batch-count').textContent=sourceChunks+' → '+visibleSurfaces;
     $('worker-count').textContent=(worker?.count||0)+' fracture + '+(physics?1:0)+' physics';
@@ -3769,7 +3845,7 @@ async function boot(){
     const ray=pointerRay(),cameraHit=castShot(ray.origin,ray.direction),target=cameraHit?.point||ray.origin.clone().addScaledVector(ray.direction,110);
     const origin=thirdPerson?gunMuzzle():ray.origin.clone(),forward=target.clone().sub(origin).normalize();
     const right=V().crossVectors(forward,Math.abs(forward.y)>.97?V(0,0,1):V(0,1,0)).normalize(),up=V().crossVectors(right,forward).normalize();
-    const edits=new Map(),pellets=scatter?12:1;shotCount++;
+    const edits=new Map(),pellets=scatter?sandbox.config.shotgunPellets:1;shotCount++;
     for(let i=0;i<pellets;i++){
       const angle=Math.random()*Math.PI*2,spread=(scatter?.042:.002)*Math.sqrt(Math.random())*(i===0?0:1);
       const dir=forward.clone().addScaledVector(right,Math.cos(angle)*spread).addScaledVector(up,Math.sin(angle)*spread).normalize();
@@ -3888,10 +3964,10 @@ async function boot(){
       if(!plan)continue;
       const trace=recordImpact({entity:e.id,root:e.rootId,name:shortName(e.name),contactAt:c.contactAt,speed:p.speed,energy:p.energy,equivalentSpeed:p.equivalentSpeed,age:e.anchored?null:simTime-e.born,sinceImpact:Number.isFinite(e.impactAt)?simTime-e.impactAt:null,otherId:c.otherId,accepted:true,reason:decision.reason,status:e.pending?'waiting-for-existing-edit':'requested',queuedBehind:!!e.pending,plannedPieces:plan.pieces,catastrophic:plan.catastrophic});
       const fracture=plan.op.ops.find(o=>o.type==='fracture'),center=fracture?.center||contacts[0].point;
-      Object.assign(plan.op,{priority:95,impactIds:[trace.id],contactAt:c.contactAt,center:[...center],radius:Math.max(...plan.op.ops.map(o=>Math.hypot(...o.center.map((x,i)=>x-center[i]))+o.radius))});
+      Object.assign(plan.op,{priority:95,impactIds:[trace.id],contactAt:c.contactAt,center:[...center],radius:Math.max(...plan.op.ops.map(o=>Math.hypot(...o.center.map((x,i)=>x-center[i]))+o.radius)),catastrophic:plan.catastrophic});
       if(requestEdit(e,plan.op,0)){
         e.impactAt=simTime;e.lastPhysicalImpact={energy:p.energy,otherId:c.otherId};fractures++;
-        lastImpact={target:e.name,speed:p.speed,energy:p.energy,plannedPieces:plan.pieces,catastrophic:plan.catastrophic,time:simTime,traceId:trace.id};
+        lastImpact={target:e.name,speed:p.speed,energy:p.energy,plannedPieces:plan.pieces,catastrophic:plan.catastrophic,time:simTime,traceId:trace.id};bestImpactEnergy=Math.max(bestImpactEnergy,p.energy);
         // Contact feedback now; full crunch when the changed material is committed.
         impactEffects(c.best.point,c.best.normal,plan.catastrophic?12:6);
       }
@@ -3915,15 +3991,27 @@ async function boot(){
     }
     stressMesh.count=n;if(n){stressMesh.instanceMatrix.needsUpdate=true;stressMesh.instanceColor.needsUpdate=true}
   }
+  let hudCache={};
+  function hudSet(id,value){if(hudCache[id]===value)return;hudCache[id]=value;$(id).textContent=value;}
+  function hudToggle(key,el,cls,on){if(hudCache[key]===on)return;hudCache[key]=on;$(el).classList.toggle(cls,on);}
+  function formatMoney(n){n=Math.max(0,n);if(n>=1e6)return'$'+(n/1e6).toFixed(1)+'M';if(n>=1e3)return'$'+(n/1e3).toFixed(1)+'K';return'$'+Math.round(n);}
+  function formatEnergy(j){if(j>=1e6)return(j/1e6).toFixed(2)+' MJ';if(j>=1e3)return(j/1e3).toFixed(1)+' kJ';return Math.round(j)+' J';}
+  function formatTonnes(kg){const t=kg/1000;return(t>=100?Math.round(t):t.toFixed(1))+' t';}
   function updateGameHUD(){
-    $('goal-tower').classList.toggle('done',missionTower);$('goal-span').classList.toggle('done',missionBridge);$('goal-drums').classList.toggle('done',barrelsExploded>=3);
-    $('drum-count').textContent=Math.min(3,barrelsExploded)+'/3';$('shot-count').textContent=shotCount.toLocaleString();$('chain-count').textContent=bestChain?'×'+bestChain:'—';
-    $('damage-count').textContent=totalRemoved.toLocaleString();$('stress-count').textContent=stressFailures+' / '+fractures;
-    $('objective-status').textContent=missionTower&&missionBridge&&barrelsExploded>=3?'YARD CLEARED · KEEP WRECKING':'DEMOLITION CONTRACT / OPTIONAL';
+    hudToggle('doneTower','goal-tower','done',missionTower);
+    hudToggle('doneSpan','goal-span','done',missionBridge);
+    hudToggle('doneDrums','goal-drums','done',barrelsExploded>=3);
+    hudToggle('doneHands','goal-hands','done',missionTower&&shotCount===0);
+    hudToggle('doneChain3','goal-chain3','done',bestChain>=3);
+    hudSet('drum-count',Math.min(3,barrelsExploded)+'/3');hudSet('shot-count',shotCount.toLocaleString());hudSet('chain-count',bestChain?'×'+bestChain:'·');
+    hudSet('damage-count',totalRemoved.toLocaleString());hudSet('stress-count',stressFailures+' / '+fractures);
+    hudSet('score-wreckage',formatMoney(wreckageValue));hudSet('score-chain',bestChain?'×'+bestChain:'·');
+    hudSet('score-impact',bestImpactEnergy?formatEnergy(bestImpactEnergy):'·');hudSet('score-mass',formatTonnes(massMoved));hudSet('score-collapses',stressFailures.toLocaleString());
+    hudSet('objective-status',missionTower&&missionBridge&&barrelsExploded>=3?'YARD CLEARED · KEEP WRECKING':'DEMOLITION CONTRACT / OPTIONAL');
   }
   async function runSelfTests({save=true}={}){
     if(testing||!ready)return;testing=true;held=false;$('selftest').disabled=true;toast('Running isolated worker + rigid-body + WebGL smoke checks…',8);
-    let testWorker=null;const report={version:'0.12.5',date:new Date().toISOString(),tests:[],passed:false};
+    let testWorker=null;const report={version:'0.13.0',date:new Date().toISOString(),tests:[],passed:false};
     try{
       const source=$('voxel-worker-source').textContent+'\nconst k=voxelKernel();onmessage=e=>{try{const r=k.handle(e.data);if(r)postMessage(r,k.transfers(r))}catch(error){postMessage({type:"error",message:error.message})}}';
       const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));testWorker=new Worker(url);URL.revokeObjectURL(url);
@@ -4062,7 +4150,8 @@ async function boot(){
       const speed=(o.kind==='chip'?5:2.2)/(1+dist/(r+1));
       if(o.lightweight){o.lightV.addScaledVector(d,speed);o.lightSettled=false;}else o.body.applyImpulse(d.multiplyScalar(o.body.mass()*speed),true);
     }
-    sound('crush');addShake(.14);impactEffects(p,V(0,1,0),14);g.snapFlash=simTime+.2;
+    for(let i=0;i<10;i++){const angle=Math.random()*Math.PI*2,rad=r*(.55+Math.random()*.5),h=(Math.random()-.5)*r*.5,from=p.clone().add(V(Math.cos(angle)*rad,h,Math.sin(angle)*rad));cosmetic(from,p.clone().sub(from).normalize().multiplyScalar(3+Math.random()*3),.03+Math.random()*.035,i%3?0xb7ad8c:0x9f8a69,.12+Math.random()*.1,i%3===0);}
+    sound('crush');addShake(.14);impactEffects(p,V(0,1,0),14);g.snapFlash=simTime+.22;
     return true;
   }
   function throwGrab(){
@@ -4251,12 +4340,14 @@ async function boot(){
   $('export').onclick=()=>{
     const sorted=frames.map(x=>x.frameMs).sort((a,b)=>a-b),percentile=q=>sorted[Math.min(sorted.length-1,Math.floor(q*sorted.length))]||0;
     const gl=renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');
-    const data={version:'0.12.5',date:new Date().toISOString(),userAgent:navigator.userAgent,gpu:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),viewport:[canvas.width,canvas.height],physicsHz:60,shadows:renderer.shadowMap.enabled,p50FrameMs:percentile(.5),p95FrameMs:percentile(.95),p99FrameMs:percentile(.99),impacts:impactReport(),limits:{activeTarget:adaptiveBudget.active,MAX_CHIPS,MAX_COLLIDERS,MAX_PROJECTILES},notes:'Rolling last 1800 frames. CPU measurements, not GPU timestamps. Not a comparative benchmark.',stats,frames};
+    const data={version:'0.13.0',date:new Date().toISOString(),userAgent:navigator.userAgent,gpu:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),viewport:[canvas.width,canvas.height],physicsHz:60,shadows:renderer.shadowMap.enabled,p50FrameMs:percentile(.5),p95FrameMs:percentile(.95),p99FrameMs:percentile(.99),impacts:impactReport(),limits:{activeTarget:adaptiveBudget.active,MAX_CHIPS,MAX_COLLIDERS,MAX_PROJECTILES},notes:'Rolling last 1800 frames. CPU measurements, not GPU timestamps. Not a comparative benchmark.',stats,frames};
     download(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'breakmass-metrics.json');
   };
   addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false)});
   // Small automation surface for real browser tests and user profiling. No fake FPS.
-  window.BREAKMASS={version:'0.12.5',physicsMode,notify:toast,
+  window.BREAKMASS={version:'0.13.0',physicsMode,notify:toast,
+    applyPreset:name=>{if(!sandbox.presets[name])return false;sandbox.setPreset(name);adaptiveBudget.setTarget(sandbox.config.budgetTarget);return true;},
+    get tuning(){return {preset:sandbox.preset,config:{...sandbox.config},budgetTarget:adaptiveBudget.target,budgetActive:adaptiveBudget.active};},
     captureFrame:()=>{if(renderer.getContext().isContextLost())throw Error('WebGL context lost; no valid screenshot');renderer.render(scene,camera);return canvas.toDataURL('image/png');},
     runtimeInfo:()=>{const gl=renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');return {three:THREE.REVISION,rapier:R.version(),webgl:gl.getParameter(gl.VERSION),renderer:gl.getParameter(ext?ext.UNMASKED_RENDERER_WEBGL:gl.RENDERER),physicsMode,hardwareConcurrency:navigator.hardwareConcurrency};},
     get liveQueue(){return {objects:[...entities.values()].map(e=>({id:e.id,rootId:e.rootId,count:e.count,pending:e.pending,queued:e.queue.length,needsConnectivity:!!e.needsConnectivity,age:e.context?performance.now()-e.context.sent:0})),commits:commitQueue.length,voxelPending:worker?.pending||0,physicsBusy:!!physics?.busy,errors:physicsError||(runtimeFaults.length?JSON.stringify(runtimeFaults):null),surfaceCommits:damageStats.surfaceCommits,settles:damageStats.settles,latencies:[...damageStats.latencies]};},
@@ -4273,6 +4364,7 @@ async function boot(){
     orbitForTest:(yaw,pitch)=>{cam.yaw=yaw;cam.pitch=pitch;},
     configurePhysics:iterations=>{solverIterations=Math.max(2,Math.min(8,Math.round(iterations)||4));if(world)world.numSolverIterations=solverIterations;},
 get stats(){return {...stats,economy:{...economy},activeRubble:[...entities.values()].filter(e=>!e.anchored&&!e.lightweight&&e.kind!=='chip').length,lightRubble:[...entities.values()].filter(e=>e.lightweight).length}},
+    get scoreDiagnostics(){return {wreckageValue,massMoved,bestImpactEnergy,bestChain,stressFailures,shotCount,missionTower}},
     get grab(){return grab?{id:grab.entity.id,cell:[...grab.cell],local:grab.local.toArray(),distance:grab.distance,serial:grab.serial,rootId:grab.entity.rootId,anchored:grab.entity.anchored,charge:grab.charge||0,goal:grab.goal?.toArray()}:null},
     get grabHistory(){return grabHistory.map(x=>({...x}))},
     grabAt:(id,point,normal=[0,1,0])=>{const e=entities.get(id);if(!e)return false;const q=Q().copy(e.body.rotation()),p=V(...point).multiplyScalar(S).applyQuaternion(q).add(V().copy(e.body.translation()));return startGrab({entity:e,point:p,normal:V(...normal).applyQuaternion(q),distance:p.distanceTo(camera.position)})},
@@ -4291,7 +4383,7 @@ get stats(){return {...stats,economy:{...economy},activeRubble:[...entities.valu
       const ids=new Set(keep);for(const e of [...entities.values()])if(!ids.has(e.id))removeEntity(e);for(const id of [...projectiles.keys()])removeProjectile(id);rainQueue=[];
       world.propagateModifiedBodyPositionsToColliders();world.updateSceneQueries?.();return true;},
     get impactDiagnostics(){return {lastImpact,impactShatters,impactRegions,audit:impactReport()}},get rocketDiagnostics(){return {rocketsFired,rocketHits,rocketExpired,lastRocket:lastRocket?{...lastRocket}:null}},
-    get ready(){return ready},travelTo,toggleJetpack,gravityPulse,spawnAt:(type,point)=>{spawnType=type;return spawnProp({point:V(...point),normal:V(0,1,0)});},get inputState(){return input.state;},get mergedSurfaces(){return [...entities.values()].filter(e=>e.surface).length;},get sceneIndexSize(){return sceneIndex.size;},leaveOneLeg,runSelfTests,cutTower:()=>cutFixture(2),cutBridge:()=>cutFixture(3),blast:(x,y,z,r=sandbox.config.blastRadius)=>explosion(V(x,y,z),r,power,null,{uniform:true}),pause:setPause,reset,clearRubble,changeMode,selectTool,inspect:()=>[...entities.values()].map(e=>({dims:[...e.dims],id:e.id,name:e.name,kind:e.kind,anchored:e.anchored,count:e.count,colliders:sumColliders(e),stress:e.stress,rootId:e.rootId,district:e.district,drawMeshes:e.surface?1:0,editChunks:e.chunks.size,pending:e.pending,needsConnectivity:!!e.needsConnectivity,queued:e.queue.length,lightweight:!!e.lightweight,compactCollision:!!e.compactCollision,explosive:e.explosive,fuse:e.fuse,rotation:e.body.rotation(),position:e.body.translation(),mass:e.body.mass(),sleeping:e.body.isSleeping()}))};
+    get ready(){return ready},travelTo,toggleJetpack,gravityPulse,spawnAt:(type,point)=>{spawnType=type;return spawnProp({point:V(...point),normal:V(0,1,0)});},get inputState(){return input.state;},get mergedSurfaces(){return [...entities.values()].filter(e=>e.surface).length;},get sceneIndexSize(){return sceneIndex.size;},leaveOneLeg,runSelfTests,cutTower:()=>cutFixture(2),cutBridge:()=>cutFixture(3),blast:(x,y,z,r=sandbox.config.blastRadius)=>explosion(V(x,y,z),r,power,null,{uniform:true}),pause:setPause,reset,clearRubble,changeMode,selectTool,inspect:()=>[...entities.values()].map(e=>({dims:[...e.dims],id:e.id,name:e.name,kind:e.kind,anchored:e.anchored,count:e.count,colliders:sumColliders(e),stress:e.stress,rootId:e.rootId,district:e.district,drawMeshes:e.surface?1:0,editChunks:e.chunks.size,pending:e.pending,needsConnectivity:!!e.needsConnectivity,queued:e.queue.length,lightweight:!!e.lightweight,compactCollision:!!e.compactCollision,explosive:e.explosive,fuse:e.fuse,rotation:e.body.rotation(),position:e.body.translation(),angvel:e.body.angvel(),mass:e.body.mass(),sleeping:e.body.isSleeping()}))};
   window.BREAKMASS_UI.attachGame();window.BREAKMASS_POWERS.attach();syncCameraUI();selectTool(3);requestAnimationFrame(animate);reframe();bootStage('physics','Starting physics…');await reset();
   bootStage('targeting','Checking targeting…');
   const interactionCheck=checkInteractionTargets();window.BREAKMASS_BOOT.targeting=interactionCheck;
@@ -4332,7 +4424,7 @@ boot().catch(error=>{
   async function waitFor(fn,label,ms=15000){const start=performance.now();while(!fn()){if(cancelled)throw Error('QA cancelled');if(performance.now()-start>ms)throw Error(label+' timed out after '+ms+' ms');await sleep(30);}return performance.now()-start;}
   async function run({reset=true}={}){
     if(running)return last;running=true;cancelled=false;host.hidden=false;stop.hidden=false;stop.textContent='Stop QA';stop.onclick=()=>cancelled=true;
-    const report={version:'0.12.5',started:new Date().toISOString(),url:location.href,scope:'Actual loaded game; real WebGL2, Rapier/WASM and physics/voxel workers. Programmatic DOM input, not native OS pointer-lock validation.',passed:false,tests:[],screenshots:[],samples:[],errors:[]};last=report;window.BREAKMASS_QA.last=report;
+    const report={version:'0.13.0',started:new Date().toISOString(),url:location.href,scope:'Actual loaded game; real WebGL2, Rapier/WASM and physics/voxel workers. Programmatic DOM input, not native OS pointer-lock validation.',passed:false,tests:[],screenshots:[],samples:[],errors:[]};last=report;window.BREAKMASS_QA.last=report;
     let F,canvas,sampleTimer,oldSound,oldShake;const captured=[];
     const captureError=e=>{const text=e.error?.stack||e.reason?.stack||e.message||String(e.reason);captured.push(String(text));};
     addEventListener('error',captureError);addEventListener('unhandledrejection',captureError);
@@ -4401,9 +4493,12 @@ boot().catch(error=>{
         try{await waitFor(()=>F.pullDiagnostics.magnetRips>rips,'Twist shear rip',15000);}finally{F.setTwist(0);}
         const chargeMs=performance.now()-t;
         await waitFor(()=>F.grab&&!F.grab.anchored,'Sheared section stays in the grip',10000);
-        const held=F.grab,state=F.twistState;F.clearGrabTarget();F.releaseGrab();await quiet();snap('04b-twist-shear');
+        const held=F.grab,state=F.twistState,spun=F.inspect().find(x=>x.id===held.id);
+        const av=spun?.angvel,angularVelocity=av?{x:av.x,y:av.y,z:av.z}:{x:0,y:0,z:0};
+        F.clearGrabTarget();F.releaseGrab();await quiet();snap('04b-twist-shear');
         assert(state.twistRips>0,'Sheared piece received no torsion impulse');
-        return {chargeMs,heldId:held.id,twistRips:state.twistRips,lastPull:F.pullDiagnostics.lastPull};
+        assert(Math.abs(angularVelocity.y)>=.9,'Sheared piece did not corkscrew: angvel.y='+angularVelocity.y.toFixed(2));
+        return {chargeMs,heldId:held.id,twistRips:state.twistRips,angularVelocity,lastPull:F.pullDiagnostics.lastPull};
       });
       await test('God Hand crush: fractures around the grip and pulls the pieces inward',async()=>{
         await F.reset();F.pause(false);await frames(6);await quiet();
@@ -4482,7 +4577,7 @@ boot().catch(error=>{
  async function wait(test,label,limit=18000){const at=performance.now();while(!test()){if(cancelled)throw Error('Cancelled');if(performance.now()-at>limit)throw Error(label+' timed out');await pause(20);}}
  async function run(){
   if(running)return last;running=true;cancelled=false;
-  const r={version:'0.12.5',started:new Date().toISOString(),scope:'Actual authored voxel objects + Rapier/WASM and render loop. Isolated ground + authored bodies; unrelated fixtures removed while paused. Controlled launches, not fabricated contacts or a full-district performance benchmark.',passed:false,cases:[],screenshots:[],errors:[]};last=r;
+  const r={version:'0.13.0',started:new Date().toISOString(),scope:'Actual authored voxel objects + Rapier/WASM and render loop. Isolated ground + authored bodies; unrelated fixtures removed while paused. Controlled launches, not fabricated contacts or a full-district performance benchmark.',passed:false,cases:[],screenshots:[],errors:[]};last=r;
   const F=window.BREAKMASS,button=$('impact-test'),status=$('impact-trace-status');
   const assert=(ok,message)=>{if(!ok)throw Error(message);};
   const say=text=>{status.textContent=text;button.textContent='Stop slam test';};
