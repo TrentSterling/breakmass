@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.0 (2026-09-17) God Hand twist and crush, fracture archetypes
+
+- **Fracture archetypes.** The voxel kernel now picks a partition profile from the shape of the material being broken (or `cut.archetype` forces one): `pancake` for thin horizontal slabs (floor plates), `shear` for thin walls (stepped diagonal slabs, never cut across the thin axis), `buckle` for tall columns and towers (stacked sheared sections), `snap` for long beams (a few long sections cut across the beam), `spall` for small local damage (small pieces peel off, the big remainder survives), `shatter` for everything else (the original mixed partition, unchanged). Same seams, crumbs and mass rules as before. `result.fracture.archetype` reports the choice; `BREAKMASS.lastFracture` exposes it.
+- **God Hand twist.** Q / E, or hold Alt and move the mouse sideways, corkscrews the held material about vertical. On an anchored structure torsion charges a shear rip through the same support graph the pull uses, with the tangential direction as the load; the sheared section keeps spinning off with an angular impulse. On a loose body it drives angular velocity directly. Q / E stop flying you up and down only while something is gripped. The pull meter reads "Twist" while torsion charges.
+- **God Hand crush.** Middle mouse while gripping fractures a small region around the grip with the spall archetype, no explosive charge, then pulls the new pieces and any nearby loose rubble inward toward the hand. Hold to keep compacting. Middle mouse still pans the camera when nothing is held.
+- New QA coverage: kernel archetype checks in `tools/kernel-check.mjs` (eight shapes, mass and cut-direction assertions) and two in-page tests (twist shears the water tank off its legs; crush fractures around the grip without losing it).
+- Hooks: `BREAKMASS.setTwist(rate)`, `BREAKMASS.crush()`, `BREAKMASS.twistState`, `BREAKMASS.lastFracture`. Economy counters `twistRips` and `crushes`.
+
 ## 0.11.3 (2026-09-17) Polish pass, first public hosting
 
 - Demolition contract HUD is visible again. It was fully wired (tank toppled, span dropped, three drums, shots, best chain) but hidden by a CSS rule and had no styling. Now a compact bottom-left block that hides with `H` and on narrow screens.

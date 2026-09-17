@@ -21,7 +21,7 @@ Single-file voxel destruction sandbox. Live at https://tront.xyz/breakmass/ (Git
 ## Workflow
 
 1. Edit `index.html` in place. Bump the version string (10 occurrences, `grep -c` the old one) and add a `CHANGELOG.md` entry.
-2. `node tools/kernel-check.mjs` for kernel-only changes.
+2. `node tools/kernel-check.mjs` for kernel changes (archetype selection, mass conservation, cut direction).
 3. `node tools/verify.mjs --qa` before any push. It boots the real page in headless Chrome (SwiftShader WebGL) and runs the in-page QA harness. 10 of 10 is the bar.
 4. Screenshots land in `tools/out/` (gitignored). `node tools/og-shot.mjs` regenerates `og-image.png`; bump `?v=` on the `og:image` meta so Discord refetches.
 5. Freeze a copy in `versions/` when a build is worth diffing against later.
@@ -29,4 +29,4 @@ Single-file voxel destruction sandbox. Live at https://tront.xyz/breakmass/ (Git
 
 ## Public hooks
 
-`window.BREAKMASS` exposes the game for QA: `stats`, `frames()`, `liveQueue`, `materialProbe(id)`, `blast(x,y,z,r)`, `cutTower()`, `cutBridge()`, `fireRocket()`, `bombRain()`, `grabAt(id, point)`, `aimAt(point, distance)`, `runSelfTests()`, `pullDiagnostics`, `impactDiagnostics`. `window.BREAKMASS_QA.run()` runs the gameplay suite; `?qa=1` runs it at boot.
+`window.BREAKMASS` exposes the game for QA: `stats`, `frames()`, `liveQueue`, `materialProbe(id)`, `blast(x,y,z,r)`, `cutTower()`, `cutBridge()`, `fireRocket()`, `bombRain()`, `grabAt(id, point)`, `aimAt(point, distance)`, `runSelfTests()`, `pullDiagnostics`, `impactDiagnostics`, `setTwist(rate)`, `crush()`, `twistState`, `lastFracture`. `window.BREAKMASS_QA.run()` runs the gameplay suite; `?qa=1` runs it at boot.

@@ -135,17 +135,17 @@ dl.bindings{font-size:14px;grid-template-columns:105px 1fr;gap:12px}dl.bindings 
 <button data-label="Voxel wrecking core" data-prop="boulder"><svg viewbox="0 0 40 40"><path d="M12 5h16v5h5v7h3v10h-5v7H9v-7H4V17h3v-7h5zM7 18h26M6 23h28"></path></svg><span>Wrecking core</span></button>
 <button data-label="Tall domino" data-prop="domino"><svg viewbox="0 0 40 40"><path d="M14 5h13v30H14zM14 11h13M14 26h13M17 6l-5 4v24h2"></path></svg><span>Domino</span></button>
 <button data-label="Heavy concrete slab" data-prop="slab"><svg viewbox="0 0 40 40"><path d="M6 12h28v22H6zM6 12l4-5h26v23l-2 4M6 16h28"></path></svg><span>Concrete slab</span></button>
-</div><div class="palette-hint"><b id="spawn-label">Crate</b> · Click to place<br/>Shift-click drops it from above.</div><button class="mini" id="clear-spawned">Clear spawned props</button></aside><aside aria-label="Settings" class="panel" id="inspector"><div class="panel-head"><h2>Settings</h2><button aria-label="Close settings" class="icon-button panel-close" data-close="settings" title="Close · Esc"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"></path></svg><span class="button-label">Close</span></button></div><details class="settings-fold" id="fold-play" open=""><summary>Controls &amp; powers</summary><div class="settings-page" id="page-play"><section class="section power-presets"><h3>How hard?</h3><div class="power-options" role="group" aria-label="Destruction power preset"><button data-power-preset="sandbox" aria-pressed="true" type="button"><b>Sandbox</b><span>Strong. Controllable.</span></button><button data-power-preset="rubble-god" aria-pressed="false" type="button"><b>Rubble God</b><span>Maximum disrespect.</span></button></div><p class="notice" id="power-summary" aria-live="polite">6× pull · 1.6× impact · 2.8 m blast</p></section><section class="section"><h3>Camera</h3><label class="row" for="camera-select">Camera mode<select id="camera-select"><option selected="" value="fly">Fly · WASD</option><option value="third">Third person</option><option value="orbit">Orbit</option></select></label><label class="row" for="fly-speed">Flight speed<span><input id="fly-speed" max="60" min="2" step="1" type="range" value="16"/><output id="fly-speed-value">16 m/s</output></span></label><p class="notice">WASD move · Space / Ctrl up / down.<br/>Hold right mouse to lock and look; release to aim freely.<br/>Escape releases the mouse.</p></section><section class="section"><h3>God hand</h3><label class="row" for="god-pull">Rip anchored objects<span><input checked="" id="god-pull" type="checkbox"/></span></label><label class="row" for="pull-strength">Pull strength<span><input id="pull-strength" max="12" min=".5" step=".1" type="range" value="6"/><output id="pull-strength-value">6.0×</output></span></label><label class="row" for="magnet-latch">Click to latch<span><input id="magnet-latch" type="checkbox"/></span></label><label class="row" for="edge-pan">Drag at screen edges<span><input checked="" id="edge-pan" type="checkbox"/></span></label><div id="grip-mode"></div><button class="mini" id="focus-tower">Try the water tower ↗</button></section><section class="section"><h3>Destruction</h3><label class="row" for="impact-scale">Impact damage<span><input id="impact-scale" max="2" min=".5" step=".1" type="range" value="1.6"/><output id="impact-value">1.6×</output></span></label><label class="row" for="radius">Blast radius<span><input id="radius" max="6" min="0.65" step=".05" type="range" value="2.8"/><output id="radius-value">2.8 m</output></span></label><label class="row" for="power">Blast impulse<span><input id="power" max="3" min="0" step=".1" type="range" value="1.5"/><output id="power-value">1.5×</output></span></label><details><summary>Structural rules</summary><label class="row" for="stress-toggle">Supports can fail<span><input checked="" id="stress-toggle" type="checkbox"/></span></label><label class="row" for="impact-toggle">Collisions break things<span><input checked="" id="impact-toggle" type="checkbox"/></span></label><label class="row" for="stress-view">Show weak sections<span><input id="stress-view" type="checkbox"/></span></label></details></section><section class="section"><h3>Sandbox</h3><div class="actions"><button class="mini" id="slow">¼ speed · T</button><button class="mini" id="jetpack">Jetpack · J</button><button class="mini" id="props-toggle">Spawn props · B</button><button class="mini" id="clear">Clear rubble</button><button class="wide danger" id="reset">Rebuild district <kbd>R</kbd></button></div></section></div></details><details class="settings-fold" id="fold-look"><summary>Appearance</summary><div class="settings-page" id="page-look"><section class="section"><h3>Appearance</h3><label class="row" for="theme-select">Theme<select id="theme-select"><option value="dark">Night</option><option value="light">Day</option></select></label><label class="row" for="match-world">Match world lighting<input checked="" id="match-world" type="checkbox"/></label><label class="row" for="show-hints">Tool hints<input checked="" id="show-hints" type="checkbox"/></label></section><section class="section"><h3>Video</h3><label class="row" for="quality">Render scale<span><select id="quality"><option value=".75">75%</option><option selected="" value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></span></label><label class="row" for="shadows">Shadows<span><input checked="" id="shadows" type="checkbox"/></span></label><label class="row" for="shake-toggle">Camera kick<span><input id="shake-toggle" type="checkbox"/></span></label></section><section class="section"><h3>Audio</h3><label class="row" for="sound">Sound effects<span><input checked="" id="sound" type="checkbox"/></span></label></section><section class="section"><h3>Capture</h3><div class="actions"><button class="" id="snapshot">Save image</button><button class="" id="fullscreen">Fullscreen</button><button class="wide" id="hide-hud">Hide HUD · H</button></div></section></div></details><details class="settings-fold" id="fold-stats"><summary>Performance &amp; tests</summary><div class="settings-page" id="page-stats"><div class="perf-head"><div><span class="big" id="fps">—</span><span class="unit">FPS</span></div><div class="smallnote"><span id="run-state">LIVE</span><br/><span id="frame-ms">—</span> ms / frame<br/><span id="resolution">—</span></div></div><canvas height="90" id="graph" width="540"></canvas><p class="notice" id="scene-count"></p><div class="stats"><div class="stat"><span>Solver</span><strong id="solver-mode">WORKER</strong></div><div class="stat"><span>Physics round trip</span><strong id="physics-trip">—</strong></div><div class="stat"><span>Query mirror / update</span><strong id="query-ms">—</strong></div><div class="stat"><span>Commit / frame</span><strong id="main-commit-ms">—</strong></div><div class="stat"><span>Force events → reads</span><strong id="contact-work">—</strong></div><div class="stat"><span>Material → physics boxes</span><strong id="collision-cover">—</strong></div><div class="stat"><span>Rubble budget</span><strong id="rubble-budget">—</strong></div><div class="stat"><span>Jam breaks / budget rescues</span><strong id="yank-breaks">0 / 0</strong></div><div class="stat"><span>Fuel splash ignitions</span><strong id="splash-arms">0</strong></div><div class="stat"><span>Physics / step</span><strong id="physics-ms">—</strong></div><div class="stat"><span>Worker / last edit</span><strong id="worker-ms">—</strong></div><div class="stat"><span>Commit / last edit</span><strong id="commit-ms">—</strong></div><div class="stat"><span>Edit latency / last</span><strong id="latency-ms">—</strong></div><div class="stat sep"><span>Bodies: awake / sleep</span><strong id="bodies">—</strong></div><div class="stat"><span>Colliders</span><strong id="colliders">—</strong></div><div class="stat"><span>Draws / triangles¹</span><strong id="draws">—</strong></div><div class="stat"><span>Solid voxels</span><strong id="voxels">—</strong></div><div class="stat"><span>In flight / queued</span><strong id="pending">0</strong></div></div><button class="mini" id="telemetry-toggle">More counters</button><div class="stats extra-stats"><div class="stat"><span>Edit chunks → visible batches</span><strong id="batch-count">—</strong></div><div class="stat"><span>Workers / queued jobs</span><strong id="worker-count">—</strong></div><div class="stat"><span>Stress / impact breaks</span><strong id="stress-count">0 / 0</strong></div><div class="stat"><span>Voxels removed</span><strong id="damage-count">0</strong></div><div class="stat"><span>Shatters / new solid pieces</span><strong id="fracture-count">0 / 0</strong></div><div class="stat"><span>Grip transfers / reanchors</span><strong id="grip-count">0 / 0</strong></div><div class="stat"><span>God-hand rips / broken bonds</span><strong id="rip-count">0 / 0</strong></div><div class="stat" title="Rocket hits / currently flying / expired without impact"><span>Rockets: hit / live / out</span><strong id="rocket-count">0 / 0 / 0</strong></div></div><div class="detail-tip"><div class="magnet-tip" id="pull-last"></div><div class="magnet-tip" id="impact-last"></div><div class="magnet-tip" id="rocket-last"></div></div><p class="notice">CPU timings · 60 Hz physics target.<br/>Rendering continues independently of the solver.</p><section class="section"><h3>Debug views</h3><label class="row" for="debug">Colliders<span><input id="debug" type="checkbox"/></span></label><label class="row" for="wire">Wireframe<span><input id="wire" type="checkbox"/></span></label></section><section class="section"><details><summary>Tests &amp; exports</summary><div class="actions"><button class="one-leg" id="one-leg">Leave one tower leg</button><button class="" id="cut-tower">Cut tower feet</button><button class="" id="cut-bridge">Cut bridge feet</button><button class="" id="step">Step physics</button><button class="" id="export">Export metrics</button><button class="one-leg" id="impact-test">Hard-slam test · rebuilds</button><button class="one-leg" id="impact-export">Export impact traces</button><p class="notice" id="impact-trace-status">No impact trace yet.</p><button class="one-leg" id="selftest">Run self-tests</button><button class="one-leg" id="bench-run">30s stress test · rebuilds</button><button class="one-leg" id="bench-save">Save stress report</button><p class="notice" id="bench-status">No test run yet.</p><button class="one-leg" id="qa-run">Automated gameplay QA · rebuilds</button><button class="one-leg" id="qa-save" disabled>Save QA report + screenshots</button><p class="notice" id="qa-status">No gameplay QA run yet.</p><details><summary>QA details</summary><pre id="qa-log" style="white-space:pre-wrap;font-size:12px;overflow-wrap:anywhere"></pre></details></div></details></section></div></details><footer class="panel-foot"><a href="https://trentsterling.com" rel="noopener noreferrer" target="_blank">Trent Sterling ↗</a><span>Breakmass 0.12.0</span><button class="text-button" id="about-link">About &amp; credits</button></footer></aside><aside aria-label="Help and About" class="panel" id="help-panel"><div class="panel-head"><h2>Help / About</h2><button aria-label="Close help" class="icon-button panel-close" data-close="help" title="Close · Esc"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"></path></svg><span class="button-label">Close</span></button></div><div class="help-content" id="help-controls">
+</div><div class="palette-hint"><b id="spawn-label">Crate</b> · Click to place<br/>Shift-click drops it from above.</div><button class="mini" id="clear-spawned">Clear spawned props</button></aside><aside aria-label="Settings" class="panel" id="inspector"><div class="panel-head"><h2>Settings</h2><button aria-label="Close settings" class="icon-button panel-close" data-close="settings" title="Close · Esc"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"></path></svg><span class="button-label">Close</span></button></div><details class="settings-fold" id="fold-play" open=""><summary>Controls &amp; powers</summary><div class="settings-page" id="page-play"><section class="section power-presets"><h3>How hard?</h3><div class="power-options" role="group" aria-label="Destruction power preset"><button data-power-preset="sandbox" aria-pressed="true" type="button"><b>Sandbox</b><span>Strong. Controllable.</span></button><button data-power-preset="rubble-god" aria-pressed="false" type="button"><b>Rubble God</b><span>Maximum disrespect.</span></button></div><p class="notice" id="power-summary" aria-live="polite">6× pull · 1.6× impact · 2.8 m blast</p></section><section class="section"><h3>Camera</h3><label class="row" for="camera-select">Camera mode<select id="camera-select"><option selected="" value="fly">Fly · WASD</option><option value="third">Third person</option><option value="orbit">Orbit</option></select></label><label class="row" for="fly-speed">Flight speed<span><input id="fly-speed" max="60" min="2" step="1" type="range" value="16"/><output id="fly-speed-value">16 m/s</output></span></label><p class="notice">WASD move · Space / Ctrl up / down.<br/>Hold right mouse to lock and look; release to aim freely.<br/>Escape releases the mouse.</p></section><section class="section"><h3>God hand</h3><label class="row" for="god-pull">Rip anchored objects<span><input checked="" id="god-pull" type="checkbox"/></span></label><label class="row" for="pull-strength">Pull strength<span><input id="pull-strength" max="12" min=".5" step=".1" type="range" value="6"/><output id="pull-strength-value">6.0×</output></span></label><label class="row" for="magnet-latch">Click to latch<span><input id="magnet-latch" type="checkbox"/></span></label><label class="row" for="edge-pan">Drag at screen edges<span><input checked="" id="edge-pan" type="checkbox"/></span></label><div id="grip-mode"></div><button class="mini" id="focus-tower">Try the water tower ↗</button></section><section class="section"><h3>Destruction</h3><label class="row" for="impact-scale">Impact damage<span><input id="impact-scale" max="2" min=".5" step=".1" type="range" value="1.6"/><output id="impact-value">1.6×</output></span></label><label class="row" for="radius">Blast radius<span><input id="radius" max="6" min="0.65" step=".05" type="range" value="2.8"/><output id="radius-value">2.8 m</output></span></label><label class="row" for="power">Blast impulse<span><input id="power" max="3" min="0" step=".1" type="range" value="1.5"/><output id="power-value">1.5×</output></span></label><details><summary>Structural rules</summary><label class="row" for="stress-toggle">Supports can fail<span><input checked="" id="stress-toggle" type="checkbox"/></span></label><label class="row" for="impact-toggle">Collisions break things<span><input checked="" id="impact-toggle" type="checkbox"/></span></label><label class="row" for="stress-view">Show weak sections<span><input id="stress-view" type="checkbox"/></span></label></details></section><section class="section"><h3>Sandbox</h3><div class="actions"><button class="mini" id="slow">¼ speed · T</button><button class="mini" id="jetpack">Jetpack · J</button><button class="mini" id="props-toggle">Spawn props · B</button><button class="mini" id="clear">Clear rubble</button><button class="wide danger" id="reset">Rebuild district <kbd>R</kbd></button></div></section></div></details><details class="settings-fold" id="fold-look"><summary>Appearance</summary><div class="settings-page" id="page-look"><section class="section"><h3>Appearance</h3><label class="row" for="theme-select">Theme<select id="theme-select"><option value="dark">Night</option><option value="light">Day</option></select></label><label class="row" for="match-world">Match world lighting<input checked="" id="match-world" type="checkbox"/></label><label class="row" for="show-hints">Tool hints<input checked="" id="show-hints" type="checkbox"/></label></section><section class="section"><h3>Video</h3><label class="row" for="quality">Render scale<span><select id="quality"><option value=".75">75%</option><option selected="" value="1">100%</option><option value="1.5">150%</option><option value="2">200%</option></select></span></label><label class="row" for="shadows">Shadows<span><input checked="" id="shadows" type="checkbox"/></span></label><label class="row" for="shake-toggle">Camera kick<span><input id="shake-toggle" type="checkbox"/></span></label></section><section class="section"><h3>Audio</h3><label class="row" for="sound">Sound effects<span><input checked="" id="sound" type="checkbox"/></span></label></section><section class="section"><h3>Capture</h3><div class="actions"><button class="" id="snapshot">Save image</button><button class="" id="fullscreen">Fullscreen</button><button class="wide" id="hide-hud">Hide HUD · H</button></div></section></div></details><details class="settings-fold" id="fold-stats"><summary>Performance &amp; tests</summary><div class="settings-page" id="page-stats"><div class="perf-head"><div><span class="big" id="fps">—</span><span class="unit">FPS</span></div><div class="smallnote"><span id="run-state">LIVE</span><br/><span id="frame-ms">—</span> ms / frame<br/><span id="resolution">—</span></div></div><canvas height="90" id="graph" width="540"></canvas><p class="notice" id="scene-count"></p><div class="stats"><div class="stat"><span>Solver</span><strong id="solver-mode">WORKER</strong></div><div class="stat"><span>Physics round trip</span><strong id="physics-trip">—</strong></div><div class="stat"><span>Query mirror / update</span><strong id="query-ms">—</strong></div><div class="stat"><span>Commit / frame</span><strong id="main-commit-ms">—</strong></div><div class="stat"><span>Force events → reads</span><strong id="contact-work">—</strong></div><div class="stat"><span>Material → physics boxes</span><strong id="collision-cover">—</strong></div><div class="stat"><span>Rubble budget</span><strong id="rubble-budget">—</strong></div><div class="stat"><span>Jam breaks / budget rescues</span><strong id="yank-breaks">0 / 0</strong></div><div class="stat"><span>Fuel splash ignitions</span><strong id="splash-arms">0</strong></div><div class="stat"><span>Physics / step</span><strong id="physics-ms">—</strong></div><div class="stat"><span>Worker / last edit</span><strong id="worker-ms">—</strong></div><div class="stat"><span>Commit / last edit</span><strong id="commit-ms">—</strong></div><div class="stat"><span>Edit latency / last</span><strong id="latency-ms">—</strong></div><div class="stat sep"><span>Bodies: awake / sleep</span><strong id="bodies">—</strong></div><div class="stat"><span>Colliders</span><strong id="colliders">—</strong></div><div class="stat"><span>Draws / triangles¹</span><strong id="draws">—</strong></div><div class="stat"><span>Solid voxels</span><strong id="voxels">—</strong></div><div class="stat"><span>In flight / queued</span><strong id="pending">0</strong></div></div><button class="mini" id="telemetry-toggle">More counters</button><div class="stats extra-stats"><div class="stat"><span>Edit chunks → visible batches</span><strong id="batch-count">—</strong></div><div class="stat"><span>Workers / queued jobs</span><strong id="worker-count">—</strong></div><div class="stat"><span>Stress / impact breaks</span><strong id="stress-count">0 / 0</strong></div><div class="stat"><span>Voxels removed</span><strong id="damage-count">0</strong></div><div class="stat"><span>Shatters / new solid pieces</span><strong id="fracture-count">0 / 0</strong></div><div class="stat"><span>Grip transfers / reanchors</span><strong id="grip-count">0 / 0</strong></div><div class="stat"><span>God-hand rips / broken bonds</span><strong id="rip-count">0 / 0</strong></div><div class="stat" title="Rocket hits / currently flying / expired without impact"><span>Rockets: hit / live / out</span><strong id="rocket-count">0 / 0 / 0</strong></div></div><div class="detail-tip"><div class="magnet-tip" id="pull-last"></div><div class="magnet-tip" id="impact-last"></div><div class="magnet-tip" id="rocket-last"></div></div><p class="notice">CPU timings · 60 Hz physics target.<br/>Rendering continues independently of the solver.</p><section class="section"><h3>Debug views</h3><label class="row" for="debug">Colliders<span><input id="debug" type="checkbox"/></span></label><label class="row" for="wire">Wireframe<span><input id="wire" type="checkbox"/></span></label></section><section class="section"><details><summary>Tests &amp; exports</summary><div class="actions"><button class="one-leg" id="one-leg">Leave one tower leg</button><button class="" id="cut-tower">Cut tower feet</button><button class="" id="cut-bridge">Cut bridge feet</button><button class="" id="step">Step physics</button><button class="" id="export">Export metrics</button><button class="one-leg" id="impact-test">Hard-slam test · rebuilds</button><button class="one-leg" id="impact-export">Export impact traces</button><p class="notice" id="impact-trace-status">No impact trace yet.</p><button class="one-leg" id="selftest">Run self-tests</button><button class="one-leg" id="bench-run">30s stress test · rebuilds</button><button class="one-leg" id="bench-save">Save stress report</button><p class="notice" id="bench-status">No test run yet.</p><button class="one-leg" id="qa-run">Automated gameplay QA · rebuilds</button><button class="one-leg" id="qa-save" disabled>Save QA report + screenshots</button><p class="notice" id="qa-status">No gameplay QA run yet.</p><details><summary>QA details</summary><pre id="qa-log" style="white-space:pre-wrap;font-size:12px;overflow-wrap:anywhere"></pre></details></div></details></section></div></details><footer class="panel-foot"><a href="https://trentsterling.com" rel="noopener noreferrer" target="_blank">Trent Sterling ↗</a><span>Breakmass 0.11.3</span><button class="text-button" id="about-link">About &amp; credits</button></footer></aside><aside aria-label="Help and About" class="panel" id="help-panel"><div class="panel-head"><h2>Help / About</h2><button aria-label="Close help" class="icon-button panel-close" data-close="help" title="Close · Esc"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6"></path></svg><span class="button-label">Close</span></button></div><div class="help-content" id="help-controls">
 <section class="section help-start"><h3>Point. Pull. Wreck.</h3><p><strong>Move the mouse to aim.</strong> Hold right mouse to hide and lock the cursor, then look freely. Release right mouse to get your cursor back. <kbd>Esc</kbd> always releases.</p></section>
 <section class="section"><h3>Move &amp; look</h3><div id="help"><div id="mode-tag">Free flight</div><div><b>WASD</b> fly · Space / Ctrl rise / descend</div><div><b>Hold right mouse</b> look · L toggles locked look</div></div></section>
 <section class="section"><h3>Break things</h3><dl class="bindings"><dt>1–3</dt><dd>Rifle, shotgun, rockets. Hold left to fire.</dd><dt>4 / 6</dt><dd>Blast / rapid bomb rain. Aim at a surface.</dd><dt>5</dt><dd>God hand. Hold left, grab a surface and pull.</dd><dt>Shift / X</dt><dd>Peel a section / throw the held piece.</dd><dt>Wheel / K</dt><dd>Grab reach / click-latch the God hand.</dd><dt>7 / 8</dt><dd>Chisel / props. Shift-click drops props from above.</dd></dl></section>
 <details class="section"><summary>More shortcuts</summary><dl class="bindings"><dt>V</dt><dd>Fly → Third person → Orbit.</dd><dt>M / B</dt><dd>World / props.</dd><dt>P / T</dt><dd>Pause / slow motion.</dd><dt>N / H</dt><dd>Day–night / hide HUD.</dd><dt>Tab / ?</dt><dd>Settings / this page.</dd><dt>G / J</dt><dd>Gravity shove / third-person jetpack.</dd><dt>R</dt><dd>Rebuild this scene (asks first).</dd><dt>Power chip</dt><dd>Sandbox ↔ Rubble God. Sliders remain available in Settings.</dd></dl></details>
-<section class="section" id="help-about"><h3 class="about-title">BREAKMASS</h3><p class="about-tagline">The city is ammunition.</p><h3>Made by Tront</h3><p>A single-player voxel destruction sandbox by <strong>Trent Sterling</strong>.</p><p class="credit-links"><a href="https://tront.xyz" rel="noopener noreferrer" target="_blank">More games ↗</a><a href="https://trentsterling.com" rel="noopener noreferrer" target="_blank">Portfolio ↗</a></p><p>Rendering: <a href="https://threejs.org" rel="noopener noreferrer" target="_blank">Three.js</a> · Physics: <a href="https://rapier.rs" rel="noopener noreferrer" target="_blank">Rapier</a>. Original procedural models and destruction code. Inspired by Teardown and Noita; not affiliated.</p><p class="quiet">Breakmass 0.12.0 · The city is ammunition.<br/>Keyboard and mouse recommended. Fly passes through walls. Older loose rubble uses cheap ground-only motion when the pile gets crowded; grab it to restore full collisions. No fluids or combustion simulation yet. Internet is needed for the pinned runtime libraries.</p></section></div></aside><div aria-live="polite" id="toast" role="status"></div><div id="pull-meter"><span id="pull-state">Pull to snap</span><div class="pull-track"><i id="pull-fill"></i></div></div><div id="target"></div><div id="hint-wrap"><div id="tool-description">Hold to fire · 1–8 switch tools</div><button aria-label="Tune this tool" class="icon-button" id="tune-tool" title="Tune this tool"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M3 6h8M15 6h6M3 18h3M10 18h11M11 3v6M7 15v6M3 12h13M20 12h1M17 9v6"></path></svg><span class="button-label">Tune</span></button></div><nav aria-label="Destruction tools" id="dock">
+<section class="section" id="help-about"><h3 class="about-title">BREAKMASS</h3><p class="about-tagline">The city is ammunition.</p><h3>Made by Tront</h3><p>A single-player voxel destruction sandbox by <strong>Trent Sterling</strong>.</p><p class="credit-links"><a href="https://tront.xyz" rel="noopener noreferrer" target="_blank">More games ↗</a><a href="https://trentsterling.com" rel="noopener noreferrer" target="_blank">Portfolio ↗</a></p><p>Rendering: <a href="https://threejs.org" rel="noopener noreferrer" target="_blank">Three.js</a> · Physics: <a href="https://rapier.rs" rel="noopener noreferrer" target="_blank">Rapier</a>. Original procedural models and destruction code. Inspired by Teardown and Noita; not affiliated.</p><p class="quiet">Breakmass 0.11.3 · The city is ammunition.<br/>Keyboard and mouse recommended. Fly passes through walls. Older loose rubble uses cheap ground-only motion when the pile gets crowded; grab it to restore full collisions. No fluids or combustion simulation yet. Internet is needed for the pinned runtime libraries.</p></section></div></aside><div aria-live="polite" id="toast" role="status"></div><div id="pull-meter"><span id="pull-state">Pull to snap</span><div class="pull-track"><i id="pull-fill"></i></div></div><div id="target"></div><div id="hint-wrap"><div id="tool-description">Hold to fire · 1–8 switch tools</div><button aria-label="Tune this tool" class="icon-button" id="tune-tool" title="Tune this tool"><svg aria-hidden="true" class="" viewbox="0 0 24 24"><path d="M3 6h8M15 6h6M3 18h3M10 18h11M11 3v6M7 15v6M3 12h13M20 12h1M17 9v6"></path></svg><span class="button-label">Tune</span></button></div><nav aria-label="Destruction tools" id="dock">
 <button aria-label="Machine gun · 1" aria-pressed="false" class="tool" data-tool="4" title="Machine gun · 1"><svg viewbox="0 0 24 24"><path d="M2 8h15v6H2zM17 9h5v3h-5M5 14v6h4v-6M12 14v5h4v-5M8 8V5h5v3M1 9v6"></path></svg><div><span>Rifle</span><kbd>1</kbd></div></button>
 <button aria-label="Scattergun · 2 · 12 pellets" aria-pressed="false" class="tool" data-tool="5" title="Scattergun · 2 · 12 pellets"><svg viewbox="0 0 24 24"><path d="M2 8h18v4H9l-3 7H2l3-9M10 12v3h4v-3M20 7v6M23 5l-1 2M23 16l-1-2"></path></svg><div><span>Shotgun</span><kbd>2</kbd></div></button>
 <button aria-label="Rocket launcher · 3" aria-pressed="false" class="tool" data-tool="2" title="Rocket launcher · 3"><svg viewbox="0 0 24 24"><path d="M4 8h13l5 4-5 4H4zM4 9L1 6v12l3-3M8 16v4h4v-4M16 8v8"></path></svg><div><span>Rocket</span><kbd>3</kbd></div></button>
 <button aria-label="Direct breach · 4" aria-pressed="false" class="tool" data-tool="1" title="Direct breach · 4"><svg viewbox="0 0 24 24"><path d="M12 2l2 6 6-4-3 7 5 3-7 1 1 7-5-5-5 4 1-7-5-2 7-3z"></path></svg><div><span>Blast</span><kbd>4</kbd></div></button>
-<button aria-label="God hand · 5 · Pull to rip / Q E twist / MMB crush" aria-pressed="true" class="tool selected" data-tool="3" title="God hand · 5 · Pull to rip / Q E twist / MMB crush"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 12V9a1.25 1.25 0 012.5 0v3M11.5 10a1.25 1.25 0 012.5 0v3M14 11a1.25 1.25 0 012.5 0v3M16.5 13a1.25 1.25 0 012.5 0v4l-3 4H9l-4-6a1.4 1.4 0 012-2l2 2V12M9 3l4-2 4 2v3l-4 2-4-2zM9 3l4 2 4-2M13 5v3"></path></svg><div><span>God hand</span><kbd>5</kbd></div></button>
+<button aria-label="God hand · 5 · Pull to rip / Shift to peel" aria-pressed="true" class="tool selected" data-tool="3" title="God hand · 5 · Pull to rip / Shift to peel"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 12V9a1.25 1.25 0 012.5 0v3M11.5 10a1.25 1.25 0 012.5 0v3M14 11a1.25 1.25 0 012.5 0v3M16.5 13a1.25 1.25 0 012.5 0v4l-3 4H9l-4-6a1.4 1.4 0 012-2l2 2V12M9 3l4-2 4 2v3l-4 2-4-2zM9 3l4 2 4-2M13 5v3"></path></svg><div><span>God hand</span><kbd>5</kbd></div></button>
 <button aria-label="Bomb rain · 6" aria-pressed="false" class="tool" data-tool="7" title="Bomb rain · 6"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M5 2v5M12 1v5M19 2v5M3 10l2-3 2 3v5H3zM10 9l2-3 2 3v5h-4zM17 10l2-3 2 3v5h-4zM2 20l4-2 4 3 3-3 4 3 5-2"></path></svg><div><span>Bomb rain</span><kbd>6</kbd></div></button>
 <button aria-label="Precision chisel · 7" aria-pressed="false" class="tool" data-tool="0" title="Precision chisel · 7"><svg viewbox="0 0 24 24"><path d="M4 20l5-2L21 6l-3-3L6 15zM7 14l4 4M3 21l2-2"></path></svg><div><span>Chisel</span><kbd>7</kbd></div></button>
 <button aria-label="Spawn props · 8 / B" aria-pressed="false" class="tool" data-tool="6" title="Spawn props · 8 / B"><svg viewbox="0 0 24 24"><path d="M3 7l9-5 9 5v10l-9 5-9-5zM3 7l9 5 9-5M12 12v10"></path></svg><div><span>Props</span><kbd>8</kbd></div></button></nav><div id="crosshair"></div><div id="hitmarker"><i></i><i></i><i></i><i></i></div><div id="contract"><div id="objective-status">DEMOLITION CONTRACT / OPTIONAL</div>
@@ -404,37 +404,6 @@ function voxelKernel() {
     let state=(cut.seed|0)||12345;
     function rand(){state^=state<<13;state^=state>>>17;state^=state<<5;return (state>>>0)/4294967296;}
     const coordinate=(a,d)=>d===0?a%nx:d===1?((a/nx)|0)%ny:(a/xy)|0;
-    // Fracture archetypes: same partition machinery, different weighting picked
-    // from the SHAPE of the material being broken (or forced by cut.archetype).
-    //   pancake  thin horizontal slab -> floor plates stacked/cut in plan
-    //   shear    thin vertical wall   -> stepped diagonal slabs, never across the thin axis
-    //   buckle   tall column/tower    -> horizontal sections that shear, lower ones split more
-    //   snap     long beam            -> few long sections cut across the long axis
-    //   spall    local surface damage -> small pieces peel off, big remainder survives
-    //   shatter  default block        -> the original mixed partition
-    const bounds=[nx,ny,nz,0,0,0];
-    for(const a of cells){const x=a%nx,y=((a/nx)|0)%ny,z=(a/xy)|0;if(x<bounds[0])bounds[0]=x;if(y<bounds[1])bounds[1]=y;if(z<bounds[2])bounds[2]=z;if(x>bounds[3])bounds[3]=x;if(y>bounds[4])bounds[4]=y;if(z>bounds[5])bounds[5]=z;}
-    const ex=bounds[3]-bounds[0]+1,ey=bounds[4]-bounds[1]+1,ez=bounds[5]-bounds[2]+1,horizontalMax=Math.max(ex,ez),horizontalMin=Math.min(ex,ez);
-    const wholeBody=cells.length>=v.data.length*.6||cut.radius*2>=Math.max(nx,ny,nz);
-    let archetype=typeof cut.archetype==='string'?cut.archetype:null;
-    if(!archetype){
-      if(!wholeBody&&cells.length<420)archetype='spall';
-      else if(ey<=Math.max(3,horizontalMax*.28)&&horizontalMin>=6)archetype='pancake';
-      else if(horizontalMin<=Math.max(3,horizontalMax*.28)&&ey>=6)archetype='shear';
-      else if(ey>=horizontalMax*1.8&&ey>=10)archetype='buckle';
-      else if(horizontalMax>=ey*2.2&&horizontalMax>=horizontalMin*2.2&&horizontalMax>=10)archetype='snap';
-      else archetype='shatter';
-    }
-    const thinAxis=horizontalMin===ex?0:2,longAxis=horizontalMax===ex?0:2;
-    const profile={
-      pancake:{axisBias:[.7,2.4,.7],slabChance:.6,target:[.25,.5],shearScale:.35,amplitudeScale:.6},
-      shear:{axisBias:[thinAxis===0?0:1.7,1,thinAxis===2?0:1.7],slabChance:.1,target:[.2,.5],shearScale:1.7,amplitudeScale:1.3},
-      buckle:{axisBias:[.55,2.2,.55],slabChance:.4,target:[.22,.55],shearScale:1.25,amplitudeScale:1},
-      snap:{axisBias:[longAxis===0?2.8:.35,.35,longAxis===2?2.8:.35],slabChance:.55,target:[.3,.4],shearScale:.5,amplitudeScale:.6},
-      spall:{axisBias:[1,1,1],slabChance:.12,target:[.1,.25],shearScale:1.2,amplitudeScale:1.2},
-      shatter:{axisBias:[1,1,1],slabChance:.16,target:[.22,.72],shearScale:1,amplitudeScale:1}
-    }[archetype]||{axisBias:[1,1,1],slabChance:.16,target:[.22,.72],shearScale:1,amplitudeScale:1};
-    labels.archetype=archetype;
     const noise=(u,w,seed)=>{let h=Math.imul(u,374761393)^Math.imul(w,668265263)^seed;h=Math.imul(h^(h>>>13),1274126177);return ((h^(h>>>16))>>>0)/4294967296-.5;};
     const groups=[cells],limit=Math.min(28,Math.max(2,cut.pieces|0));
     while(groups.length<limit){
@@ -445,13 +414,13 @@ function voxelKernel() {
       for(const a of current){const x=a%nx,y=((a/nx)|0)%ny,z=(a/xy)|0;
         if(x<lo[0])lo[0]=x;if(x>hi[0])hi[0]=x;if(y<lo[1])lo[1]=y;if(y>hi[1])hi[1]=y;if(z<lo[2])lo[2]=z;if(z>hi[2])hi[2]=z;}
       const axis=cut.impactAxis||[0,0,0];
-      const order=[0,1,2].map(d=>({d,score:(hi[d]-lo[d])*(.75+rand()*.45+.18*Math.abs(axis[d]||0))*profile.axisBias[d]})).filter(o=>o.score>0).sort((a,b)=>b.score-a.score);
+      const order=[0,1,2].map(d=>({d,score:(hi[d]-lo[d])*(.75+rand()*.45+.18*Math.abs(axis[d]||0))})).sort((a,b)=>b.score-a.score);
       let halves=null;
       for(const {d} of order){
         if(hi[d]===lo[d])continue;
-        const u=(d+1)%3,w=(d+2)%3,slab=rand()<profile.slabChance;
-        const su=slab?0:(.18+rand()*.42)*profile.shearScale*(rand()<.5?-1:1),sw=slab?0:(.12+rand()*.30)*profile.shearScale*(rand()<.5?-1:1);
-        const patch=5+Math.floor(rand()*5),amplitude=slab?0:Math.min(1.25,(hi[d]-lo[d])*.07*profile.amplitudeScale),seed=state|0;
+        const u=(d+1)%3,w=(d+2)%3,slab=rand()<.16;
+        const su=slab?0:(.18+rand()*.42)*(rand()<.5?-1:1),sw=slab?0:(.12+rand()*.30)*(rand()<.5?-1:1);
+        const patch=5+Math.floor(rand()*5),amplitude=slab?0:Math.min(1.25,(hi[d]-lo[d])*.07),seed=state|0;
         const stair=Math.max(hi[u]-lo[u],hi[w]-lo[w])>=12?2:1;
         // Evaluate the coarse displacement once per in-plane cell, not once per
         // solid voxel and again for every descendant partition. Integer stepped
@@ -470,7 +439,7 @@ function voxelKernel() {
         if(max===min)continue;
         const bins=new Uint32Array(max-min+1);
         for(const s of projection)bins[s-min]++;
-        const target=current.length*(profile.target[0]+rand()*(profile.target[1]-profile.target[0]));let sum=0,at=0;
+        const target=current.length*(.22+rand()*.5);let sum=0,at=0;
         for(;at<bins.length-1;at++){sum+=bins[at];if(sum>=target)break;}
         const threshold=min+at,left=[],right=[];
         for(let i=0;i<current.length;i++)(projection[i]<=threshold?left:right).push(current[i]);
@@ -756,7 +725,7 @@ function voxelKernel() {
     const remaining=count(v),emptyMesh=()=>({p:new Float32Array(),n:new Float32Array(),c:new Float32Array(),g:new Float32Array(),i:new Uint32Array()});
     const outPackets=remaining?packets(v,dirty):(v.anchored?[...dirty]:['body']).map(key=>({key,mesh:emptyMesh(),boxes:new Float32Array()}));
     const token=nextToken++,stress=stressProfile(v);
-    const result={type:'proposal',id,token,count:remaining,packets:outPackets,fragments:fragments.map(describe),dust,removed:removed.length,dirty:dirty.size,stress,failure,pull,rough,settled:op.type==='settle',fracture:fracture?{regions:groups.length,requested:fracture.pieces,archetype:labels?.archetype||null}:null,ms:performance.now()-start};
+    const result={type:'proposal',id,token,count:remaining,packets:outPackets,fragments:fragments.map(describe),dust,removed:removed.length,dirty:dirty.size,stress,failure,pull,rough,settled:op.type==='settle',fracture:fracture?{regions:groups.length,requested:fracture.pieces}:null,ms:performance.now()-start};
     proposals.set(token,{id,v,fragments});return result;
   }
   function transfers(result){
@@ -1998,7 +1967,7 @@ if(typeof module!=='undefined')module.exports=runBreakmassStress;
   function themeToggle(){setTheme(theme==='dark'?'light':'dark');focusCanvas();}
   function mode(value){const name={fly:'Fly',third:'Third person',orbit:'Orbit'}[value]||'Fly';$('mode').classList.toggle('active',value==='third');$('mode').querySelector('.button-label').textContent=name;$('mode').title='Camera: '+name+' · V cycles modes';$('mode').setAttribute('aria-label',$('mode').title);body.classList.toggle('third-person',value==='third');body.dataset.camera=value;}
   function timeState(paused,slow){$('pause').classList.toggle('active',paused);$('pause').setAttribute('aria-pressed',String(paused));$('pause').title=paused?'Resume · P':'Pause · P';$('pause').setAttribute('aria-label',paused?'Resume':'Pause');$('pause').querySelector('.button-label').textContent=paused?'Resume':'Pause';body.classList.toggle('is-paused',paused);body.classList.toggle('is-slow',slow);}
-  const hints=['Hold to carve','Hold to blast · Tune radius →','Hold to launch rockets','Pull to rip · Shift peel · Q/E twist · MMB crush · X throw','Hold to fire · 1–8 switch tools','Hold to fire · Wide spread','Click to place · Shift drop · B choose prop','Hold to rain bombs · 10 per volley'];
+  const hints=['Hold to carve','Hold to blast · Tune radius →','Hold to launch rockets','Pull to rip · Shift peel · X throw · K latch','Hold to fire · 1–8 switch tools','Hold to fire · Wide spread','Click to place · Shift drop · B choose prop','Hold to rain bombs · 10 per volley'];
   function tool(i){root.dataset.tool=String(i);$('tool-description').textContent=hints[i]||'';document.querySelectorAll('.tool').forEach(el=>{const selected=+el.dataset.tool===i;el.classList.toggle('selected',selected);el.setAttribute('aria-pressed',String(selected));});}
   let pendingScene=null;
   function confirmReset(scene=null){
@@ -2419,12 +2388,12 @@ if(typeof module!=='undefined'){module.exports.createDamageQueue=createDamageQue
 </script>
 <script type="module">
 
-/* Breakmass v0.12.0 — independent voxel destruction / rigid-body experiment.
+/* Breakmass v0.11.3 — independent voxel destruction / rigid-body experiment.
  * THREE handles rendering; Rapier handles contacts, inertia, sleeping and CCD.
  * The original voxel kernel lives in a Worker. No third-party demo code/assets.
  */
 const $=id=>document.getElementById(id);
-window.BREAKMASS_BOOT={version:'0.12.0',protocol:location.protocol,workerType:'classic',stage:'libraries',userAgent:navigator.userAgent,errors:[]};
+window.BREAKMASS_BOOT={version:'0.11.3',protocol:location.protocol,workerType:'classic',stage:'libraries',userAgent:navigator.userAgent,errors:[]};
 function bootStage(stage,label){window.BREAKMASS_BOOT.stage=stage;if(label)$('load-message').textContent=label;}
 async function library(urls,label){
   let last;
@@ -2563,11 +2532,11 @@ async function boot(){
     while(impactAudit.traces.length>256){const done=impactAudit.traces.findIndex(t=>!t.accepted||t.visibleAt||(t.status==='no-change'||t.status==='armed'));if(done<0)break;impactAudit.traces.splice(done,1);}
   }
   function impactReport(){
-    return {version:'0.12.0',scope:'Actual received contacts, admission reasons and first submitted fracture draw. CPU wall-clock timings; not GPU completion times.',
+    return {version:'0.11.3',scope:'Actual received contacts, admission reasons and first submitted fracture draw. CPU wall-clock timings; not GPU completion times.',
       accepted:impactAudit.accepted,hardBypasses:impactAudit.hardBypasses,rejected:impactAudit.rejected,reasons:{...impactAudit.reasons},traces:impactAudit.traces.map(t=>({...t}))};
   }
   const fuelEntities=new Map();
-  const economy={rescuedEdits:0,lightened:0,reactivated:0,recycled:0,jamBreaks:0,splashArmed:0,twistRips:0,crushes:0,lastAdmission:null,lastSplash:null};
+  const economy={rescuedEdits:0,lightened:0,reactivated:0,recycled:0,jamBreaks:0,splashArmed:0,lastAdmission:null,lastSplash:null};
   let rocketsFired=0,rocketHits=0,rocketExpired=0,lastRocket=null;
   let impactScale=sandbox.config.impactScale,lastImpact=null,impactShatters=0,impactRegions=0;
   const sceneIndex=createSpatialIndex(16),boundsMatrix=new THREE.Matrix4(),boundsSize=V(),boundsCenter=V(),boundsRotation=Q();
@@ -2580,7 +2549,7 @@ async function boot(){
   let structuralFailure=true,impactFracture=true,stressView=false,shakeEnabled=false,shake=0,recoil=0;
   const runtimeFaults=[];
   let lastBalanceAt=0,analyticSequence=0,overflowFlights=0;
-  let shotCount=0,barrelsExploded=0,chain=0,bestChain=0,lastBoom=-10,fractures=0,stressFailures=0,queuedDrops=0,lastFracture=null,twistMouse=0,lastPointerX=null,twistInput=0,twistOverride=0;
+  let shotCount=0,barrelsExploded=0,chain=0,bestChain=0,lastBoom=-10,fractures=0,stressFailures=0,queuedDrops=0;
   let godPull=true,pullStrength=sandbox.config.pullStrength,magnetRips=0,magnetBonds=0,lastPull=null;
   let grabTransfers=0,grabReanchors=0,lastGrabRelease='',grabSequence=0;
   const grabHistory=[];
@@ -2603,7 +2572,7 @@ async function boot(){
   const centerNDC=new THREE.Vector2(0,0);
   const aimCentered=()=>!!lookCapture?.state.centered;
   const uiOpen=()=>!!document.querySelector('.settings-open,.help-open,.spawn-open')||!document.body.classList.contains('atlas-hidden')||$('confirm-reset').open;
-  const descriptions=['Precision chisel. Hold to carve.','Direct breach. Click a surface; adjust the blast radius.','Powered rockets. Hold to fire · swept impact · 3.1m minimum blast.','God hand. Pull to rip supports · Q/E or Alt+mouse: twist until supports shear · Middle mouse: crush around the grip · Shift: peel · X: rip + throw · K: latch.','Machine gun. 20 rounds/sec · wider cuts. Hold to chew through supports.','Scattergun. 12 destructive pellets · faster follow-up shots. Hold to repeat.','Spawner. Click a surface to place the selected prop. Shift drops it from 8m up. B opens the palette.'];
+  const descriptions=['Precision chisel. Hold to carve.','Direct breach. Click a surface; adjust the blast radius.','Powered rockets. Hold to fire · swept impact · 3.1m minimum blast.','God hand. Pull to rip supports · Shift: peel a section · X: rip + throw · K: latch.','Machine gun. 20 rounds/sec · wider cuts. Hold to chew through supports.','Scattergun. 12 destructive pellets · faster follow-up shots. Hold to repeat.','Spawner. Click a surface to place the selected prop. Shift drops it from 8m up. B opens the palette.'];
   function shortName(text){return String(text||'').replace(/(?:\s*\/\s*detached)+/gi,'').replace(/\s*\/\s*/g,' · ').slice(0,66);}
   function toast(text,seconds=3){
     // Repeated fracture ancestry is useful internally, not on the player's HUD.
@@ -2912,16 +2881,6 @@ async function boot(){
         const torque=V(bend.z,0,-bend.x).clampLength(0,1).multiplyScalar(child.body.mass()*.3);child.body.applyTorqueImpulse(torque,true);
       }
     }
-    if(ctx.crushPoint){
-      // Crush: freshly broken material implodes toward the grip instead of scattering.
-      const cp=V(...ctx.crushPoint),reach=ctx.crushRadius||1;
-      for(const c of newEntities){
-        if(c.anchored)continue;const com=V().copy(c.body.worldCom()),d=cp.clone().sub(com),dist=d.length();if(dist<.02)continue;d.normalize();
-        const speed=Math.min(6,(c.kind==='chip'?4.5:2.6)*(1+.5*(1-Math.min(1,dist/(reach+.5)))));
-        if(c.lightweight){c.lightV.addScaledVector(d,speed);c.lightSettled=false;}else c.body.applyImpulse(d.multiplyScalar(c.body.mass()*speed),true);
-      }
-      if(result.fracture)lastFracture={archetype:result.fracture.archetype,regions:result.fracture.regions,via:'crush',id:e.id,time:simTime};
-    }else if(result.fracture)lastFracture={archetype:result.fracture.archetype,regions:result.fracture.regions,via:ctx.yankSerial?'yank':ctx.impactIds?.length?'impact':'edit',id:e.id,time:simTime};
     // Rebind before deleting the old body. No render/physics frame sees a
     // dangling handle, stale local point, or a vanished tether.
     transferGrab(liveGrip,wantedGrip);
@@ -2959,7 +2918,7 @@ async function boot(){
     const protectedCell=grab?.entity===e?[...grab.cell]:null;
     op={...op,protectCell:protectedCell,priority:op.type==='pull'?100:op.type==='settle'?(e.lastInputAt&&performance.now()-e.lastInputAt<1200?45:5):Math.max(op.priority||1,...cuts.map(c=>c.priority||1))};
     if(op.priority>=50)e.lastInputAt=performance.now();
-    e.context={pullSerial:op.type==='pull'?op.gripSerial:null,yankSerial:op.yankSerial??null,yankWitness:op.yankWitness??null,crushPoint:first.crushPoint??op.crushPoint??null,crushRadius:first.crushRadius??op.crushRadius??null,localCenter:first.center||op.center,radius:(first.radius||op.radius||1)*S,power:amount,scatterEnergy:Math.max(0,...cuts.map(c=>c.scatterEnergy||0)),sent:performance.now(),firstImpactAt,priority:op.priority,impactIds:op.impactIds?[...op.impactIds]:null};
+    e.context={pullSerial:op.type==='pull'?op.gripSerial:null,yankSerial:op.yankSerial??null,yankWitness:op.yankWitness??null,localCenter:first.center||op.center,radius:(first.radius||op.radius||1)*S,power:amount,scatterEnergy:Math.max(0,...cuts.map(c=>c.scatterEnergy||0)),sent:performance.now(),firstImpactAt,priority:op.priority,impactIds:op.impactIds?[...op.impactIds]:null};
     worker.postMessage({type:'edit',id:e.id,op});return true;
   }
   function dispatchNextEdit(e){
@@ -3175,7 +3134,7 @@ async function boot(){
     if(cameraMode==='fly'){
       const state=flyMotion.step({dt,yaw:cam.yaw,pitch:cam.pitch,
         forward:Number(keys.has('KeyW'))-Number(keys.has('KeyS')),right:Number(keys.has('KeyD'))-Number(keys.has('KeyA')),
-        up:Number(keys.has('Space')||(!grab&&keys.has('KeyE')))-Number(keys.has('ControlLeft')||keys.has('ControlRight')||(!grab&&keys.has('KeyQ'))),
+        up:Number(keys.has('Space')||keys.has('KeyE'))-Number(keys.has('ControlLeft')||keys.has('ControlRight')||keys.has('KeyQ')),
         speed:flySpeed,boost:!grab&&(keys.has('ShiftLeft')||keys.has('ShiftRight')),enabled:canMove});
       camera.position.set(...state.position);camera.rotation.set(-cam.pitch,cam.yaw,0,'YXZ');
       cam.eye.copy(camera.position);cam.target.copy(camera.position).addScaledVector(V(0,0,-1).applyQuaternion(camera.quaternion),24);
@@ -3189,7 +3148,7 @@ async function boot(){
         if(!cam.initialized)cam.target.copy(cam.follow);else cam.target.lerp(cam.follow,1-Math.exp(-18*dt));
       }else if(canMove){
         const dx=Number(keys.has('KeyD'))-Number(keys.has('KeyA')),dz=Number(keys.has('KeyW'))-Number(keys.has('KeyS'));
-        const move=V(Math.cos(cam.yaw)*dx-Math.sin(cam.yaw)*dz,Number(!grab&&keys.has('KeyE'))-Number(!grab&&keys.has('KeyQ')),-Math.sin(cam.yaw)*dx-Math.cos(cam.yaw)*dz);
+        const move=V(Math.cos(cam.yaw)*dx-Math.sin(cam.yaw)*dz,Number(keys.has('KeyE'))-Number(keys.has('KeyQ')),-Math.sin(cam.yaw)*dx-Math.cos(cam.yaw)*dz);
         if(move.lengthSq()>0)cam.target.addScaledVector(move.normalize(),cam.distance*.3*dt);
       }
       const cp=Math.cos(cam.pitch),arm=V(Math.sin(cam.yaw)*cp,Math.sin(cam.pitch),Math.cos(cam.yaw)*cp);
@@ -3378,7 +3337,7 @@ async function boot(){
     if(!anchor)return false;
     if(e.lightweight)activateRubble(e);
     e.body.wakeUp();lastGrabRelease='';
-    grab={entity:e,local:V(...anchor.point).multiplyScalar(S),cell:anchor.cell,distance:hit.distance,serial:++grabSequence,charge:0,gestureAge:0,ripCooldown:0,focusSpent:false,twistCharge:0,twistRip:0,twistCreak:0,lastCrush:-9};
+    grab={entity:e,local:V(...anchor.point).multiplyScalar(S),cell:anchor.cell,distance:hit.distance,serial:++grabSequence,charge:0,gestureAge:0,ripCooldown:0,focusSpent:false};
     tether.visible=true;sound('grab');return true;
   }
   function releaseGrab(reason='released'){
@@ -3401,15 +3360,7 @@ async function boot(){
       if(grabHistory.length>32)grabHistory.shift();
     }
   }
-  // Horizontal tangent of the grip point about the body's vertical axis: the
-  // direction a corkscrew twist loads the supports in. Sign picks the handedness.
-  function twistTangent(e,p,sign){
-    const q=Q().copy(e.body.rotation()),center=V(...e.dims).multiplyScalar(S*.5).applyQuaternion(q).add(V().copy(e.body.translation()));
-    const arm=p.clone().sub(center);arm.y=0;
-    if(arm.lengthSq()<.04)arm.set(1,0,0);
-    return V(0,1,0).cross(arm).normalize().multiplyScalar(sign>0?1:-1).add(V(0,.22,0)).normalize();
-  }
-  function requestMagnetRip(sling=false,twist=0){
+  function requestMagnetRip(sling=false){
     const g=grab,e=g?.entity;
     if(!g||!e||!godPull||paused||inputSuspended||!entities.has(e.id))return false;
     if(sling)g.slingAfterRip=true;
@@ -3417,9 +3368,9 @@ async function boot(){
     // never queued and duplicated onto every resulting fragment.
     if(e.pending){worker.promote?.(e.id);return false;}
     const p=g.local.clone().applyQuaternion(Q().copy(e.body.rotation())).add(V().copy(e.body.translation()));
-    const direction=twist?twistTangent(e,p,twist):g.slingAfterRip?pointerRay().direction.clone():(g.goal||p).clone().sub(p);
+    const direction=g.slingAfterRip?pointerRay().direction.clone():(g.goal||p).clone().sub(p);
     if(direction.lengthSq()<1e-8)return false;
-    direction.normalize();if(twist){g.twistRip=twist;g.twistCharge=0;}
+    direction.normalize();
     const localDirection=direction.clone().applyQuaternion(Q().copy(e.body.rotation()).invert());
     const focused=keys.has('ShiftLeft')||keys.has('ShiftRight');
     const ok=requestEdit(e,{type:'pull',cell:[...g.cell],center:g.local.toArray().map(x=>x/S),direction:localDirection.toArray(),focused,chips:0,strength:pullStrength,gripSerial:g.serial},0);
@@ -3443,13 +3394,7 @@ async function boot(){
       if(!grab.entity.anchored){
         const e=grab.entity,point=grab.local.clone().applyQuaternion(Q().copy(e.body.rotation())).add(V().copy(e.body.translation()));
         e.body.applyImpulseAtPoint(direction.multiplyScalar(e.body.mass()*Math.min(7,2.2*pullStrength)),point,true);
-        if(grab.twistRip){
-          // The sheared section keeps corkscrewing: angular impulse about vertical.
-          const dims=V(...e.dims).multiplyScalar(S),inertia=e.body.mass()*(dims.x*dims.x+dims.z*dims.z)/12;
-          e.body.applyTorqueImpulse(V(0,(grab.twistRip>0?1:-1)*inertia*2.6,0),true);economy.twistRips++;
-        }
       }
-      grab.twistRip=0;
     }
     sound('rip');addShake(.12);tether.material.color.setHex(0xfff0a7);
     $('pull-last').textContent=(p.mode==='peel'?'PEELED':'SNAPPED')+' · '+(p.bonds+p.groundBonds)+' bonds · '+p.heldCells.toLocaleString()+' voxels';
@@ -3465,24 +3410,6 @@ async function boot(){
     const focused=keys.has('ShiftLeft')||keys.has('ShiftRight');
     const yank=magnetControl.step(g,{extension,dt:DT,anchored:e.anchored,focused,enabled:godPull,suspended:inputSuspended,pending:e.pending,strength:pullStrength});
     if(yank||g.slingAfterRip&&!e.pending)requestMagnetRip();
-    // TWIST. Q/E or Alt + mouse X corkscrew the held material about vertical.
-    // Anchored: torsion charges a shear rip. Loose: drive angular velocity.
-    const altHeld=keys.has('AltLeft')||keys.has('AltRight');
-    let twist=(Number(keys.has('KeyE'))-Number(keys.has('KeyQ')))+(altHeld?Math.max(-1,Math.min(1,twistMouse*.045)):0);
-    twistMouse=0;if(twistOverride)twist=twistOverride;twist=Math.max(-1,Math.min(1,twist));if(inputSuspended||paused)twist=0;twistInput=twist;
-    if(twist&&e.anchored&&godPull&&!e.pending){
-      g.twistCharge=Math.min(1,(g.twistCharge||0)+DT*Math.abs(twist)*(1.1+.12*pullStrength));
-      if(simTime-(g.twistCreak||0)>.32){g.twistCreak=simTime;sound('creak');addShake(.02);}
-      if(g.twistCharge>=1)requestMagnetRip(false,twist);
-    }else if(g.twistCharge>0)g.twistCharge=Math.max(0,g.twistCharge-DT*1.4);
-    if(!e.anchored&&twist){
-      const dims=V(...e.dims).multiplyScalar(S),inertia=Math.max(1e-3,b.mass()*(dims.x*dims.x+dims.z*dims.z)/12);
-      const target=twist*(1.6+.28*pullStrength),current=b.angvel().y;
-      b.applyTorqueImpulse(V(0,Math.max(-inertia*40*DT,Math.min(inertia*40*DT,inertia*(target-current)*9*DT)),0),true);
-      if(simTime-(g.twistCreak||0)>.5){g.twistCreak=simTime;sound('creak');}
-    }
-    // CRUSH. Holding middle mouse keeps compacting around the grip.
-    if((mouseButtons&4)&&simTime-(g.lastCrush||-9)>.42)crushGrab();
     // Rapier fixed bodies are deliberately not forced or toggled dynamic. Only
     // severed material changes body type, in the normal atomic mesh/body commit.
     if(e.anchored)return;
@@ -3590,11 +3517,11 @@ async function boot(){
     drawTracers(dt);flashLife=Math.max(0,flashLife-dt);flashLight.intensity=flashLife*120;
     hitFlash=Math.max(0,hitFlash-dt);$('hitmarker').style.opacity=String(Math.min(1,hitFlash*12));
     gripHalo.visible=!!grab;
-    $('pull-meter').classList.toggle('visible',!!grab&&(grab.entity.anchored||grab.charge>0||grab.twistCharge>0));document.body.classList.toggle('pulling',!!grab&&(grab.entity.anchored||grab.charge>0||grab.twistCharge>0));
+    $('pull-meter').classList.toggle('visible',!!grab&&(grab.entity.anchored||grab.charge>0));document.body.classList.toggle('pulling',!!grab&&(grab.entity.anchored||grab.charge>0));
     if(grab){
-      const twisting=(grab.twistCharge||0)>(grab.charge||0),charge=Math.max(grab.charge||0,grab.twistCharge||0);
+      const charge=grab.charge||0;
       $('pull-fill').style.width=(charge*100)+'%';$('pull-fill').style.transform='none';
-      $('pull-state').textContent=inputSuspended?'Grip held':grab.entity.pending&&charge>=1?(twisting?'Shearing…':'Snapping…'):twisting?'Twist · '+Math.round(charge*100)+'%':charge>.02?'Pull · '+Math.round(charge*100)+'%':godPull?'Pull to snap · Q/E twist · MMB crush':'Rip disabled';
+      $('pull-state').textContent=inputSuspended?'Grip held':grab.entity.pending&&charge>=1?'Snapping…':charge>.02?'Pull · '+Math.round(charge*100)+'%':godPull?'Pull to snap':'Rip disabled';
       tether.material.color.copy(tetherCool).lerp(tetherHot,charge);gripHalo.material.color.copy(tether.material.color);
       const ray=pointerRay(),a=ray.origin.clone().addScaledVector(ray.direction,1.3),e=grab.entity,b=grab.local.clone().applyQuaternion(e.group.quaternion).add(e.group.position);
       gripHalo.position.copy(b);gripHalo.quaternion.copy(camera.quaternion);gripHalo.scale.setScalar(Math.max(1,camera.position.distanceTo(b)*.015)*(1+charge*.4));
@@ -3610,7 +3537,7 @@ async function boot(){
         noiseBuffer=audio.createBuffer(1,audio.sampleRate,audio.sampleRate);const a=noiseBuffer.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1;
       }
       if(audio.state==='suspended')audio.resume();
-      const cfg={rifle:[.095,2400,.21,145],shotgun:[.24,1700,.4,85],blast:[.7,540,.55,48],launch:[.3,900,.28,95],collapse:[.48,750,.25,62],creak:[.3,1500,.07,180],cut:[.08,2500,.1,0],rip:[.28,2200,.33,78],grab:[.12,800,.06,130],crush:[.34,880,.36,56]}[type]||[.1,1200,.1,0];
+      const cfg={rifle:[.095,2400,.21,145],shotgun:[.24,1700,.4,85],blast:[.7,540,.55,48],launch:[.3,900,.28,95],collapse:[.48,750,.25,62],creak:[.3,1500,.07,180],cut:[.08,2500,.1,0],rip:[.28,2200,.33,78],grab:[.12,800,.06,130]}[type]||[.1,1200,.1,0];
       const [duration,freq,volume,bass]=cfg,t=audio.currentTime;
       const source=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();source.buffer=noiseBuffer;filter.type='lowpass';filter.frequency.setValueAtTime(freq,t);filter.frequency.exponentialRampToValueAtTime(Math.max(100,freq*.2),t+duration);
       gain.gain.setValueAtTime(volume,t);gain.gain.exponentialRampToValueAtTime(.001,t+duration);source.connect(filter).connect(gain).connect(master);voices++;
@@ -3907,7 +3834,7 @@ async function boot(){
   }
   async function runSelfTests({save=true}={}){
     if(testing||!ready)return;testing=true;held=false;$('selftest').disabled=true;toast('Running isolated worker + rigid-body + WebGL smoke checks…',8);
-    let testWorker=null;const report={version:'0.12.0',date:new Date().toISOString(),tests:[],passed:false};
+    let testWorker=null;const report={version:'0.11.3',date:new Date().toISOString(),tests:[],passed:false};
     try{
       const source=$('voxel-worker-source').textContent+'\nconst k=voxelKernel();onmessage=e=>{try{const r=k.handle(e.data);if(r)postMessage(r,k.transfers(r))}catch(error){postMessage({type:"error",message:error.message})}}';
       const url=URL.createObjectURL(new Blob([source],{type:'text/javascript'}));testWorker=new Worker(url);URL.revokeObjectURL(url);
@@ -4025,30 +3952,6 @@ async function boot(){
     const spec={...p.proto,data:p.proto.data.slice(),origin:p.origin.toArray(),id:spawnId++,runtime:true,district:(p.center.x<0?0:1)+(p.center.z<0?2:0)};
     initSpecs.set(spec.id,spec);spawnPending++;worker.postMessage({type:'init',volume:spec},[spec.data.buffer]);sound('grab');return spec.id;
   }
-  // CRUSH: fracture a small region around the grip (spall archetype) and pull
-  // the pieces and any nearby loose rubble inward. No explosive charge; the
-  // hand supplies the force. Works on anchored walls (crater + chunks) and on
-  // held loose bodies (they compact against the grip).
-  function crushGrab(){
-    const g=grab,e=g?.entity;
-    if(!g||!e||paused||inputSuspended||!godPull||!entities.has(e.id))return false;
-    if(simTime-(g.lastCrush||-9)<.42)return false;
-    if(e.pending){worker.promote?.(e.id);return false;}
-    const q=Q().copy(e.body.rotation()),p=g.local.clone().applyQuaternion(q).add(V().copy(e.body.translation()));
-    const r=Math.min(2.8,1.15+.14*pullStrength),pieces=Math.max(3,Math.min(9,Math.round(e.count/380)));
-    // The queue rebuilds ops per cut, so crush intent rides on the cut itself.
-    const op={type:'batch',chips:5,ops:[{type:'fracture',center:g.local.clone().multiplyScalar(1/S).toArray(),radius:r/S,pieces,seed:e.id*131+Math.round(simTime*60),uniform:true,archetype:'spall',scatterEnergy:0,impactAxis:[0,-1,0],sourceCount:e.count,priority:90,crushPoint:p.toArray(),crushRadius:r}]};
-    if(!requestEdit(e,op,0))return false;
-    g.lastCrush=simTime;economy.crushes++;
-    for(const id of sceneIndex.query(p.toArray(),r*2.2)){
-      const o=entities.get(id);if(!o||o.anchored||o===e||o.pending)continue;
-      const com=V().copy(o.body.worldCom()),d=p.clone().sub(com),dist=d.length();if(dist>r*2.2||dist<.05)continue;d.normalize();
-      const speed=(o.kind==='chip'?5:2.2)/(1+dist/(r+1));
-      if(o.lightweight){o.lightV.addScaledVector(d,speed);o.lightSettled=false;}else o.body.applyImpulse(d.multiplyScalar(o.body.mass()*speed),true);
-    }
-    sound('crush');addShake(.14);impactEffects(p,V(0,1,0),14);g.snapFlash=simTime+.2;
-    return true;
-  }
   function throwGrab(){
     if(!grab||paused)return;if(grab.entity.anchored){requestMagnetRip(true);return;}const e=grab.entity,ray=pointerRay(),point=grab.local.clone().applyQuaternion(Q().copy(e.body.rotation())).add(V().copy(e.body.translation()));
     releaseGrab('magnet sling');input.reset('magnet sling');held=false;slings++;
@@ -4124,15 +4027,13 @@ async function boot(){
   function updatePointer(ev){
     if(lookCapture?.state.locked||lookCapture?.state.pending)return;
     const p=arenaPointerCoordinates(ev.clientX,ev.clientY,canvas.getBoundingClientRect());pointerNDC.set(p.x,p.y);pointerInside=p.inside;edgeX=p.edgeX;edgeY=p.edgeY;
-    if(Number.isFinite(ev.clientX)){if(lastPointerX!=null&&(keys.has('AltLeft')||keys.has('AltRight')))twistMouse+=ev.clientX-lastPointerX;lastPointerX=ev.clientX;}
   }
   function syncMouseButtons(e){
     const previous=mouseButtons;mouseButtons=e.buttons;
     lookCapture?.setRight(!!(e.buttons&2),e);
     if((e.buttons&1)&&!(previous&1)){held=true;if(tool===3&&magnetLatch&&grab)releaseGrab('click-latch released');else useTool();}
     if(!(e.buttons&1)&&(previous&1)){held=false;if(!magnetLatch)releaseGrab('mouse released');}
-    if((e.buttons&4)&&!(previous&4)&&grab&&tool===3){crushGrab();}
-    else if((e.buttons&6)&&!(previous&6))drag={x:e.clientX,y:e.clientY,pan:!!(e.buttons&4)};
+    if((e.buttons&6)&&!(previous&6))drag={x:e.clientX,y:e.clientY,pan:!!(e.buttons&4)};
     if(!(e.buttons&6))drag=null;
   }
   function pan(dx,dy){const scale=cam.distance*.0015;cam.target.addScaledVector(V(1,0,0).applyQuaternion(camera.quaternion),-dx*scale).addScaledVector(V(0,1,0).applyQuaternion(camera.quaternion),dy*scale);}
@@ -4169,7 +4070,7 @@ async function boot(){
     c.classList.toggle('centered',centered);document.body.classList.toggle('mouse-captured',!!lookCapture?.state.locked);
   }
   lookCapture=createLookCapture(canvas,{
-    onDelta:(dx,dy)=>{if(grab&&(keys.has('AltLeft')||keys.has('AltRight'))){twistMouse+=dx;return;}cam.yaw-=dx*.0025;cam.pitch=THREE.MathUtils.clamp(cam.pitch+dy*.0025,cameraMode==='orbit'?.06:-1.5,1.5);},
+    onDelta:(dx,dy)=>{cam.yaw-=dx*.0025;cam.pitch=THREE.MathUtils.clamp(cam.pitch+dy*.0025,cameraMode==='orbit'?.06:-1.5,1.5);},
     onState:state=>{
       $('mouse-look').setAttribute('aria-pressed',String(state.locked||state.latched));
       $('mouse-look').querySelector('.button-label').textContent=state.latched?'Unlock look':state.locked?'Looking':'Lock look';
@@ -4192,7 +4093,6 @@ async function boot(){
   function cutFixture(id){const e=entities.get(id);if(!e){toast('Rebuild the range to repeat this test.');return}requestEdit(e,{type:'slice',y:5,thickness:3,center:[e.dims[0]/2,6,e.dims[2]/2],chips:0,uniform:true},0);sound('cut')}
   function clearRubble(){let n=0;for(const e of [...entities.values()])if(e.kind==='chip'||e.kind==='structure'){removeEntity(e);n++}for(const id of [...projectiles.keys()])removeProjectile(id);particles=[];toast(n+' rubble bodies removed. Original props retained.')}
   document.addEventListener('keydown',e=>{
-    if((e.code==='AltLeft'||e.code==='AltRight')&&!$('confirm-reset').open&&!['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)){if(tool===3)e.preventDefault();keys.add(e.code);return;}
     if($('confirm-reset').open||e.defaultPrevented||e.metaKey||e.altKey||['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)||e.target.closest?.('.panel'))return;
     const movement=['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','Space','ControlLeft','ControlRight','ShiftLeft','ShiftRight'].includes(e.code);
     if(e.ctrlKey&&!movement)return;
@@ -4238,12 +4138,12 @@ async function boot(){
   $('export').onclick=()=>{
     const sorted=frames.map(x=>x.frameMs).sort((a,b)=>a-b),percentile=q=>sorted[Math.min(sorted.length-1,Math.floor(q*sorted.length))]||0;
     const gl=renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');
-    const data={version:'0.12.0',date:new Date().toISOString(),userAgent:navigator.userAgent,gpu:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),viewport:[canvas.width,canvas.height],physicsHz:60,shadows:renderer.shadowMap.enabled,p50FrameMs:percentile(.5),p95FrameMs:percentile(.95),p99FrameMs:percentile(.99),impacts:impactReport(),limits:{activeTarget:adaptiveBudget.active,MAX_CHIPS,MAX_COLLIDERS,MAX_PROJECTILES},notes:'Rolling last 1800 frames. CPU measurements, not GPU timestamps. Not a comparative benchmark.',stats,frames};
+    const data={version:'0.11.3',date:new Date().toISOString(),userAgent:navigator.userAgent,gpu:ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER),viewport:[canvas.width,canvas.height],physicsHz:60,shadows:renderer.shadowMap.enabled,p50FrameMs:percentile(.5),p95FrameMs:percentile(.95),p99FrameMs:percentile(.99),impacts:impactReport(),limits:{activeTarget:adaptiveBudget.active,MAX_CHIPS,MAX_COLLIDERS,MAX_PROJECTILES},notes:'Rolling last 1800 frames. CPU measurements, not GPU timestamps. Not a comparative benchmark.',stats,frames};
     download(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),'breakmass-metrics.json');
   };
   addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false)});
   // Small automation surface for real browser tests and user profiling. No fake FPS.
-  window.BREAKMASS={version:'0.12.0',physicsMode,notify:toast,
+  window.BREAKMASS={version:'0.11.3',physicsMode,notify:toast,
     captureFrame:()=>{if(renderer.getContext().isContextLost())throw Error('WebGL context lost; no valid screenshot');renderer.render(scene,camera);return canvas.toDataURL('image/png');},
     runtimeInfo:()=>{const gl=renderer.getContext(),ext=gl.getExtension('WEBGL_debug_renderer_info');return {three:THREE.REVISION,rapier:R.version(),webgl:gl.getParameter(gl.VERSION),renderer:gl.getParameter(ext?ext.UNMASKED_RENDERER_WEBGL:gl.RENDERER),physicsMode,hardwareConcurrency:navigator.hardwareConcurrency};},
     get liveQueue(){return {objects:[...entities.values()].map(e=>({id:e.id,rootId:e.rootId,count:e.count,pending:e.pending,queued:e.queue.length,needsConnectivity:!!e.needsConnectivity,age:e.context?performance.now()-e.context.sent:0})),commits:commitQueue.length,voxelPending:worker?.pending||0,physicsBusy:!!physics?.busy,errors:physicsError||(runtimeFaults.length?JSON.stringify(runtimeFaults):null),surfaceCommits:damageStats.surfaceCommits,settles:damageStats.settles,latencies:[...damageStats.latencies]};},
@@ -4267,7 +4167,6 @@ get stats(){return {...stats,economy:{...economy},activeRubble:[...entities.valu
     clearGrabTarget:()=>{if(grab)delete grab.diagnosticGoal;},ripGrab:(sling=false)=>requestMagnetRip(sling),
     get pullDiagnostics(){const g=grab,e=g?.entity;return {magnetRips,magnetBonds,lastPull,jamBreaks:economy.jamBreaks,grip:e?{id:e.id,root:e.rootId,name:e.name,anchored:e.anchored,lightweight:e.lightweight,dynamic:e.body.isDynamic?.(),strength:pullStrength,pending:e.pending,queued:e.queue.length,editKind:e.context?.pullSerial?'support':e.context?.yankSerial?'jam-fracture':e.pending?'damage':null,editAgeMs:e.context?performance.now()-e.context.sent:0,charge:g.charge||0,jamReady:!!g.jamReady,jamReason:g.jamReason||null,windowSeconds:g.jamTime||0,netAdvance:g.jamDisplacement||0}:null};},
     releaseGrab:()=>releaseGrab(),edit:(id,op)=>requestEdit(entities.get(id),op,0),
-    setTwist:rate=>{twistOverride=Number.isFinite(rate)?Math.max(-1,Math.min(1,rate)):0;},crush:()=>crushGrab(),get lastFracture(){return lastFracture?{...lastFracture}:null;},get twistState(){const g=grab;return {input:twistInput,override:twistOverride,charge:g?.twistCharge||0,rip:g?.twistRip||0,twistRips:economy.twistRips,crushes:economy.crushes};},
     fireRocket:()=>fireProjectile(hitTest()),
     aimAt:(point,distance=28)=>{cameraMode='orbit';thirdPerson=false;player.group.visible=false;player.body.setEnabled(false);cam.target.set(...point);cam.distance=distance;cam.initialized=false;pointerNDC.set(0,0);syncCameraUI();},
     setBodyMotion:(id,position,velocity=[0,0,0])=>{const e=entities.get(id);if(!e||e.anchored)return false;releaseGrab('diagnostic motion');if(e.lightweight)activateRubble(e);e.body.setTranslation(V(...position),true);e.body.setLinvel(V(...velocity),true);e.body.setAngvel(V(),true);e.prevP.copy(e.body.translation());e.curP.copy(e.prevP);syncBounds(e);world.propagateModifiedBodyPositionsToColliders();world.updateSceneQueries?.();return true;},
@@ -4319,7 +4218,7 @@ boot().catch(error=>{
   async function waitFor(fn,label,ms=15000){const start=performance.now();while(!fn()){if(cancelled)throw Error('QA cancelled');if(performance.now()-start>ms)throw Error(label+' timed out after '+ms+' ms');await sleep(30);}return performance.now()-start;}
   async function run({reset=true}={}){
     if(running)return last;running=true;cancelled=false;host.hidden=false;stop.hidden=false;stop.textContent='Stop QA';stop.onclick=()=>cancelled=true;
-    const report={version:'0.12.0',started:new Date().toISOString(),url:location.href,scope:'Actual loaded game; real WebGL2, Rapier/WASM and physics/voxel workers. Programmatic DOM input, not native OS pointer-lock validation.',passed:false,tests:[],screenshots:[],samples:[],errors:[]};last=report;window.BREAKMASS_QA.last=report;
+    const report={version:'0.11.3',started:new Date().toISOString(),url:location.href,scope:'Actual loaded game; real WebGL2, Rapier/WASM and physics/voxel workers. Programmatic DOM input, not native OS pointer-lock validation.',passed:false,tests:[],screenshots:[],samples:[],errors:[]};last=report;window.BREAKMASS_QA.last=report;
     let F,canvas,sampleTimer,oldSound,oldShake;const captured=[];
     const captureError=e=>{const text=e.error?.stack||e.reason?.stack||e.message||String(e.reason);captured.push(String(text));};
     addEventListener('error',captureError);addEventListener('unhandledrejection',captureError);
@@ -4378,33 +4277,6 @@ boot().catch(error=>{
         F.setBodyMotion(body.id,[body.position.x,30,body.position.z],[0,-28,0]);
         await waitFor(()=>F.impactDiagnostics.impactShatters>breaks,'Actual Rapier ground-impact fracture',20000);await quiet();snap('04-slam-rubble');
         return {releaseMs,impact:F.impactDiagnostics,fragments:F.inspect().filter(e=>e.rootId===target.rootId).length};
-      });
-      await test('God Hand twist: torsion shears the water tank off its legs',async()=>{
-        await F.reset();F.pause(false);await frames(6);await quiet();
-        const tank=F.inspect().find(e=>e.id===2);assert(tank?.anchored,'Water tank missing or already loose');await aimEntity(2);
-        const probe=F.materialProbe(2);assert(probe&&F.grabAt(2,probe.local,[0,1,0]),'Tank grip failed');
-        F.setGrabTarget(probe.point); // Hold the reach still: only torsion may charge.
-        const rips=F.pullDiagnostics.magnetRips,t=performance.now();F.setTwist(1);
-        try{await waitFor(()=>F.pullDiagnostics.magnetRips>rips,'Twist shear rip',15000);}finally{F.setTwist(0);}
-        const chargeMs=performance.now()-t;
-        await waitFor(()=>F.grab&&!F.grab.anchored,'Sheared section stays in the grip',10000);
-        const held=F.grab,state=F.twistState;F.clearGrabTarget();F.releaseGrab();await quiet();snap('04b-twist-shear');
-        assert(state.twistRips>0,'Sheared piece received no torsion impulse');
-        return {chargeMs,heldId:held.id,twistRips:state.twistRips,lastPull:F.pullDiagnostics.lastPull};
-      });
-      await test('God Hand crush: fractures around the grip and pulls the pieces inward',async()=>{
-        await F.reset();F.pause(false);await frames(6);await quiet();
-        const target=F.inspect().find(e=>e.anchored&&/Northstar/.test(e.name));assert(target,'Northstar missing');await aimEntity(target.id);
-        const probe=F.materialProbe(target.id);assert(probe&&F.grabAt(target.id,probe.local,[0,1,0]),'Grip failed');F.setGrabTarget(probe.point);
-        const shatters=F.impactDiagnostics.impactShatters,crushes=F.twistState.crushes,t=performance.now();
-        assert(F.crush(),'Crush request rejected');
-        await waitFor(()=>F.impactDiagnostics.impactShatters>shatters,'Crush fracture commit',12000);
-        const commitMs=performance.now()-t,fracture=F.lastFracture;await frames(12);
-        const pieces=F.inspect().filter(e=>e.rootId===target.rootId&&!e.anchored);
-        assert(pieces.length>0,'Crush produced no loose pieces');assert(fracture?.via==='crush'&&fracture.archetype==='spall','Crush did not use the spall archetype: '+JSON.stringify(fracture));
-        assert(F.grab?.id!=null,'Crush lost the grip');
-        F.clearGrabTarget();F.releaseGrab();await quiet();snap('04c-crush');
-        return {commitMs,pieces:pieces.length,crushes:F.twistState.crushes-crushes,fracture};
       });
       await test('Sustained powered rockets commit progressive cuts and drain after ceasefire',async()=>{
         await F.reset();F.pause(false);await frames(6);const root=F.inspect().find(e=>/Northstar/.test(e.name)).id,before=mass(root),samples=[];F.selectTool(2);
@@ -4469,7 +4341,7 @@ boot().catch(error=>{
  async function wait(test,label,limit=18000){const at=performance.now();while(!test()){if(cancelled)throw Error('Cancelled');if(performance.now()-at>limit)throw Error(label+' timed out');await pause(20);}}
  async function run(){
   if(running)return last;running=true;cancelled=false;
-  const r={version:'0.12.0',started:new Date().toISOString(),scope:'Actual authored voxel objects + Rapier/WASM and render loop. Isolated ground + authored bodies; unrelated fixtures removed while paused. Controlled launches, not fabricated contacts or a full-district performance benchmark.',passed:false,cases:[],screenshots:[],errors:[]};last=r;
+  const r={version:'0.11.3',started:new Date().toISOString(),scope:'Actual authored voxel objects + Rapier/WASM and render loop. Isolated ground + authored bodies; unrelated fixtures removed while paused. Controlled launches, not fabricated contacts or a full-district performance benchmark.',passed:false,cases:[],screenshots:[],errors:[]};last=r;
   const F=window.BREAKMASS,button=$('impact-test'),status=$('impact-trace-status');
   const assert=(ok,message)=>{if(!ok)throw Error(message);};
   const say=text=>{status.textContent=text;button.textContent='Stop slam test';};

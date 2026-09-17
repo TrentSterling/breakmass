@@ -22,7 +22,9 @@ try {
   console.log('frames', JSON.stringify(frames));
   if (process.argv.includes('--qa')) {
     console.log('running QA...');
-    const report = await page.eval('BREAKMASS_QA.run({reset:true}).then(r=>({passed:r.passed,tests:r.tests.map(t=>({name:t.name,passed:t.passed,error:t.error||null,ms:t.ms})),errors:r.errors,samples:r.samples?.length}))');
+    const report = await page.eval('BREAKMASS_QA.run({reset:true}).then(r=>({passed:r.passed,tests:r.tests.map(t=>({name:t.name,passed:t.passed,error:t.error||null,ms:t.durationMs,details:t.details})),errors:r.errors,samples:r.samples?.length,screenshots:(r.screenshots||[]).map(s=>({name:s.name,image:s.image}))}))');
+    for (const s of report.screenshots || []) if (s.image?.startsWith('data:image/png;base64,')) writeFileSync(`${out}/qa-${s.name}.png`, Buffer.from(s.image.slice(22), 'base64'));
+    report.screenshots = (report.screenshots || []).map(s => s.name);
     console.log(JSON.stringify(report, null, 1));
     writeFileSync(`${out}/qa.json`, JSON.stringify(report, null, 2));
     await page.shot(`${out}/after-qa.png`);
