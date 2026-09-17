@@ -22,6 +22,9 @@ try {
   await page.mouse('mouseReleased', 560, 330, 'right');
   await sleep(150);
   const after = await page.eval('JSON.stringify(BREAKMASS.lookState)');
+  await page.mouse('mousePressed', 560, 330, 'right'); await sleep(120); await page.mouse('mouseReleased', 560, 330, 'right'); await sleep(150);
+  const second = await page.eval('JSON.stringify(BREAKMASS.lookState)');
+  console.log(' second click', second);
   console.log(file, v, '\n before', before, '\n during', during, '\n cam', cam1.slice(0, 160), '\n after', after);
 } finally {
   for (const l of page.logs.filter(l => /EXCEPTION|error/i.test(l))) console.log(' ', l.slice(0, 400));

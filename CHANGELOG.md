@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.2 (2026-09-17)
+
+- **Right click toggles mouse look.** One click locks the cursor and looks; click again or press Escape to release. No more hold-to-look, no more Lock-look button.
+
 ## 0.12.1 (2026-09-17) Feel fixes from Trent's play session
 
 - **Q / E fly up and down again while holding a building.** 0.12.0 had put twist on Q / E, which broke the core lift move (grab a roof, press E to rise). Twist is now Alt plus sideways mouse only.

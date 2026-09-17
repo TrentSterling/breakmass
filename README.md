@@ -21,7 +21,7 @@ Grab a building with the God Hand, rip it off its supports, swing it through the
 
 - `1` Rifle, `2` Shotgun, `3` Rocket, `4` Blast, `5` God Hand (default), `6` Bomb rain, `7` Chisel, `8` / `B` Props
 - God Hand: hold left mouse to grab, wheel for reach, `Shift` to peel, `X` to throw, `Alt` + mouse to twist, middle mouse to crush, `K` for click-latch
-- `WASD` fly, `Space` / `Ctrl` or `E` / `Q` up and down, hold right mouse to look, `L` latches look, `V` toggles fly / third person
+- `WASD` fly, `Space` / `Ctrl` or `E` / `Q` up and down, right click toggles mouse look (`Esc` releases), `V` toggles fly / third person
 - `T` quarter speed, `J` jetpack, `R` rebuild, `H` hide HUD, `P` pause, `M` world map
 
 ## Verifying a build
