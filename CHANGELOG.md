@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.4 (2026-09-17) A lock the browser drops on a click is ignored
+
+- Trent's browser grants pointer lock on the right click and then releases it on the next left click. Every earlier build treated that browser-initiated unlock as an Escape: latch cleared, grab released, input reset. That is the "left click kills mouse look" and "can't move while left-clicking" pair.
+- Now an unlock that happens during or right after a mouse button press is ignored: look stays latched and keeps steering from raw mouse motion, the grip stays, nothing resets. An unlock with no mouse button involved is still treated as Escape. Right click still toggles.
+- No more lock retry on left click.
+- `tools/clickdrop-check.mjs` simulates that browser (exits the lock on every left mousedown) and asserts look, grab and steering survive.
+
 ## 0.12.3 (2026-09-17) Mouse look no longer depends on pointer lock
 
 - Root cause of every look complaint this session: on some machines the browser never grants pointer lock and never says so. The game used to wait for it (1.8 s originally, 0.7 s in 0.12.1) and then drop the latch, which looked like "right click does nothing" and later like "left click kills mouse look" because the grab click landed inside that window.
