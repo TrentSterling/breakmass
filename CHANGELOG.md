@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.3 (2026-09-17) Mouse look no longer depends on pointer lock
+
+- Root cause of every look complaint this session: on some machines the browser never grants pointer lock and never says so. The game used to wait for it (1.8 s originally, 0.7 s in 0.12.1) and then drop the latch, which looked like "right click does nothing" and later like "left click kills mouse look" because the grab click landed inside that window.
+- Now a right click latches look immediately and the camera rotates from raw mouse movement whether or not the lock arrives. If the lock is granted it takes over (cursor warps to center, unlimited travel). If not, the cursor is hidden over the arena and can drift to the screen edge; right click again re-centers. The lock is retried silently on later clicks.
+- A refused lock warns once instead of on every attempt, and never clears the latch.
+
 ## 0.12.2 (2026-09-17)
 
 - **Right click toggles mouse look.** One click locks the cursor and looks; click again or press Escape to release. No more hold-to-look, no more Lock-look button.
