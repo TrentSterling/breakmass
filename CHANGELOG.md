@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.5 (2026-09-17) Hold-right drag look is back, plus a real gate
+
+- **Hold right mouse to look, like the original.** Release to stop. A quick right click (under 300 ms, barely moved) latches look on instead; click again or Escape releases. Raw mouse motion steers in every case; pointer lock is only a bonus when the browser grants it.
+- **Look deltas come from `pointermove`, not `mousemove`.** Browsers stop sending compatibility mouse events while a button is held once pointerdown is cancelled, which is why the camera froze during a left drag whenever the lock was absent.
+- The old duplicate drag-look path in the pointer binding is gone; the look capture owns all rotation.
+- **Gate:** `node tools/gate.mjs` runs the kernel checks, the three-browser mouse-look suite (`tools/look-check.mjs`: lock granted, lock never answers, lock dropped on click) and the in-page QA suite, and fails on the first regression. It runs before every push from now on.
+
 ## 0.12.4 (2026-09-17) A lock the browser drops on a click is ignored
 
 - Trent's browser grants pointer lock on the right click and then releases it on the next left click. Every earlier build treated that browser-initiated unlock as an Escape: latch cleared, grab released, input reset. That is the "left click kills mouse look" and "can't move while left-clicking" pair.

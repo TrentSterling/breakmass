@@ -23,7 +23,8 @@ Single-file voxel destruction sandbox. Live at https://tront.xyz/breakmass/ (Git
 
 1. Edit `index.html` in place. Bump the version string (10 occurrences, `grep -c` the old one) and add a `CHANGELOG.md` entry.
 2. `node tools/kernel-check.mjs` for kernel changes (archetype selection, mass conservation, cut direction).
-3. `node tools/verify.mjs --qa` before any push. It boots the real page in headless Chrome (SwiftShader WebGL) and runs the in-page QA harness. 10 of 10 is the bar.
+3. `node tools/gate.mjs` before any push. It runs the kernel checks, `tools/look-check.mjs` (mouse look in three browser behaviours: lock granted, lock never answers, lock dropped on click) and `tools/verify.mjs --qa` (the in-page gameplay suite in headless Chrome). Green across the board is the bar; a regression anywhere means no push.
+   Mouse look rules: hold right = drag look, quick right click = latch, Escape releases, raw `pointermove` deltas steer, pointer lock is a bonus only, and a lock the browser drops during a click is ignored. Trent's browser drops the lock on left click; this cannot be reproduced by CDP automation, only by the stubs in look-check.
 4. Screenshots land in `tools/out/` (gitignored). `node tools/og-shot.mjs` regenerates `og-image.png`; bump `?v=` on the `og:image` meta so Discord refetches.
 5. Freeze a copy in `versions/` when a build is worth diffing against later.
 6. Commit and push. Pages deploys from `main` in about a minute. Re-run `verify.mjs` against the live URL.
