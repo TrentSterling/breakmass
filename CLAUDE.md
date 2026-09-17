@@ -14,7 +14,8 @@ Single-file voxel destruction sandbox. Live at https://tront.xyz/breakmass/ (Git
 - Soft budgets only. Degrade collision fidelity, never refuse a player-requested fracture.
 - God Hand is the product. Default 6x, slider to 12x, and the slider must actually drive the spring.
 - Tool order 1 to 8 is fixed (Rifle, Shotgun, Rocket, Blast, God Hand, Bomb rain, Chisel, Props). Muscle memory has formed.
-- Every icon control has a visible text label. Panels closed by default. No SaaS-template UI.
+- Every icon control has a visible text label. Panels closed by default. No SaaS-template UI. Do not add topbar buttons or HUD text; new mechanics go in Help.
+- Q / E are flight up and down, always, even while gripping. Never bind them to anything else. Cameras are fly and third person only; orbit exists solely behind `aimAt` for QA and screenshots.
 - No em dashes in player-facing strings or docs. Discord links are `tront.xyz/discord/`.
 - Never call kernel tests, mocks or screenshots a playtest. Label what was measured.
 

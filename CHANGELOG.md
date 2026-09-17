@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.1 (2026-09-17) Feel fixes from Trent's play session
+
+- **Q / E fly up and down again while holding a building.** 0.12.0 had put twist on Q / E, which broke the core lift move (grab a roof, press E to rise). Twist is now Alt plus sideways mouse only.
+- **Orbit camera removed from the controls.** Fly and third person only. V toggles between them, the camera menu lists two modes, district overview stays in fly. Middle drag no longer pans; middle mouse is crush while gripping and nothing otherwise. The orbit math survives only behind the QA and screenshot hooks.
+- **Right-button look responds immediately.** Right-drag now rotates the camera while the pointer-lock request is still pending or refused, instead of ignoring the mouse for up to 1.8 s. Lock timeout cut to 0.7 s. If the lock is granted, it takes over as before.
+- **Fewer buttons.** The Lock-look button left the topbar. L still latches look, Escape releases, and the help panel says so.
+- HUD copy back to the short form ("Pull to rip · Shift peel · X throw", "Pull to snap"). Twist and crush are described in Help only.
+
 ## 0.12.0 (2026-09-17) God Hand twist and crush, fracture archetypes
 
 - **Fracture archetypes.** The voxel kernel now picks a partition profile from the shape of the material being broken (or `cut.archetype` forces one): `pancake` for thin horizontal slabs (floor plates), `shear` for thin walls (stepped diagonal slabs, never cut across the thin axis), `buckle` for tall columns and towers (stacked sheared sections), `snap` for long beams (a few long sections cut across the beam), `spall` for small local damage (small pieces peel off, the big remainder survives), `shatter` for everything else (the original mixed partition, unchanged). Same seams, crumbs and mass rules as before. `result.fracture.archetype` reports the choice; `BREAKMASS.lastFracture` exposes it.
