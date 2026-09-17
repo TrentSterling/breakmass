@@ -27,8 +27,8 @@ try {
   const H = plan.hero, top = H.top, height = H.dims[1] * .25;
   const base = [top[0], top[1] - height, top[2]];
   // Camera: low, close, three-quarter view of the hero; the rest of the yard behind it.
-  // Default framing (v=3 image): low beside the domino run, three towers ahead. EYE/TARGET/KICK env override.
-  process.env.EYE ||= '6,1.7,-16'; process.env.TARGET ||= '22,10,10'; process.env.KICK ||= '6.2,1.2,-10,2.4';
+  // Default framing (v=4 image): elevated over the domino run, three towers ahead. EYE/TARGET/KICK env override.
+  process.env.EYE ||= '1,13,-23'; process.env.TARGET ||= '22,8,10'; process.env.KICK ||= '6.2,1.2,-10,2.4';
   if (process.env.EYE) {
     // Explicit eye + target (metres, "x,y,z"): derive the orbit yaw/pitch/distance that lands the camera there.
     const E = process.env.EYE.split(',').map(Number), T = (process.env.TARGET || `${base[0]},${base[1] + height * .45},${base[2]}`).split(',').map(Number);
