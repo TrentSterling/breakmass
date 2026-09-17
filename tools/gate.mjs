@@ -14,7 +14,8 @@ const steps = [
 const t0 = Date.now();
 for (const [name, args] of steps) {
   console.log(`\n=== ${name}`);
-  const r = spawnSync(process.execPath, args, {stdio: 'inherit', env: {...process.env, PORT: String(9600 + steps.findIndex(s => s[0] === name) * 10)}});
+  const base = Number(process.env.GATE_PORT || 9600); // set GATE_PORT per parallel checkout so headless Chromes never collide
+  const r = spawnSync(process.execPath, args, {stdio: 'inherit', env: {...process.env, PORT: String(base + steps.findIndex(s => s[0] === name) * 10)}});
   if (r.status !== 0) { console.log(`\nGATE FAILED at ${name} after ${((Date.now() - t0) / 1000).toFixed(0)} s`); process.exit(1); }
 }
 console.log(`\nGATE OK in ${((Date.now() - t0) / 1000).toFixed(0)} s`);
