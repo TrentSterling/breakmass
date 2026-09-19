@@ -1,3 +1,4 @@
+import sys
 # One-shot polish edits for index.html (v0.11.2 -> v0.11.3). Idempotent-ish: each
 # replacement asserts the old text exists exactly once (or N times where noted).
 import re, sys, io
@@ -56,3 +57,6 @@ rep('0.11.2', '0.11.3', count=10)
 assert s != orig
 io.open(p, 'w', encoding='utf-8', newline='\n').write(s)
 print('ok', len(orig), '->', len(s))
+# ---- SEO About block (prose, crosslinks, JSON-LD) so the page is not just a canvas to Google ----
+import subprocess
+subprocess.run([sys.executable, 'C:/trontstack/seo/about.py', 'breakmass'], check=True)
