@@ -1,3 +1,8 @@
+## 2026-10-14: About discovery
+
+- Consolidate the existing About copy and links with the approved game discovery component.
+- Keep the panel collapsed during play; isolate its keyboard, pointer and touch input, preserve fullscreen, and return pointer lock only through the original game control.
+
 # Changelog
 
 ## 0.13.0 (2026-09-17) God Hand feedback, destruction juice, a score, tuned fractures, Rubble God
