@@ -1,5 +1,6 @@
 // Real-page regression checks using CDP input and the existing QA hooks.
 // This is automated integration coverage, not a manual or performance playtest.
+// Shared launcher enforces muted headless execution. No OS input or audio tests.
 // node tools/smash-retry-check.mjs [index.html] [--baseline]
 import {launch,sleep,until} from './cdp.mjs';
 import {mkdirSync,writeFileSync} from 'node:fs';
