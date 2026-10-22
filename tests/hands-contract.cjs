@@ -25,6 +25,31 @@ test('scenes without tank are unavailable until district is rebuilt',()=>{
 test('diagnostics cannot mutate the contract',()=>{
   const c=make();c.state.status='complete';assert.equal(c.state.status,'ready');
 });
+const toolSource=html.match(/  function useTool\(\)\{[\s\S]*?\n  \}/)[0];
+function blastAction({target=true,earned=false,onExplosion=()=>{}}={}){
+  const contract=make();if(earned)contract.topple();
+  const vector=a=>({toArray:()=>a});let explosions=0;
+  const context={ready:true,testing:false,inputSuspended:false,tool:1,performance:{now:()=>1000},lastShot:-10,
+    hitTest:()=>target?{point:vector([-60,0,60]),normal:vector([0,1,0])}:null,
+    radius:.65,power:1,handsContract:contract,sandbox:{breach:h=>({point:h.point,radius:.65,directId:null})},
+    V:(...p)=>p,explosion:()=>{explosions++;onExplosion(contract);return 0;},lastBlast:null,simTime:1,toast:()=>{}};
+  vm.runInNewContext(toolSource+';useTool()',context);
+  return {contract,explosions,blast:context.lastBlast};
+}
+test('Blast fails the attempt before an indirect chain can topple the tank',()=>{
+  const r=blastAction({onExplosion:c=>{assert.equal(c.state.status,'failed');c.topple();}});
+  assert.equal(r.explosions,1);assert.equal(r.blast.editRequests,0);
+  assert.equal(r.contract.state.status,'failed');assert.equal(r.contract.state.reason,'Blast');
+});
+test('a harmless surface Blast still counts as tool use',()=>{
+  const r=blastAction();assert.equal(r.explosions,1);assert.equal(r.contract.state.status,'failed');
+});
+test('empty-sky click creates no Blast and keeps the attempt eligible',()=>{
+  const r=blastAction({target:false});assert.equal(r.explosions,0);assert.equal(r.blast,null);assert.equal(r.contract.state.status,'ready');
+});
+test('an actual surface Blast preserves completion already earned',()=>{
+  const r=blastAction({earned:true});assert.equal(r.explosions,1);assert.equal(r.contract.state.status,'complete');
+});
 test('all executable inline scripts parse',()=>{
   let n=0;
   for(const m of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)){

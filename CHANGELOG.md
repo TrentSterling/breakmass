@@ -5,6 +5,12 @@
 
 # Changelog
 
+## 0.13.3 (2026-10-22) Count indirect Blast use in the hands-only contract
+
+- A player Blast that hits a surface now fails an unfinished hands-only attempt before splash ignition or pressure takes effect. A ground blast beside fuel cannot bypass the rule merely because it cuts no voxels.
+- A surface blast counts even without damage; clicking empty sky without a target does not create a blast or fail the attempt. Selecting Blast alone remains allowed.
+- Hand-triggered fuel chains remain valid, and earned completion still survives later tool use. Added exact Fuel drum 4, hand-chain and no-effect Blast regressions.
+
 ## 0.13.2 (2026-10-22) Retryable hands-only tank contract
 
 - The existing hands-only contract now banks completion until Rebuild. Firing a rocket after a successful God Hand topple no longer removes its checkmark.
