@@ -5,6 +5,12 @@
 
 # Changelog
 
+## 0.13.4 (2026-10-22) Repeatable smash setups
+
+- Added explicit Retry actions beside the existing tank, chimney and span presets in World. After a throw destroys a setup, one confirmed retry rebuilds and restores its starting view with God Hand selected.
+- Existing preset buttons still travel without clearing damage. Retry states that destruction, props and scores will reset; cancelling preserves the current attempt. Power preferences stay, and the chimney retry keeps Foundry-only scenes in the Foundry.
+- The hands-only tank retry uses the same setup restoration path. Earned completion still persists until a confirmed rebuild; Blast attribution and hand-chain rules are unchanged.
+
 ## 0.13.3 (2026-10-22) Count indirect Blast use in the hands-only contract
 
 - A player Blast that hits a surface now fails an unfinished hands-only attempt before splash ignition or pressure takes effect. A ground blast beside fuel cannot bypass the rule merely because it cuts no voxels.
