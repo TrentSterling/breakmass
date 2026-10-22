@@ -5,6 +5,15 @@
 
 # Changelog
 
+## 0.13.2 (2026-10-22) Retryable hands-only tank contract
+
+- The existing hands-only contract now banks completion until Rebuild. Firing a rocket after a successful God Hand topple no longer removes its checkmark.
+- Using another tool, spawning a prop or applying gravity shove before success fails that attempt. Blast and Chisel no longer bypass the rule by leaving the shot counter at zero. Merely selecting a tool is allowed; hand-triggered chain reactions remain allowed.
+- Help reports the attempt result and offers Retry tank contract. Its confirmation rebuilds the whole district, clears destruction and props, resumes play at the tank and selects God Hand while retaining power preferences. Cancelling preserves the attempt.
+- Scenes without the tank identify the contract as unavailable. Retry can return from those scenes to the district.
+- About now lists WASD flight, Space/E rise, Ctrl/Q descend and right-mouse look. Both vertical mappings already worked; no bindings changed.
+- Added transition tests and an actual-page contract regression runner. No worker, fracture, physics, tool order or storage format changes.
+
 ## 0.13.0 (2026-09-17) God Hand feedback, destruction juice, a score, tuned fractures, Rubble God
 
 - **God Hand twist:** dust/chips kick off the shear plane while torsion charges on an anchored grab, and the creak's pitch rises with charge.

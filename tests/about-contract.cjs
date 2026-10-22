@@ -10,7 +10,8 @@ test('original descriptions, credits, project links and structured data survive'
   const old = manifest.originalAbout;
   for (const match of old.matchAll(/<(?:p|li)\b[^>]*>([\s\S]*?)<\/(?:p|li)>/g)) {
     if (match[1] === '<strong>More from Tront</strong>') continue;
-    assert.ok(html.includes(match[1]), 'Lost original content: ' + match[1]);
+    const expected = match[1].replace("Fly with Q and E, look around with the mouse, and use the contract HUD to score demolitions.", "Fly with WASD; Space or E rises, Ctrl or Q descends. Hold right mouse to look around, and use the contract HUD to score demolitions.");
+    assert.ok(html.includes(expected), 'Lost original content: ' + expected);
   }
   assert.ok(html.includes(manifest.originalJsonLd));
 });
