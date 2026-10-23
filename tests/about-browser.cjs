@@ -5,6 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const http = require('node:http');
 const {trackPosterRequests,waitForPostersWithDiagnostics} = require('../tools/about-poster-diagnostics.cjs');
+const {aboutLaunchOptions} = require('../tools/about-chrome.cjs');
 const root = path.resolve(__dirname,'..');
 const {repository} = require('./about-manifest.json');
 const output = process.env.EVIDENCE_DIR || path.join(__dirname,'about-evidence');
@@ -97,7 +98,7 @@ const server = http.createServer((req,res)=>{
 (async()=>{
   await new Promise(r=>server.listen(0,'127.0.0.1',r));
   const base = process.env.TEST_URL || `http://127.0.0.1:${server.address().port}/`;
-  const browser = await chromium.launch({headless:true,executablePath:process.env.CHROME || undefined,args:['--enable-unsafe-swiftshader','--mute-audio']});
+  const browser = await chromium.launch(aboutLaunchOptions());
   const results = [],posterObservers=[];
   try {
     for(const mode of ['desktop','reduced-motion','save-data','touch']) {
