@@ -112,3 +112,59 @@ test('slam preserves the global commit condition and all post-twist success asse
   for(const condition of ["F.grab&&!F.grab.anchored","state.twistRips>0","Math.abs(angularVelocity.y)>=.9","F.stats.rainFired-fired>=10"])assert.ok(qa.includes(condition),condition);
   assert.doesNotMatch(helpers,/physicsStep|world\.step|\.injectPhysics|\.pause\(|requestAnimationFrame/);
 });
+
+// Execute the authored district generator, not a hand-written list of obstacles.
+const sceneContext=vm.createContext({});
+const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
+for(const marker of ['function makeArena()','function voxelBuilder()','function polishDistrict('])vm.runInContext(scripts.find(s=>s.includes(marker)),sceneContext);
+const authored=vm.runInContext('buildPlayableScene("district")',sceneContext);
+const identity={x:0,y:0,z:0,w:1};
+const objects=authored.volumes.map((v,i)=>({id:v.id||i+1,name:v.name,rootId:v.id||i+1,dims:v.dims,position:{x:v.origin[0],y:v.origin[1],z:v.origin[2]},rotation:identity}));
+const released={id:1000001,rootId:57,dims:[40,83,36],position:{x:8,y:30,z:7},rotation:identity};
+const fixtureApi=vm.runInNewContext(helpers+';({groundSlamFixture,slamBodyBounds});');
+const plain=x=>JSON.parse(JSON.stringify(x));
+const fixture=(body=released,others=objects,position)=>fixtureApi.groundSlamFixture(body,[...others,body],authored.preset,position);
+test('old Northstar launch is obstructed by its own authored base',()=>{
+  const f=fixture(released,objects,[8,30,7]);assert.equal(f.clear,false);assert.ok(f.blockers.some(o=>o.id===57));
+});
+test('central-crossing launch and full sweep clear all 181 authored bodies',()=>{
+  const f=fixture();assert.equal(objects.length,181);assert.equal(f.checked,181);assert.equal(f.clear,true);assert.deepEqual(plain(f.blockers),[]);
+  assert.deepEqual(plain(f.position),[-5,30,-5]);assert.deepEqual(plain(f.velocity),[0,-28,0]);
+  assert.deepEqual(plain(f.launch),{min:[-5,30,-5],max:[5,50.75,4]});
+  assert.deepEqual(plain(f.sweep),{min:[-6,0,-6],max:[6,51.75,5]});
+  assert.deepEqual(plain(f.ground),{min:[-56,0,-52],max:[56,0,52]});assert.equal(f.margin,1);
+});
+test('clearance covers the full original tower as well as the observed released section',()=>{
+  const f=fixture({...released,dims:[40,87,36]});assert.equal(f.clear,true);assert.equal(f.sweep.max[1],52.75);
+});
+for(const [name,position,anchored] of [['remaining base',[0,0,0],true],['mid-air debris',[0,15,0],false],['overhead beam',[0,45,0],true],['one-metre safety margin',[5.5,0,0],false]])test('ground-slam fixture rejects '+name+' anywhere in the sweep',()=>{
+  const obstacle={id:999,rootId:999,name,dims:[1,1,1],rotation:identity,position:{x:position[0],y:position[1],z:position[2]},anchored};
+  const f=fixture(released,[...objects,obstacle]);assert.equal(f.clear,false);assert.ok(f.blockers.some(o=>o.id===999));
+});
+test('rotated body bounds include all eight corners around its voxel origin',()=>{
+  const body={...released,rotation:{x:0,y:Math.SQRT1_2,z:0,w:Math.SQRT1_2}};
+  const b=fixtureApi.slamBodyBounds(body,[-5,30,-5]);
+  for(const [actual,expected] of [[b.min,[-5,30,-15]],[b.max,[4,50.75,-5]]])actual.forEach((n,i)=>assert.ok(Math.abs(n-expected[i])<1e-10));
+  assert.equal(fixture(body,[{...released,id:999,position:{x:0,y:10,z:-12},dims:[1,1,1]}]).clear,false);
+});
+test('rotated obstacles cannot hide outside their unrotated origin box',()=>{
+  const obstacle={...released,id:999,dims:[48,4,4],position:{x:10,y:10,z:0},rotation:{x:0,y:1,z:0,w:0}};
+  const f=fixture(released,[obstacle]);assert.equal(f.clear,false);assert.equal(f.blockers[0].id,999);
+});
+test('a sweep extending beyond the real pad fails even when no object blocks it',()=>{
+  const f=fixture(released,[],[50,30,0]);assert.equal(f.onPad,false);assert.equal(f.clear,false);
+});
+test('a launch initially intersecting ground is rejected',()=>{assert.equal(fixture(released,[],[-5,-1,-5]).clear,false);});
+for(const [name,change] of [['nonfinite position',{position:{x:NaN,y:0,z:0}}],['missing rotation',{rotation:null}],['nonunit rotation',{rotation:{x:0,y:0,z:0,w:2}}],['invalid extent',{dims:[40,Infinity,36]}]])test('clearance fails closed for '+name,()=>{
+  assert.throws(()=>fixture(released,[{...released,id:999,...change}]),/Invalid ground-slam fixture pose/);
+});
+test('fixture records clearance before motion without changing attribution or budgets',()=>{
+  const slam=between("      await test('Tall building yank", "      await test('God Hand twist");
+  assert.ok(slam.indexOf('groundSlamFixture(body,F.inspect(),SCENE_PRESETS[F.scenePreset])')<slam.indexOf('F.setBodyMotion'));
+  assert.ok(slam.indexOf('assert(fixture.clear')<slam.indexOf('F.setBodyMotion'));
+  assert.match(slam,/activeTest\.fixture=fixture/);assert.match(slam,/position:fixture\.position,velocity:fixture\.velocity,fixture/);
+  assert.match(slam,/entity:body\.id,root:target\.rootId/);assert.match(slam,/impactShatters>breaks&&targetGroundFracture/);
+  assert.deepEqual(plain(harness().api.simulationBudgets),{twist:{ticks:60,wallMs:60000},rain:{ticks:60,wallMs:60000},slam:{ticks:120,wallMs:120000}});
+  assert.doesNotMatch(slam,/prepareImpactTest|removeEntity|\.edit\(|\.blast\(|physicsStep|world\.step/);
+  assert.match(html,/const S=\.25,DT=1\/60/);assert.match(html,/setBodyMotion:[^\n]*setAngvel\(V\(\),true\)/);
+});

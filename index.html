@@ -4550,6 +4550,33 @@ boot().catch(error=>{
       t.contactAt>=target.launchedAt&&t.otherId==='ground'&&t.accepted===true&&t.status==='drawn'&&
       Number.isFinite(t.commitAt)&&Number.isFinite(t.visibleAt)&&t.fragments>0);
   }
+  // QA fixture only. Body translations are voxel-grid origins, not box centres.
+  function slamBodyBounds(body,position=[body.position?.x,body.position?.y,body.position?.z]){
+    const dims=body.dims,q=body.rotation;
+    if(!dims||dims.length!==3||!dims.every(n=>Number.isFinite(n)&&n>0)||position.length!==3||!position.every(Number.isFinite)||
+      !q||![q.x,q.y,q.z,q.w].every(Number.isFinite)||Math.abs(Math.hypot(q.x,q.y,q.z,q.w)-1)>.001)throw Error('Invalid ground-slam fixture pose');
+    const min=[Infinity,Infinity,Infinity],max=[-Infinity,-Infinity,-Infinity];
+    for(let corner=0;corner<8;corner++){
+      const p=dims.map((n,i)=>corner&(1<<i)?n*.25:0),u=[q.x,q.y,q.z];
+      const cross=[u[1]*p[2]-u[2]*p[1],u[2]*p[0]-u[0]*p[2],u[0]*p[1]-u[1]*p[0]];
+      const twice=[u[1]*cross[2]-u[2]*cross[1],u[2]*cross[0]-u[0]*cross[2],u[0]*cross[1]-u[1]*cross[0]];
+      for(let i=0;i<3;i++){const n=position[i]+p[i]+2*(q.w*cross[i]+twice[i]);min[i]=Math.min(min[i],n);max[i]=Math.max(max[i],n);}
+    }
+    return {min,max};
+  }
+  function groundSlamFixture(body,objects,pad,position=[-5,30,-5]){
+    if(!pad||![pad.width,pad.depth].every(n=>Number.isFinite(n)&&n>0)||!pad.center||pad.center.length!==2||!pad.center.every(Number.isFinite))throw Error('Invalid ground-slam fixture pad');
+    const launch=slamBodyBounds(body,position),margin=1;
+    // setBodyMotion gives a vertical velocity and zero spin. Check the complete
+    // rotated body from its launch pose to first ground contact, plus 1 m slack.
+    const sweep={min:[launch.min[0]-margin,0,launch.min[2]-margin],max:launch.max.map(n=>n+margin)};
+    const ground={min:[pad.center[0]-pad.width/2,0,pad.center[1]-pad.depth/2],max:[pad.center[0]+pad.width/2,0,pad.center[1]+pad.depth/2]};
+    const onPad=[0,2].every(i=>sweep.min[i]>=ground.min[i]&&sweep.max[i]<=ground.max[i]);
+    const blockers=[];
+    for(const other of objects){if(other.id===body.id)continue;const bounds=slamBodyBounds(other);
+      if(bounds.min.every((n,i)=>n<=sweep.max[i]&&bounds.max[i]>=sweep.min[i]))blockers.push({id:other.id,root:other.rootId,name:other.name,bounds});}
+    return {position:[...position],velocity:[0,-28,0],launch,sweep,ground,margin,checked:objects.length-1,onPad,blockers,clear:onPad&&launch.min[1]>0&&!blockers.length};
+  }
   async function run({reset=true}={}){
     if(running)return last;running=true;cancelled=false;host.hidden=false;stop.hidden=false;stop.textContent='Stop QA';stop.onclick=()=>cancelled=true;
     const report={version:'0.13.6',started:new Date().toISOString(),url:location.href,scope:'Actual loaded game; real WebGL2, Rapier/WASM and physics/voxel workers. Programmatic DOM input, not native OS pointer-lock validation.',passed:false,tests:[],screenshots:[],samples:[],errors:[]};last=report;window.BREAKMASS_QA.last=report;
@@ -4615,7 +4642,9 @@ boot().catch(error=>{
         const held=F.grab,releaseMs=performance.now()-t;release();F.clearGrabTarget();
         const body=F.inspect().find(e=>e.id===held.id);assert(body,'Released piece disappeared');const breaks=F.impactDiagnostics.impactShatters;
         assert(body.rootId===target.rootId,'Released body belongs to another structure');
-        const impactTarget={entity:body.id,root:target.rootId,afterTraceId:Math.max(0,...F.impactDiagnostics.audit.traces.map(t=>t.id)),launchedAt:performance.now(),position:[body.position.x,30,body.position.z],velocity:[0,-28,0]};
+        const fixture=groundSlamFixture(body,F.inspect(),SCENE_PRESETS[F.scenePreset]);activeTest.fixture=fixture;
+        assert(fixture.clear,'Ground-slam sweep is obstructed or outside the pad: '+JSON.stringify(fixture));
+        const impactTarget={entity:body.id,root:target.rootId,afterTraceId:Math.max(0,...F.impactDiagnostics.audit.traces.map(t=>t.id)),launchedAt:performance.now(),position:fixture.position,velocity:fixture.velocity,fixture};
         assert(F.setBodyMotion(body.id,impactTarget.position,impactTarget.velocity),'Controlled ground-slam launch failed');
         const impactState=()=>({target:impactTarget,body:F.inspect().find(e=>e.id===body.id)||null,impactShatters:F.impactDiagnostics.impactShatters,traces:F.impactDiagnostics.audit.traces,rubble:F.impactDiagnostics.audit.rubble});
         const targetImpact=await physicsWait(()=>F.impactDiagnostics.impactShatters>breaks&&targetGroundFracture(F.impactDiagnostics.audit.traces,impactTarget),'Actual Rapier target ground-impact fracture',simulationBudgets.slam,impactState);
