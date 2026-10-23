@@ -5,6 +5,12 @@
 
 # Changelog
 
+## 0.13.6 (2026-10-23) Keep released structures alive through impact
+
+- Recently released God Hand structures retain dynamic impact physics while background rubble is simplified. At most four bodies are protected for six simulation seconds; accepted impacts, sleep, removal and rebuild end protection earlier. Fracture children use the existing rubble lifecycle.
+- Emergency collider pressure can still use a compact collision proxy without turning the released body into non-damageable lightweight rubble. Existing body and collider budgets stay unchanged.
+- Bounded impact diagnostics now record release resolution and demotion cause, entity, root, simulation tick and velocity. Added deterministic source/CPU regressions; hosted gameplay and downstream contract, Blast, hand-chain, retry and native DOM qualification remain required before release.
+
 ## 0.13.5 (2026-10-23) Keep retry confirmations attached to their action
 
 - Keep a reset request reserved until its queued dialog close event is consumed. A rapid second request can no longer erase a selected retry or turn it into a generic rebuild.
