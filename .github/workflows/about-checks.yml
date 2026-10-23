@@ -33,8 +33,15 @@ jobs:
           node-version: 22
       - run: npm install --no-save --package-lock=false playwright@1.58.2
       - run: npx playwright install --with-deps chromium
-      - name: Select hosted Chromium for the muted headless driver
-        run: node -e "require('node:fs').appendFileSync(process.env.GITHUB_ENV, 'CHROME=' + require('playwright').chromium.executablePath() + '\n')"
+      - name: Verify and select installed Chrome for the muted headless driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -x /opt/google/chrome/chrome
+          test -f /etc/apparmor.d/chrome
+          sudo -n cat /sys/kernel/security/apparmor/profiles | grep -E '^chrome \((enforce|unconfined)\)$'
+          /opt/google/chrome/chrome --version
+          printf '%s\n' 'CHROME=/opt/google/chrome/chrome' >> "$GITHUB_ENV"
       - name: Existing kernel, mouse-look and gameplay gates
         run: |
           node tools/gate.mjs
