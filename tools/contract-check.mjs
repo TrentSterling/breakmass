@@ -1,6 +1,7 @@
 // Real page integration checks. CDP mouse + DOM keyboard input; not a human playtest.
 // node tools/contract-check.mjs [index.html] [--baseline]
 import {launch, sleep, until} from './cdp.mjs';
+import {waitForNativeCancel} from './native-close-wait.mjs';
 import {mkdirSync, writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -8,7 +9,7 @@ const baseline=process.argv.includes('--baseline');
 const file=process.argv.slice(2).find(x=>!x.startsWith('--'))||'index.html';
 const out=resolve(process.env.EVIDENCE_DIR||'tools/out/contracts');mkdirSync(out,{recursive:true});
 const page=await launch({port:Number(process.env.PORT||9780),width:1280,height:720});
-const checks=[];
+const checks=[],dialogEvents=[];
 const check=(ok,name,details)=>{checks.push({name,passed:!!ok,details});console.log((ok?'PASS ':'FAIL ')+name);if(!ok)throw Error(name);};
 const key=(code,type='keydown')=>page.eval(`document.dispatchEvent(new KeyboardEvent(${JSON.stringify(type)},{code:${JSON.stringify(code)},bubbles:true}))`);
 const state=()=>page.eval(`({score:BREAKMASS.scoreDiagnostics,hands:document.getElementById('goal-hands').className,status:document.getElementById('hands-status')?.textContent,camera:BREAKMASS.cameraState,scene:BREAKMASS.scenePreset,ready:BREAKMASS.ready,tool:document.documentElement.dataset.tool})`);
@@ -39,8 +40,9 @@ try{
   check(afterShot.hands.includes('done')===!baseline,baseline?'baseline reproduces lost completion':'earned completion survives later rocket');
   await page.shot(out+'/03-after-rocket.png');
   if(!baseline){
-    await page.eval("document.getElementById('help-toggle').click();document.getElementById('retry-hands').click();document.querySelector('#confirm-reset button[value=cancel]').click()");
-    await sleep(100);check((await state()).score.handsContract.status==='complete','cancel preserves earned attempt');
+    await page.eval("document.getElementById('help-toggle').click();document.getElementById('retry-hands').click()");
+    await waitForNativeCancel(page,()=>page.eval("document.querySelector('#confirm-reset button[value=cancel]').click()"),dialogEvents,'contract-cancel-before-retry');
+    check((await state()).score.handsContract.status==='complete','cancel preserves earned attempt');
     await page.eval("document.getElementById('help-toggle').click()");
     await retry();const fresh=await state();
     check(fresh.tool==='3'&&fresh.scene==='district'&&!fresh.score.missionTower,'retry restores tank and God Hand');
@@ -66,6 +68,6 @@ try{
     await page.eval("document.getElementById('help-toggle').click()");await page.shot(out+'/05-help.png');
   }
   check(!page.logs.some(x=>/EXCEPTION/.test(x)),'no uncaught browser exceptions');
-  writeFileSync(out+'/report.json',JSON.stringify({baseline,file,scope:'Actual workers and pointer targeting; synthetic keyboard/CDP mouse. Self-play separately recorded.',checks,start,afterShot,logs:page.logs},null,2));
-}catch(error){writeFileSync(out+'/failure.json',JSON.stringify({error:error.message,checks,state:await state().catch(()=>null),logs:page.logs},null,2));process.exitCode=1;}
+  writeFileSync(out+'/report.json',JSON.stringify({baseline,file,scope:'Actual workers and pointer targeting; synthetic keyboard/CDP mouse. Self-play separately recorded.',checks,dialogEvents,start,afterShot,logs:page.logs},null,2));
+}catch(error){writeFileSync(out+'/failure.json',JSON.stringify({error:error.message,checks,dialogEvents,state:await state().catch(()=>null),logs:page.logs},null,2));process.exitCode=1;}
 finally{page.kill();}

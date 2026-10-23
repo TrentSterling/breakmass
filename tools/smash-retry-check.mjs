@@ -3,6 +3,7 @@
 // Shared launcher enforces muted headless execution. No OS input or audio tests.
 // node tools/smash-retry-check.mjs [index.html] [--baseline]
 import {launch,sleep,until} from './cdp.mjs';
+import {waitForNativeCancel} from './native-close-wait.mjs';
 import {mkdirSync,writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -10,7 +11,7 @@ const baseline=process.argv.includes('--baseline');
 const file=process.argv.slice(2).find(x=>!x.startsWith('--'))||'index.html';
 const out=resolve(process.env.EVIDENCE_DIR||'tools/out/smash-retry');mkdirSync(out,{recursive:true});
 const page=await launch({port:Number(process.env.PORT||9790),width:1280,height:720});
-const checks=[];
+const checks=[],dialogEvents=[];
 const check=(ok,name,details)=>{checks.push({name,passed:!!ok,details});console.log((ok?'PASS ':'FAIL ')+name);if(!ok)throw Error(name);};
 const click=selector=>page.eval(`document.querySelector(${JSON.stringify(selector)}).click()`);
 const key=(code,type='keydown')=>page.eval(`document.dispatchEvent(new KeyboardEvent(${JSON.stringify(type)},{code:${JSON.stringify(code)},bubbles:true}))`);
@@ -58,7 +59,8 @@ try{
     const beforeCancel=await state();await closeDialog('cancel');
     check(JSON.stringify((await state()).score)===JSON.stringify(beforeCancel.score),'cancel preserves earned success and score');
     check((await state()).paused==='true','cancel preserves pause');
-    await click('[data-experiment-retry="bridge"]');await page.mouse('mousePressed',10,360);await page.mouse('mouseReleased',10,360);await sleep(100);
+    await click('[data-experiment-retry="bridge"]');
+    await waitForNativeCancel(page,async()=>{await page.mouse('mousePressed',10,360);await page.mouse('mouseReleased',10,360);},dialogEvents,'smash-backdrop-before-rebuild');
     check(!await page.eval('document.getElementById("confirm-reset").open'),'backdrop cancels retry');
     await click('#quick-rebuild');
     check(await page.eval('document.getElementById("reset-title").textContent==="Rebuild this scene?"'),'ordinary rebuild has no stale retry action');
@@ -92,5 +94,5 @@ try{
   }
   const errors=page.logs.filter(x=>/^EXCEPTION:|^error:/.test(x));check(errors.length===0,'no browser exceptions',errors);
 }finally{
-  writeFileSync(out+'/result.json',JSON.stringify({baseline,passed:checks.every(c=>c.passed),checks,logs:page.logs},null,2));page.kill();
+  writeFileSync(out+'/result.json',JSON.stringify({baseline,passed:checks.every(c=>c.passed)&&dialogEvents.every(e=>e.passed),checks,dialogEvents,logs:page.logs},null,2));page.kill();
 }
