@@ -4,6 +4,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const http = require('node:http');
+const {trackPosterRequests,waitForPostersWithDiagnostics} = require('../tools/about-poster-diagnostics.cjs');
+const {aboutLaunchOptions} = require('../tools/about-chrome.cjs');
 const root = path.resolve(__dirname,'..');
 const {repository} = require('./about-manifest.json');
 const output = process.env.EVIDENCE_DIR || path.join(__dirname,'about-evidence');
@@ -96,8 +98,8 @@ const server = http.createServer((req,res)=>{
 (async()=>{
   await new Promise(r=>server.listen(0,'127.0.0.1',r));
   const base = process.env.TEST_URL || `http://127.0.0.1:${server.address().port}/`;
-  const browser = await chromium.launch({headless:true,executablePath:process.env.CHROME || undefined,args:['--enable-unsafe-swiftshader','--mute-audio']});
-  const results = [];
+  const browser = await chromium.launch(aboutLaunchOptions());
+  const results = [],posterObservers=[];
   try {
     for(const mode of ['desktop','reduced-motion','save-data','touch']) {
       const context = await browser.newContext({viewport:mode==='touch'?{width:390,height:844}:{width:1280,height:800},hasTouch:mode==='touch',isMobile:mode==='touch',reducedMotion:mode==='reduced-motion'?'reduce':'no-preference'});
@@ -117,6 +119,7 @@ const server = http.createServer((req,res)=>{
         };
       });
       const page = await context.newPage(); const mp4=[]; const errors=[];
+      const posters=trackPosterRequests(page);posterObservers.push(posters);
       page.setDefaultTimeout(60000);
       page.on('request',r=>{if(/\.mp4(?:\?|$)/.test(r.url()))mp4.push(r.url());});
       page.on('pageerror',e=>errors.push(e.message));
@@ -183,7 +186,8 @@ const server = http.createServer((req,res)=>{
       assert.equal(await page.evaluate(()=>document.activeElement.tagName),'A');
       await page.locator('.tront-discovery').evaluate(e=>e.scrollTop=0);
       // Screenshots show decoded current posters, never an empty lazy-image slot.
-      await page.waitForFunction(()=>[...document.querySelectorAll('.tront-discovery__poster')].every(i=>i.complete&&i.naturalWidth>0));
+      await waitForPostersWithDiagnostics(page,posters,mode,path.join(output,`${repository}-${mode}-posters-failure.json`),()=>
+        page.waitForFunction(()=>[...document.querySelectorAll('.tront-discovery__poster')].every(i=>i.complete&&i.naturalWidth>0)));
       await page.evaluate(()=>{window.__aboutKeyLeak=0;window.addEventListener('keydown',()=>window.__aboutKeyLeak++,true);});
       await summary.focus();await page.keyboard.press('w');
       assert.equal(await page.evaluate(()=>window.__aboutKeyLeak),0,'About keystrokes do not enter game handlers');
@@ -211,5 +215,5 @@ const server = http.createServer((req,res)=>{
     }
     fs.writeFileSync(path.join(output,`${repository}-results.json`),JSON.stringify(results,null,2));
     console.log(JSON.stringify({repository,passed:true,results}));
-  } finally {await browser.close();server.close();}
+  } finally {for(const observer of posterObservers)observer.stop();await browser.close();server.close();}
 })().catch(e=>{console.error(e);server.close();process.exit(1);});

@@ -5,6 +5,25 @@
 
 # Changelog
 
+## 0.13.6 (2026-10-23) Keep released structures alive through impact
+
+- Recently released God Hand structures retain dynamic impact physics while background rubble is simplified. At most four bodies are protected for six simulation seconds; accepted impacts, sleep, removal and rebuild end protection earlier. Fracture children use the existing rubble lifecycle.
+- Grip cleanup for removed, missing or empty material cannot enroll a new release or evict another airborne body's protection.
+- Emergency collider pressure can still use a compact collision proxy without turning the released body into non-damageable lightweight rubble. Existing body and collider budgets stay unchanged.
+- Bounded impact diagnostics now record release resolution and demotion cause, entity, root, simulation tick and velocity. Added deterministic source/CPU regressions; hosted gameplay and downstream contract, Blast, hand-chain, retry and native DOM qualification remain required before release.
+
+## 0.13.5 (2026-10-23) Keep retry confirmations attached to their action
+
+- Keep a reset request reserved until its queued dialog close event is consumed. A rapid second request can no longer erase a selected retry or turn it into a generic rebuild.
+- Consume each confirmation once, preserving the selected setup and scene. Cancel, ordinary rebuild and the Help tank retry keep their existing behavior.
+- Added deterministic CPU regressions using the production confirmation handler and a model of queued dialog events. This change has not yet received browser qualification.
+
+## 0.13.4 (2026-10-22) Repeatable smash setups
+
+- Added explicit Retry actions beside the existing tank, chimney and span presets in World. After a throw destroys a setup, one confirmed retry rebuilds and restores its starting view with God Hand selected.
+- Existing preset buttons still travel without clearing damage. Retry states that destruction, props and scores will reset; cancelling preserves the current attempt. Power preferences stay, and the chimney retry keeps Foundry-only scenes in the Foundry.
+- The hands-only tank retry uses the same setup restoration path. Earned completion still persists until a confirmed rebuild; Blast attribution and hand-chain rules are unchanged.
+
 ## 0.13.3 (2026-10-22) Count indirect Blast use in the hands-only contract
 
 - A player Blast that hits a surface now fails an unfinished hands-only attempt before splash ignition or pressure takes effect. A ground blast beside fuel cannot bypass the rule merely because it cuts no voxels.

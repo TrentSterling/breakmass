@@ -7,13 +7,17 @@ import {join} from 'node:path';
 const CHROME = process.env.CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 
 export async function launch({port, width = 1280, height = 800, headless = true} = {}) {
+  // Automated checks must never take over the user's desktop or play audio.
+  // Keep input inside an isolated headless target; headed use needs a separate,
+  // explicitly authorized workflow rather than an option on this test driver.
+  if (headless !== true) throw new Error('BREAKMASS checks require headless mode; desktop input is not authorized.');
   const dir = mkdtempSync(join(tmpdir(), 'bb-chrome-'));
   const args = [
-    headless ? '--headless=new' : '', `--remote-debugging-port=${port}`, `--user-data-dir=${dir}`,
+    '--headless=new', '--mute-audio', `--remote-debugging-port=${port}`, `--user-data-dir=${dir}`,
     `--window-size=${width},${height}`, '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
     '--no-first-run', '--no-default-browser-check', '--autoplay-policy=no-user-gesture-required', '--hide-scrollbars',
   ].filter(Boolean);
-  const proc = spawn(CHROME, args, {stdio: 'ignore'});
+  const proc = spawn(CHROME, args, {stdio: ['ignore', 'ignore', 'inherit']});
   let info;
   for (let i = 0; i < 60; i++) {
     try { info = await (await fetch(`http://127.0.0.1:${port}/json/version`)).json(); break; } catch { await sleep(250); }
@@ -45,7 +49,8 @@ export async function launch({port, width = 1280, height = 800, headless = true}
     eval: async (expr) => { const r = await call('Runtime.evaluate', {expression: expr, returnByValue: true, awaitPromise: true}); if (r.exceptionDetails) throw new Error('eval: ' + (r.exceptionDetails.exception?.description || r.exceptionDetails.text)); return r.result.value; },
     shot: async (file) => { const {data} = await call('Page.captureScreenshot', {format: 'png'}); const fs = await import('node:fs'); fs.writeFileSync(file, Buffer.from(data, 'base64')); return file; },
     mouse: (type, x, y, button = 'left') => call('Input.dispatchMouseEvent', {type, x, y, button, clickCount: 1, buttons: type === 'mouseReleased' ? 0 : 1}),
-    front: () => call('Page.bringToFront'),
+    // Legacy look checks call this. A headless target needs no foregrounding.
+    front: async () => {},
     kill: () => { try { proc.kill(); } catch {} },
   };
   return page;

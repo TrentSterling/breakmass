@@ -23,6 +23,10 @@ try {
   if (process.argv.includes('--qa')) {
     console.log('running QA...');
     const report = await page.eval('BREAKMASS_QA.run({reset:true}).then(r=>({passed:r.passed,tests:r.tests.map(t=>({name:t.name,passed:t.passed,error:t.error||null,ms:t.durationMs,details:t.details})),errors:r.errors,samples:r.samples?.length,screenshots:(r.screenshots||[]).map(s=>({name:s.name,image:s.image}))}))');
+    // Retain existing per-test timestamps and simulation samples for timeout diagnosis.
+    // Keep image bytes in their PNGs and the compact qa.json/log format unchanged.
+    const telemetry = await page.eval('(()=>{const {screenshots,...data}=BREAKMASS_QA.last;return {...data,screenshots:screenshots.map(({image,...metadata})=>metadata)};})()');
+    writeFileSync(`${out}/qa-telemetry.json`, JSON.stringify(telemetry, null, 2));
     for (const s of report.screenshots || []) if (s.image?.startsWith('data:image/png;base64,')) writeFileSync(`${out}/qa-${s.name}.png`, Buffer.from(s.image.slice(22), 'base64'));
     report.screenshots = (report.screenshots || []).map(s => s.name);
     console.log(JSON.stringify(report, null, 1));

@@ -3,23 +3,149 @@ on:
   pull_request:
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      run_historical_comparison:
+        description: Run the pinned historical gameplay comparison
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
   about-browser-checks:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    env:
+      CHROME: /opt/google/chrome/chrome
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --test tests/about-contract.cjs
+      - run: node --test tests/about-contract.cjs tests/hands-contract.cjs tests/reset-confirmation.cjs tests/qa-progress.cjs tests/released-impact.cjs tests/native-close-wait.cjs tests/paused-damage-wait.cjs tests/ui-boundaries.cjs tests/fuel-wait-trace.cjs tests/hand-chain-wait.cjs tests/about-poster-diagnostics.cjs tests/about-chrome.cjs
       - run: npm install --no-save --package-lock=false playwright@1.58.2
-      - run: npx playwright install --with-deps chromium
+      - name: Verify installed Chrome prerequisites for sandboxed About checks
+        run: node tools/about-chrome.cjs
       - run: node tests/about-browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: about-browser-evidence
           path: tests/about-evidence/
+  gameplay-browser-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --package-lock=false playwright@1.58.2
+      - run: npx playwright install --with-deps chromium
+      - name: Verify and select installed Chrome for the muted headless driver
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -x /opt/google/chrome/chrome
+          test -f /etc/apparmor.d/chrome
+          sudo -n cat /sys/kernel/security/apparmor/profiles | grep -E '^chrome \((enforce|unconfined)\)$'
+          /opt/google/chrome/chrome --version
+          printf '%s\n' 'CHROME=/opt/google/chrome/chrome' >> "$GITHUB_ENV"
+      - name: Existing kernel, mouse-look and gameplay gates
+        run: |
+          node tools/gate.mjs
+          node -e "const assert=require('node:assert/strict'),r=require('./tools/out/qa.json'); assert.equal(r.passed,true); assert.ok(r.tests.length>0 && r.tests.every(t=>t.passed===true)); assert.equal(r.errors.length,0);"
+      - name: Existing hands-only contract regressions
+        run: node tools/contract-check.mjs
+      - name: Existing Blast and valid hand-chain regressions
+        run: node tools/blast-contract-check.mjs
+      - name: Existing smash setup retry regressions
+        run: node tools/smash-retry-check.mjs
+      - name: Native DOM confirmation timing regressions
+        run: node tests/reset-confirmation-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gameplay-browser-evidence
+          path: tools/out/
+  gameplay-baseline-comparison:
+    if: github.event_name == 'workflow_dispatch' && inputs.run_historical_comparison == true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      BASELINE_SHA: dab69052d2aba5bd2337e6db2869a64ca483cf33
+      CANDIDATE_SHA: 7a72ef5252b204dc3e3f388011b057d6b70df472
+      CHROME: /opt/google/chrome/chrome
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --package-lock=false playwright@1.58.2
+      - run: npx playwright install --with-deps chromium
+      - name: Prepare pinned sources and record the shared runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tests/hosted-case-cleanup.py
+          test -x "$CHROME"
+          test -f /etc/apparmor.d/chrome
+          evidence="$GITHUB_WORKSPACE/tools/out/baseline-comparison"
+          mkdir -p "$evidence" "$RUNNER_TEMP/breakmass-comparison"
+          sudo -n cat /sys/kernel/security/apparmor/profiles | grep -E '^chrome \((enforce|unconfined)\)$' > "$evidence/apparmor.txt"
+          git diff --exit-code "$CANDIDATE_SHA" -- tools/verify.mjs tools/cdp.mjs
+          node --version > "$evidence/node-version.txt"
+          "$CHROME" --version > "$evidence/chrome-version.txt"
+          sha256sum "$CHROME" tools/verify.mjs tools/cdp.mjs tools/run-hosted-case.py > "$evidence/shared-sha256.txt"
+          printf '%s\n' "ImageOS=${ImageOS:-unknown}" "ImageVersion=${ImageVersion:-unknown}" "WorkflowSHA=$GITHUB_SHA" > "$evidence/runner.txt"
+          for side in baseline candidate; do
+            revision="$BASELINE_SHA"
+            if [ "$side" = candidate ]; then revision="$CANDIDATE_SHA"; fi
+            tree="$RUNNER_TEMP/breakmass-comparison/$side"
+            git worktree add --detach "$tree" "$revision"
+            mkdir -p "$evidence/$side" "$RUNNER_TEMP/breakmass-comparison/profiles/$side"
+            git -C "$tree" rev-parse HEAD > "$evidence/$side/source-sha.txt"
+            git -C "$tree" ls-tree -r HEAD > "$evidence/$side/source-tree.txt"
+            sha256sum "$tree/index.html" > "$evidence/$side/runtime-sha256.txt"
+          done
+      - name: Compare sequentially and retain both failure verdicts
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          evidence="$GITHUB_WORKSPACE/tools/out/baseline-comparison"
+          driver="$GITHUB_WORKSPACE/tools/verify.mjs"
+          supervisor="$GITHUB_WORKSPACE/tools/run-hosted-case.py"
+          failed=0
+          printf 'side\tprocess_exit\tcopy_exit\tqa_exit\tcleanup_exit\n' > "$evidence/status.tsv"
+          for side in baseline candidate; do
+            tree="$RUNNER_TEMP/breakmass-comparison/$side"
+            output="$evidence/$side"
+            (
+              cd "$tree" || exit 125
+              export TMPDIR="$RUNNER_TEMP/breakmass-comparison/profiles/$side"
+              export PORT=9333
+              if [ "$side" = candidate ]; then export PORT=9334; fi
+              python3 "$supervisor" "$output/cleanup.json" node "$driver" index.html --qa
+            ) > "$output/runner.log" 2>&1
+            process_exit=$?
+            cp -a "$tree/tools/out/." "$output/"
+            copy_exit=$?
+            find "$RUNNER_TEMP/breakmass-comparison/profiles/$side" -mindepth 1 -maxdepth 1 -type d -name 'bb-chrome-*' -printf '%f\n' > "$output/profile-names.txt"
+            node -e "const fs=require('node:fs'),a=require('node:assert/strict'),p=process.argv[1],r=JSON.parse(fs.readFileSync(p+'/qa.json')),t=JSON.parse(fs.readFileSync(p+'/qa-telemetry.json'));a.equal(r.passed,true);a.equal(r.tests.length,12);a.ok(r.tests.every(x=>x.passed===true));a.equal(r.errors.length,0);a.equal(t.passed,true);a.equal(t.tests.length,12);a.ok(t.tests.every(x=>x.passed===true));a.equal(t.errors.length,0);a.ok(Array.isArray(t.samples)&&t.samples.length>0);" "$output" > "$output/verdict.log" 2>&1
+            qa_exit=$?
+            node -e "const a=require('node:assert/strict'),r=require(process.argv[1]);a.equal(r.verified,true);a.deepEqual(r.remaining,[]);" "$output/cleanup.json" > "$output/cleanup-verdict.log" 2>&1
+            cleanup_exit=$?
+            printf '%s\t%s\t%s\t%s\t%s\n' "$side" "$process_exit" "$copy_exit" "$qa_exit" "$cleanup_exit" >> "$evidence/status.tsv"
+            if [ "$process_exit" -ne 0 ] || [ "$copy_exit" -ne 0 ] || [ "$qa_exit" -ne 0 ]; then failed=1; fi
+            if [ "$cleanup_exit" -ne 0 ]; then failed=1; break; fi
+          done
+          cat "$evidence/status.tsv"
+          exit "$failed"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gameplay-baseline-comparison
+          path: tools/out/baseline-comparison/
