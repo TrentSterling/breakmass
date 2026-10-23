@@ -6,6 +6,8 @@ import {createHash} from 'node:crypto';
 import {readFileSync,mkdirSync,writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {authoredViews,observePublishedView} from '../tools/ui-boundaries.mjs';
+import {readPausedDamage,waitForPausedDamage} from '../tools/paused-damage-wait.mjs';
 import {launch,until} from '../tools/cdp.mjs';
 
 if(process.platform!=='linux'||process.env.GITHUB_ACTIONS!=='true'||process.env.RUNNER_ENVIRONMENT!=='github-hosted'){
@@ -13,6 +15,7 @@ if(process.platform!=='linux'||process.env.GITHUB_ACTIONS!=='true'||process.env.
 }
 const file=resolve(process.argv[2]||'index.html'),out=resolve('tools/out/native-confirmation');
 mkdirSync(out,{recursive:true});
+const views=authoredViews(file);
 const checks=[],report={commit:process.env.GITHUB_SHA,sourceSha256:createHash('sha256').update(readFileSync(file)).digest('hex'),
   scope:'Actual game and native dialog scheduling in muted headless Chromium on a GitHub-hosted Linux runner. DOM button activation, not human input or performance qualification.',passed:false,checks};
 let page;
@@ -28,6 +31,9 @@ try{
     probe.wait=(promise,ms,label)=>{let timer;return Promise.race([promise,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error(label+' timed out')),ms);})]).finally(()=>clearTimeout(timer));};
     probe.frames=()=>probe.wait(new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))),5000,'render frames');
     probe.rebuilt=()=>probe.wait(probe.completion,90000,'rebuild');
+    probe.views=${JSON.stringify(views)};probe.boundaries=[];probe.damageWaits=[];
+    probe.view=async(name,scene='district')=>{const r=await (${observePublishedView.toString()})(probe.views[scene][name],5000);probe.boundaries.push(r);if(!r.passed)throw Error(r.error);};
+    probe.quiet=()=>(${waitForPausedDamage.toString()})(()=>(${readPausedDamage.toString()})(),probe.damageWaits,'native DOM paused snapshot');
     probe.snapshot=()=>{
       const {mode,position,yaw,pitch}=game.cameraState,{preset,config,budgetTarget}=game.tuning;
       return {scene:game.scenePreset,camera:{mode,position,yaw,pitch},score:game.scoreDiagnostics,tuning:{preset,config,budgetTarget},
@@ -54,8 +60,8 @@ try{
 
   const cancelled=await page.eval(`(async()=>{
     const p=__confirmationProbe,d=document.getElementById('confirm-reset'),g=BREAKMASS;
-    g.focusExperiment('bridge');await p.frames();const bridgeView=g.cameraState;
-    g.focusExperiment('tank');g.pause(true);await p.frames();const before=p.snapshot();
+    g.focusExperiment('bridge');await p.view('bridge');const bridgeView=g.cameraState;
+    g.focusExperiment('tank');g.pause(true);await p.view('tank');await p.quiet();const before=p.snapshot();
     document.querySelector('[data-experiment-retry="tank"]').click();const opened=d.open;
     const closing=p.closed();d.querySelector('[value="cancel"]').click();
     const hiddenBeforeDelivery=!d.open,eventsBeforeDelivery=p.events.length;
@@ -72,7 +78,7 @@ try{
     const p=__confirmationProbe,d=document.getElementById('confirm-reset');
     document.querySelector('[data-experiment-retry="bridge"]').click();const reopened=d.open;
     const closing=p.closed();document.getElementById('confirm-rebuild-button').click();
-    const event=await closing;await p.rebuilt();await p.frames();
+    const event=await closing;await p.rebuilt();await p.view('bridge');
     return {reopened,event,calls:p.calls,after:p.snapshot(),ready:BREAKMASS.ready};
   })()`);
   check(retried.reopened&&retried.event.trusted,'retry reopens after native cancellation completes');
@@ -82,13 +88,13 @@ try{
 
   const accepted=await page.eval(`(async()=>{
     const p=__confirmationProbe,d=document.getElementById('confirm-reset'),g=BREAKMASS;
-    await g.changeScene('foundry');g.focusExperiment('chimney');g.pause(true);await p.frames();
+    await g.changeScene('foundry');g.focusExperiment('chimney');g.pause(true);await p.view('chimney','foundry');await p.quiet();
     const expected=g.cameraState;p.calls=[];const eventCount=p.events.length;
     document.querySelector('[data-experiment-retry="chimney"]').click();
     const closing=p.closed();document.getElementById('confirm-rebuild-button').click();
     const hiddenBeforeDelivery=!d.open,eventsBeforeDelivery=p.events.length-eventCount;
     document.getElementById('retry-hands').click();const reopenBlocked=!d.open;
-    const event=await closing;await p.rebuilt();await p.frames();
+    const event=await closing;await p.rebuilt();await p.view('chimney','foundry');
     return {hiddenBeforeDelivery,eventsBeforeDelivery,reopenBlocked,event,expected,calls:p.calls,after:p.snapshot(),ready:g.ready};
   })()`);
   check(accepted.hiddenBeforeDelivery&&accepted.eventsBeforeDelivery===0&&accepted.reopenBlocked,'confirm/reopen gap keeps the accepted request reserved');
@@ -97,7 +103,7 @@ try{
 
   const noResult=await page.eval(`(async()=>{
     const p=__confirmationProbe,d=document.getElementById('confirm-reset');
-    BREAKMASS.pause(true);await p.frames();const before=p.snapshot();p.calls=[];
+    BREAKMASS.pause(true);await p.frames();await p.quiet();const before=p.snapshot();p.calls=[];
     document.querySelector('[data-experiment-retry="chimney"]').click();const defaultValue=d.returnValue;
     const closing=p.closed();d.close();const event=await closing;await p.frames();
     return {defaultValue,event,calls:p.calls,before,after:p.snapshot()};
@@ -114,6 +120,7 @@ try{
   await page?.shot(out+'/failure.png').catch(()=>{});
 }finally{
   report.logs=page?.logs||[];
+  if(page)Object.assign(report,await page.eval('({boundaries:window.__confirmationProbe?.boundaries,damageWaits:window.__confirmationProbe?.damageWaits})').catch(()=>({})));
   if(page)await page.eval(`(()=>{const p=window.__confirmationProbe;if(p)for(const [name,original] of Object.entries(p.originals))BREAKMASS[name]=original;})()`).catch(()=>{});
   page?.kill();writeFileSync(out+'/result.json',JSON.stringify(report,null,2)+'\n');
   console.log(JSON.stringify({passed:report.passed,checks:checks.length,error:report.error||null}));

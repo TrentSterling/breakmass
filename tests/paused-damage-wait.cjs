@@ -101,7 +101,7 @@ test('a real score reset after completion still fails the original strict equali
 for(const writeFails of [false,true])test('production failure report and cleanup survive transport failure; writeFails='+writeFails,()=>{
   let report,killed=0;
   const tail=runner.slice(runner.lastIndexOf('}catch(error){'));
-  const context={checks:[{passed:true}],dialogEvents:[],damageWaits:[{passed:true}],failure:null,baseline:false,out:'unused',
+  const context={checks:[{passed:true}],dialogEvents:[],damageWaits:[{passed:true}],boundaries:[],failure:null,baseline:false,out:'unused',
     page:{logs:[],kill:()=>killed++},writeFileSync:(file,json)=>{report=JSON.parse(json);if(writeFails)throw Error('write failed');}};
   assert.throws(()=>vm.runInNewContext("try{throw Error('transport failed');"+tail,context),writeFails?/write failed/:/transport failed/);
   assert.equal(report.passed,false);assert.match(report.failure,/transport failed/);assert.equal(killed,1);
@@ -112,6 +112,6 @@ test('source integration uses the existing boundary, preserves equality and reta
   assert.match(runner,/check\(arrived\.score\.wreckageValue===earned\.score\.wreckageValue,'existing setup travel preserves damage',travelEvidence\)/);
   assert.match(runner,/damageWaits\.every\(e=>e\.passed\)/);assert.match(runner,/before:\{state:earned,damage:beforeTravel\},after:\{state:arrived,damage:afterTravel\}/);
   assert.match(runner,/catch\(error\)\{failure=String\(error.stack\|\|error\);throw error;\}/);
-  assert.match(runner,/&&damageWaits\.every\(e=>e\.passed\)&&!failure/);assert.match(runner,/finally\{page.kill\(\);\}/);
+  assert.match(runner,/&&damageWaits\.every\(e=>e\.passed\)&&boundaries\.every\(e=>e\.passed\)&&!failure/);assert.match(runner,/finally\{page.kill\(\);\}/);
   assert.doesNotMatch(api.readPausedDamage.toString()+api.waitForPausedDamage.toString(),/\.pause\(|\.reset\(|\.step\(|dispatchEvent|\.click\(|\.shift\(|\.splice\(/);
 });

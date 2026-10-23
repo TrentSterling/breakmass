@@ -3,6 +3,7 @@
 // Shared launcher enforces muted headless execution. No OS input or audio tests.
 // node tools/smash-retry-check.mjs [index.html] [--baseline]
 import {launch,sleep,until} from './cdp.mjs';
+import {authoredViews,viewBoundary,rebuildBoundary} from './ui-boundaries.mjs';
 import {waitForNativeCancel} from './native-close-wait.mjs';
 import {readPausedDamage,waitForPausedDamage} from './paused-damage-wait.mjs';
 import {mkdirSync,writeFileSync} from 'node:fs';
@@ -12,7 +13,8 @@ const baseline=process.argv.includes('--baseline');
 const file=process.argv.slice(2).find(x=>!x.startsWith('--'))||'index.html';
 const out=resolve(process.env.EVIDENCE_DIR||'tools/out/smash-retry');mkdirSync(out,{recursive:true});
 const page=await launch({port:Number(process.env.PORT||9790),width:1280,height:720});
-const checks=[],dialogEvents=[],damageWaits=[];
+const checks=[],dialogEvents=[],damageWaits=[],boundaries=[];
+const views=authoredViews(file);
 let failure=null;
 const check=(ok,name,details)=>{checks.push({name,passed:!!ok,details});console.log((ok?'PASS ':'FAIL ')+name);if(!ok)throw Error(name);};
 const click=selector=>page.eval(`document.querySelector(${JSON.stringify(selector)}).click()`);
@@ -20,25 +22,21 @@ const key=(code,type='keydown')=>page.eval(`document.dispatchEvent(new KeyboardE
 const tap=async code=>{await key(code);await key(code,'keyup');};
 const state=()=>page.eval(`({score:BREAKMASS.scoreDiagnostics,camera:BREAKMASS.cameraState,scene:BREAKMASS.scenePreset,ready:BREAKMASS.ready,tool:document.documentElement.dataset.tool,grip:BREAKMASS.grab,tuning:BREAKMASS.tuning,paused:document.getElementById('pause').getAttribute('aria-pressed'),slow:document.getElementById('slow-flag').textContent,objects:BREAKMASS.inspect().map(e=>({id:e.id,root:e.rootId,count:e.count,anchored:e.anchored}))})`);
 const sameView=(a,b)=>a.mode===b.mode&&a.yaw===b.yaw&&a.pitch===b.pitch&&a.position.every((v,i)=>Math.abs(v-b.position[i])<.002);
-const focus=async name=>{await click(`[data-experiment="${name}"]`);await sleep(200);return state();};
-const closeDialog=value=>page.eval(`new Promise(resolve=>{const d=document.getElementById('confirm-reset');d.addEventListener('close',()=>resolve(true),{once:true});d.querySelector('button[value="${value}"]').click();})`);
-async function confirmRebuild(){
-  await closeDialog('rebuild');
-  // Native dialog close is queued after click. Observe rebuild start before
-  // accepting ready, which could otherwise still describe the old scene.
-  await until(()=>page.eval('!BREAKMASS.ready'),{timeout:5000,every:10,label:'rebuild starts'});
-  await until(()=>page.eval('BREAKMASS.ready'),{timeout:90000,label:'rebuild completes'});
-  await sleep(250);
+const focus=async name=>{await click(`[data-experiment="${name}"]`);const scene=await page.eval('BREAKMASS.scenePreset');await viewBoundary(page,views[scene][name],boundaries,'focus '+scene+' '+name);return state();};
+const closeDialog=value=>{if(value!=='cancel')throw Error('Use observed rebuild');return waitForNativeCancel(page,()=>click('#confirm-reset [value="cancel"]'),dialogEvents,'smash form cancel');};
+async function confirmRebuild(name,scene='district',contract=false){
+  await rebuildBoundary(page,contract?'retryHandsContract':'retryExperiment',contract?[]:[name,scene],boundaries,'smash rebuild '+name,90000);
+  await viewBoundary(page,views[scene][name],boundaries,'smash rebuilt view '+name);
 }
 async function retry(name){
   await click('#atlas-toggle');await click(`[data-experiment-retry="${name}"]`);
   check(await page.eval("document.getElementById('confirm-reset').open"),name+' retry asks first');
-  await confirmRebuild();return state();
+  await confirmRebuild(name);return state();
 }
 try{
   await page.goto(pathToFileURL(resolve(file)).href);
   await until(()=>page.eval('!!window.BREAKMASS?.ready && getComputedStyle(document.getElementById("loading")).display==="none"'),{timeout:90000,label:'boot'});
-  await sleep(300);
+  await viewBoundary(page,views.district.tank,boundaries,'smash initial tank view');
   const initial={};for(const name of ['chimney','bridge','tank'])initial[name]=await focus(name);
   await tap('KeyK');await page.mouse('mouseMoved',642,331);await page.mouse('mousePressed',642,331);await page.mouse('mouseReleased',642,331);
   check(await page.eval('BREAKMASS.grab?.rootId===2'),'pointer grabs tank');
@@ -85,20 +83,20 @@ try{
       check(JSON.stringify(current)===JSON.stringify(prefs),name+' preserves power, latch, sound and slow preferences',{before:prefs,after:current});
       if(name==='tank')await page.shot(out+'/02-restored-tank.png');
     }
-    await page.eval("BREAKMASS.changeScene('foundry')");await sleep(200);const foundry=await focus('chimney');
+    await page.eval("BREAKMASS.changeScene('foundry')");const foundry=await focus('chimney');
     check(await page.eval("document.querySelector('[data-smash-row=chimney]').hidden===false && document.querySelector('[data-smash-row=tank]').hidden && document.querySelector('[data-smash-row=bridge]').hidden"),'Foundry shows only its chimney setup and retry');
     await click('#atlas-toggle');await click('[data-experiment-retry="chimney"]');
     check(await page.eval("document.getElementById('reset-explanation').textContent.includes('rebuilds the Foundry')"),'Foundry confirmation states correct scope');
-    await confirmRebuild();
+    await confirmRebuild('chimney','foundry');
     const again=await state();check(again.scene==='foundry'&&sameView(again.camera,foundry.camera),'chimney retry retains Foundry scene and view');
     check(again.score.handsContract.status==='unavailable','Foundry retry does not invent a tank contract');
-    await page.eval("BREAKMASS.changeScene('physics')");await sleep(100);
+    await page.eval("BREAKMASS.changeScene('physics')");
     check(await page.eval("[...document.querySelectorAll('[data-smash-row]')].every(row=>row.hidden)"),'Physics park hides unavailable setup rows');
-    await click('#help-toggle');await click('#retry-hands');await confirmRebuild();
+    await click('#help-toggle');await click('#retry-hands');await confirmRebuild('tank','district',true);
     check(sameView((await state()).camera,initial.tank.camera),'existing Help tank retry still restores district and matching view');
     check(await page.eval("BREAKMASS.retryExperiment('invalid').then(v=>v===false)"),'unknown setup cannot rebuild scene');
   }
   const errors=page.logs.filter(x=>/^EXCEPTION:|^error:/.test(x));check(errors.length===0,'no browser exceptions',errors);
 }catch(error){failure=String(error.stack||error);throw error;}finally{
-  try{writeFileSync(out+'/result.json',JSON.stringify({baseline,passed:checks.every(c=>c.passed)&&dialogEvents.every(e=>e.passed)&&damageWaits.every(e=>e.passed)&&!failure,checks,dialogEvents,damageWaits,failure,logs:page.logs},null,2));}finally{page.kill();}
+  try{writeFileSync(out+'/result.json',JSON.stringify({baseline,passed:checks.every(c=>c.passed)&&dialogEvents.every(e=>e.passed)&&damageWaits.every(e=>e.passed)&&boundaries.every(e=>e.passed)&&!failure,checks,dialogEvents,damageWaits,boundaries,failure,logs:page.logs},null,2));}finally{page.kill();}
 }
