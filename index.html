@@ -2346,7 +2346,7 @@ function createRubblePolicy(){
     if(!Number.isFinite(now)||now<r.at||now>=r.until){resolveReleased(id,now,'expired');return false;}return true;
   }
   function protectReleased(e,now){
-    if(!e||e.anchored||e.lightweight||e.explosive||e.kind!=='structure'||!Number.isFinite(now))return false;
+    if(!e||!(e.count>0)||e.anchored||e.lightweight||e.explosive||e.kind!=='structure'||!Number.isFinite(now))return false;
     for(const id of released.keys())releasedProtected(id,now);
     released.delete(e.id);
     if(released.size>=releaseConfig.max)resolveReleased(released.keys().next().value,now,'capacity');
@@ -2791,7 +2791,7 @@ async function boot(){
   }
   function removeEntity(e,notify=true){
     if(!entities.has(e.id))return;
-    if(grab?.entity===e)releaseGrab('body removed');
+    if(grab?.entity===e)releaseGrab('body removed',false);
     rubblePolicy.resolveReleased(e.id,simTime,'removed');
     for(const chunk of e.chunks.values())colliderCount-=chunk.colliders.length;
     e.surface?.geometry.dispose();sceneIndex.remove(e.id);fuelEntities.delete(e.id);
@@ -3535,14 +3535,14 @@ async function boot(){
     grab={entity:e,local:V(...anchor.point).multiplyScalar(S),cell:anchor.cell,distance:hit.distance,serial:++grabSequence,charge:0,gestureAge:0,ripCooldown:0,focusSpent:false,twistCharge:0,twistRip:0,twistCreak:0,lastCrush:-9};
     tether.visible=true;sound('grab');return true;
   }
-  function releaseGrab(reason='released'){
-    if(grab){lastGrabRelease=reason;rubblePolicy.protectReleased(grab.entity,simTime);}
+  function releaseGrab(reason='released',preserveImpact=true){
+    if(grab){lastGrabRelease=reason;if(preserveImpact&&entities.get(grab.entity.id)===grab.entity)rubblePolicy.protectReleased(grab.entity,simTime);}
     grab=null;tether.visible=false;
   }
   function transferGrab(expected,choice){
     if(!expected||grab!==expected)return; // Mouse-up or a newer grip always wins.
     const child=choice&&entities.get(choice.id);
-    if(!child){releaseGrab('material pulverized');toast('GRIP LOST: no surviving material within 0.75m.',2);return}
+    if(!child){releaseGrab('material pulverized',false);toast('GRIP LOST: no surviving material within 0.75m.',2);return}
     const from=grab.entity.id,fromLocal=grab.local.toArray();
     grab.entity=child;grab.cell=choice.cell;grab.local.set(...choice.point).multiplyScalar(S);
     // Reach, spring target, and the inherited rigid-body velocities are untouched.

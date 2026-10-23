@@ -130,17 +130,52 @@ test('actual entity removal forgets its release record before deleting the body'
   vm.runInContext(between(h.html,'  function removeEntity(','  function snapshotBody(')+';removeEntity(entities.get(1));',h.c);
   assert.equal(h.c.entities.size,0);assert.equal(h.c.rubblePolicy.releaseReport().active.length,0);
 });
+function fullAirborneProtection(){
+  const h=harness();for(let i=1;i<=4;i++){h.c.grab={entity:h.entity(i)};h.api.releaseGrab();}
+  h.c.grab={entity:h.entity(5)};h.c.toast=()=>{};return h;
+}
+function assertFourRetained(h){
+  assert.deepEqual(plain(h.c.rubblePolicy.releaseReport().active.map(x=>x.entity)),[1,2,3,4]);
+  assert.equal(h.c.rubblePolicy.releaseReport().history.some(x=>x.reason==='capacity'),false);
+  assert.equal(h.c.rubblePolicy.releaseReport().history.some(x=>x.entity===5),false);
+  for(let i=1;i<=4;i++)assert.equal(h.api.lightenRubble(h.c.entities.get(i)),false,'airborne body '+i+' remains protected');
+  assert.equal(h.c.grab,null);
+}
+test('removing a fifth held body cannot evict four protected airborne releases',()=>{
+  const h=fullAirborneProtection();h.c.sceneIndex={remove:()=>{}};h.c.fuelEntities=new Map();h.c.scene={remove:()=>{}};h.c.world.removeRigidBody=()=>{};h.c.worker={postMessage:()=>{}};
+  vm.runInContext(between(h.html,'  function removeEntity(','  function snapshotBody(')+';removeEntity(entities.get(5));',h.c);
+  assert.equal(h.c.entities.has(5),false);assertFourRetained(h);
+});
+test('pulverizing a fifth held body cannot evict four protected airborne releases',()=>{
+  const h=fullAirborneProtection();h.c.grab.entity.count=0;
+  vm.runInContext(between(h.html,'  function transferGrab(','  // Horizontal tangent')+';transferGrab(grab,null);',h.c);
+  assertFourRetained(h);
+});
+test('lost grip material on a surviving fifth body is cleanup, not a new release',()=>{
+  const h=fullAirborneProtection();
+  vm.runInContext(between(h.html,'  function transferGrab(','  // Horizontal tangent')+';transferGrab(grab,null);',h.c);
+  assertFourRetained(h);
+});
+test('missing fifth held body cannot consume protection during grip cleanup',()=>{
+  const h=fullAirborneProtection();h.c.entities.delete(5);h.api.releaseGrab('missing body');assertFourRetained(h);
+});
+test('stale held object with a reused id cannot consume a release slot',()=>{
+  const h=fullAirborneProtection();h.entity(5);h.api.releaseGrab();assertFourRetained(h);
+});
+test('zero-material ordinary release is ineligible with four airborne bodies',()=>{
+  const h=fullAirborneProtection();h.c.grab.entity.count=0;h.api.releaseGrab();assertFourRetained(h);
+});
 test('diagnostics retain no entity objects and cannot mutate policy state',()=>{
   const h=harness(),e=h.entity(1);h.c.grab={entity:e};h.api.releaseGrab();const report=h.c.rubblePolicy.releaseReport();report.active[0].until=0;report.history.length=0;
   assert.equal(h.c.rubblePolicy.releasedProtected(1,1),true);assert.equal(h.c.rubblePolicy.releaseReport().history.length,1);
 });
 test('10,000 release cycles stay bounded and fully expire',()=>{
   const p=factory(current(),'createRubblePolicy');let peak=0;
-  for(let id=1;id<=10000;id++){p.protectReleased({id,rootId:id,kind:'structure'},id/100);const r=p.releaseReport();peak=Math.max(peak,r.active.length);assert.ok(r.history.length<=64);}
+  for(let id=1;id<=10000;id++){p.protectReleased({id,rootId:id,kind:'structure',count:100},id/100);const r=p.releaseReport();peak=Math.max(peak,r.active.length);assert.ok(r.history.length<=64);}
   assert.equal(peak,4);p.updateReleased(new Map(),107);assert.equal(p.releaseReport().active.length,0);assert.ok(p.releaseReport().history.length<=64);p.resetReleased();assert.equal(p.releaseReport().history.length,0);
 });
 test('reset epochs and invalid time cannot retain permanent protection',()=>{
-  for(const now of [-1,NaN,Infinity]){const p=factory(current(),'createRubblePolicy');p.protectReleased({id:1,kind:'structure'},1);assert.equal(p.releasedProtected(1,now),false);assert.equal(p.releaseReport().active.length,0);}
+  for(const now of [-1,NaN,Infinity]){const p=factory(current(),'createRubblePolicy');p.protectReleased({id:1,kind:'structure',count:100},1);assert.equal(p.releasedProtected(1,now),false);assert.equal(p.releaseReport().active.length,0);}
 });
 test('impact policies, budgets and QA success conditions remain unchanged',()=>{
   const p=factory(current(),'createRubblePolicy');assert.deepEqual(plain(p.config),{active:384,light:768,chip:48,colliders:14000,proxyBoxes:24});
