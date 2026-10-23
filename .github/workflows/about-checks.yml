@@ -3,6 +3,12 @@ on:
   pull_request:
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      run_historical_comparison:
+        description: Run the pinned historical gameplay comparison
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -63,7 +69,7 @@ jobs:
           name: gameplay-browser-evidence
           path: tools/out/
   gameplay-baseline-comparison:
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'codex/breakmass-confirmation-20261023'
+    if: github.event_name == 'workflow_dispatch' && inputs.run_historical_comparison == true
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
