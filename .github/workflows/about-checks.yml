@@ -23,3 +23,32 @@ jobs:
         with:
           name: about-browser-evidence
           path: tests/about-evidence/
+  gameplay-browser-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-save --package-lock=false playwright@1.58.2
+      - run: npx playwright install --with-deps chromium
+      - name: Select hosted Chromium for the muted headless driver
+        run: node -e "require('node:fs').appendFileSync(process.env.GITHUB_ENV, 'CHROME=' + require('playwright').chromium.executablePath() + '\n')"
+      - name: Existing kernel, mouse-look and gameplay gates
+        run: |
+          node tools/gate.mjs
+          node -e "const assert=require('node:assert/strict'),r=require('./tools/out/qa.json'); assert.equal(r.passed,true); assert.ok(r.tests.length>0 && r.tests.every(t=>t.passed===true)); assert.equal(r.errors.length,0);"
+      - name: Existing hands-only contract regressions
+        run: node tools/contract-check.mjs
+      - name: Existing Blast and valid hand-chain regressions
+        run: node tools/blast-contract-check.mjs
+      - name: Existing smash setup retry regressions
+        run: node tools/smash-retry-check.mjs
+      - name: Native DOM confirmation timing regressions
+        run: node tests/reset-confirmation-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gameplay-browser-evidence
+          path: tools/out/
