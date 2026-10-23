@@ -5,6 +5,12 @@
 
 # Changelog
 
+## 0.13.5 (2026-10-23) Keep retry confirmations attached to their action
+
+- Keep a reset request reserved until its queued dialog close event is consumed. A rapid second request can no longer erase a selected retry or turn it into a generic rebuild.
+- Consume each confirmation once, preserving the selected setup and scene. Cancel, ordinary rebuild and the Help tank retry keep their existing behavior.
+- Added deterministic CPU regressions using the production confirmation handler and a model of queued dialog events. This change has not yet received browser qualification.
+
 ## 0.13.4 (2026-10-22) Repeatable smash setups
 
 - Added explicit Retry actions beside the existing tank, chimney and span presets in World. After a throw destroys a setup, one confirmed retry rebuilds and restores its starting view with God Hand selected.
