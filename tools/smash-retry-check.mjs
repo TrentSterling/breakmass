@@ -4,6 +4,7 @@
 // node tools/smash-retry-check.mjs [index.html] [--baseline]
 import {launch,sleep,until} from './cdp.mjs';
 import {waitForNativeCancel} from './native-close-wait.mjs';
+import {readPausedDamage,waitForPausedDamage} from './paused-damage-wait.mjs';
 import {mkdirSync,writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
@@ -11,7 +12,8 @@ const baseline=process.argv.includes('--baseline');
 const file=process.argv.slice(2).find(x=>!x.startsWith('--'))||'index.html';
 const out=resolve(process.env.EVIDENCE_DIR||'tools/out/smash-retry');mkdirSync(out,{recursive:true});
 const page=await launch({port:Number(process.env.PORT||9790),width:1280,height:720});
-const checks=[],dialogEvents=[];
+const checks=[],dialogEvents=[],damageWaits=[];
+let failure=null;
 const check=(ok,name,details)=>{checks.push({name,passed:!!ok,details});console.log((ok?'PASS ':'FAIL ')+name);if(!ok)throw Error(name);};
 const click=selector=>page.eval(`document.querySelector(${JSON.stringify(selector)}).click()`);
 const key=(code,type='keydown')=>page.eval(`document.dispatchEvent(new KeyboardEvent(${JSON.stringify(type)},{code:${JSON.stringify(code)},bubbles:true}))`);
@@ -44,10 +46,14 @@ try{
   try{await until(()=>page.eval('BREAKMASS.grab && !BREAKMASS.grab.anchored'),{timeout:15000,every:50,label:'lift frees tank'});}finally{await key('KeyE','keyup');}
   await tap('KeyX');await until(()=>page.eval('BREAKMASS.scoreDiagnostics.missionTower'),{timeout:16000,label:'thrown tank topples'});
   check((await state()).score.handsContract.status==='complete','actual hand throw earns completion');
-  await page.eval('BREAKMASS.pause(true)');await sleep(100);
-  const earned=await state();await focus('tank');
-  check((await state()).score.handsContract.status==='complete','existing setup travel preserves earned completion');
-  check((await state()).score.wreckageValue===earned.score.wreckageValue,'existing setup travel preserves damage');
+  await page.eval('BREAKMASS.pause(true)');
+  const damageSnapshot=()=>page.eval(`(${readPausedDamage.toString()})()`);
+  await waitForPausedDamage(damageSnapshot,damageWaits,'earned throw before setup travel');
+  const earned=await state(),beforeTravel=await damageSnapshot();
+  const arrived=await focus('tank'),afterTravel=await damageSnapshot();
+  const travelEvidence={before:{state:earned,damage:beforeTravel},after:{state:arrived,damage:afterTravel}};
+  check(arrived.score.handsContract.status==='complete','existing setup travel preserves earned completion',travelEvidence);
+  check(arrived.score.wreckageValue===earned.score.wreckageValue,'existing setup travel preserves damage',travelEvidence);
   await click('#atlas-toggle');await sleep(100);await page.shot(out+'/01-destroyed-setup-menu.png');
   const retries=await page.eval('document.querySelectorAll("[data-experiment-retry]").length');
   if(baseline){
@@ -93,6 +99,6 @@ try{
     check(await page.eval("BREAKMASS.retryExperiment('invalid').then(v=>v===false)"),'unknown setup cannot rebuild scene');
   }
   const errors=page.logs.filter(x=>/^EXCEPTION:|^error:/.test(x));check(errors.length===0,'no browser exceptions',errors);
-}finally{
-  writeFileSync(out+'/result.json',JSON.stringify({baseline,passed:checks.every(c=>c.passed)&&dialogEvents.every(e=>e.passed),checks,dialogEvents,logs:page.logs},null,2));page.kill();
+}catch(error){failure=String(error.stack||error);throw error;}finally{
+  try{writeFileSync(out+'/result.json',JSON.stringify({baseline,passed:checks.every(c=>c.passed)&&dialogEvents.every(e=>e.passed)&&damageWaits.every(e=>e.passed)&&!failure,checks,dialogEvents,damageWaits,failure,logs:page.logs},null,2));}finally{page.kill();}
 }
