@@ -17,7 +17,7 @@ export async function launch({port, width = 1280, height = 800, headless = true}
     `--window-size=${width},${height}`, '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
     '--no-first-run', '--no-default-browser-check', '--autoplay-policy=no-user-gesture-required', '--hide-scrollbars',
   ].filter(Boolean);
-  const proc = spawn(CHROME, args, {stdio: 'ignore'});
+  const proc = spawn(CHROME, args, {stdio: ['ignore', 'ignore', 'inherit']});
   let info;
   for (let i = 0; i < 60; i++) {
     try { info = await (await fetch(`http://127.0.0.1:${port}/json/version`)).json(); break; } catch { await sleep(250); }
