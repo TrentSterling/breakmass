@@ -80,6 +80,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          python3 -B tests/hosted-case-cleanup.py
           test -x "$CHROME"
           test -f /etc/apparmor.d/chrome
           evidence="$GITHUB_WORKSPACE/tools/out/baseline-comparison"
@@ -88,7 +89,7 @@ jobs:
           git diff --exit-code "$CANDIDATE_SHA" -- tools/verify.mjs tools/cdp.mjs
           node --version > "$evidence/node-version.txt"
           "$CHROME" --version > "$evidence/chrome-version.txt"
-          sha256sum "$CHROME" tools/verify.mjs tools/cdp.mjs > "$evidence/shared-sha256.txt"
+          sha256sum "$CHROME" tools/verify.mjs tools/cdp.mjs tools/run-hosted-case.py > "$evidence/shared-sha256.txt"
           printf '%s\n' "ImageOS=${ImageOS:-unknown}" "ImageVersion=${ImageVersion:-unknown}" "WorkflowSHA=$GITHUB_SHA" > "$evidence/runner.txt"
           for side in baseline candidate; do
             revision="$BASELINE_SHA"
@@ -107,8 +108,9 @@ jobs:
           set +e
           evidence="$GITHUB_WORKSPACE/tools/out/baseline-comparison"
           driver="$GITHUB_WORKSPACE/tools/verify.mjs"
+          supervisor="$GITHUB_WORKSPACE/tools/run-hosted-case.py"
           failed=0
-          printf 'side\tprocess_exit\tcopy_exit\tqa_exit\n' > "$evidence/status.tsv"
+          printf 'side\tprocess_exit\tcopy_exit\tqa_exit\tcleanup_exit\n' > "$evidence/status.tsv"
           for side in baseline candidate; do
             tree="$RUNNER_TEMP/breakmass-comparison/$side"
             output="$evidence/$side"
@@ -116,7 +118,8 @@ jobs:
               cd "$tree" || exit 125
               export TMPDIR="$RUNNER_TEMP/breakmass-comparison/profiles/$side"
               export PORT=9333
-              timeout --signal=TERM --kill-after=10s 15m node "$driver" index.html --qa
+              if [ "$side" = candidate ]; then export PORT=9334; fi
+              python3 "$supervisor" "$output/cleanup.json" node "$driver" index.html --qa
             ) > "$output/runner.log" 2>&1
             process_exit=$?
             cp -a "$tree/tools/out/." "$output/"
@@ -124,8 +127,11 @@ jobs:
             find "$RUNNER_TEMP/breakmass-comparison/profiles/$side" -mindepth 1 -maxdepth 1 -type d -name 'bb-chrome-*' -printf '%f\n' > "$output/profile-names.txt"
             node -e "const fs=require('node:fs'),a=require('node:assert/strict'),p=process.argv[1],r=JSON.parse(fs.readFileSync(p+'/qa.json')),t=JSON.parse(fs.readFileSync(p+'/qa-telemetry.json'));a.equal(r.passed,true);a.equal(r.tests.length,12);a.ok(r.tests.every(x=>x.passed===true));a.equal(r.errors.length,0);a.equal(t.passed,true);a.equal(t.tests.length,12);a.ok(t.tests.every(x=>x.passed===true));a.equal(t.errors.length,0);a.ok(Array.isArray(t.samples)&&t.samples.length>0);" "$output" > "$output/verdict.log" 2>&1
             qa_exit=$?
-            printf '%s\t%s\t%s\t%s\n' "$side" "$process_exit" "$copy_exit" "$qa_exit" >> "$evidence/status.tsv"
+            node -e "const a=require('node:assert/strict'),r=require(process.argv[1]);a.equal(r.verified,true);a.deepEqual(r.remaining,[]);" "$output/cleanup.json" > "$output/cleanup-verdict.log" 2>&1
+            cleanup_exit=$?
+            printf '%s\t%s\t%s\t%s\t%s\n' "$side" "$process_exit" "$copy_exit" "$qa_exit" "$cleanup_exit" >> "$evidence/status.tsv"
             if [ "$process_exit" -ne 0 ] || [ "$copy_exit" -ne 0 ] || [ "$qa_exit" -ne 0 ]; then failed=1; fi
+            if [ "$cleanup_exit" -ne 0 ]; then failed=1; break; fi
           done
           cat "$evidence/status.tsv"
           exit "$failed"
