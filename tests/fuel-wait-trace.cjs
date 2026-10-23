@@ -68,10 +68,12 @@ test('late snapshot resolution cannot turn a failed trace green',async()=>{
   let finish;const receipts=[],t=fakeTimers();const p=api.traceFuelWait(()=>new Promise(r=>{finish=r;}),receipts,async()=>{},t);
   const rejected=assert.rejects(p,/timed out/);await flush();t.fire();await rejected;const saved=JSON.stringify(receipts);finish(snapshot());await flush();assert.equal(JSON.stringify(receipts),saved);
 });
-test('real runner keeps exact acquisition, throw, deadline and predicate inside the trace',()=>{
+test('real runner keeps exact acquisition and throw plus reviewed progress wait inside the trace',()=>{
   const source=fs.readFileSync(path.join(__dirname,'../tools/blast-contract-check.mjs'),'utf8');
-  const action=source.match(/await traceFuelWait\([\s\S]*?async\(\)=>\{([\s\S]*?)\n  \}\);/)[1].trim().replace(/\r?\n\s*/g,'\n');
-  assert.equal(action,"await click();check((await state()).grab?.id===36,'God Hand picks up original fuel drum',await state());\nawait tap('KeyX');\nawait until(()=>page.eval('BREAKMASS.stats.barrels>=2'),{timeout:20000,label:'hand-triggered fuel chain'});");
-  assert.match(source,/checks,samples,boundaries,fuelWaits,logs:page.logs/);
+  const action=source.match(/await traceFuelWait\([\s\S]*?async start=>\{([\s\S]*?)\n  \}\);/)[1].trim().replace(/\r?\n\s*/g,'\n');
+  assert.equal(action,"await click();check((await state()).grab?.id===36,'God Hand picks up original fuel drum',await state());\nawait tap('KeyX');\nawait waitForHandChain(()=>page.eval(`(${readHandChainProgress.toString()})()`),handChainWaits,start);");
+  assert.match(source,/checks,samples,boundaries,fuelWaits,handChainWaits,logs:page.logs/);
+  assert.match(source,/!handChain.score.missionTower&&handChain.score.handsContract.status==='ready'/);
+  assert.match(source,/\(await state\(\)\).score.handsContract.status==='complete','hand chain followed by hand topple earns completion'/);
   assert.doesNotMatch(api.readFuelWaitTrace.toString(),/\.step\(|\.pause\(|\.reset\(|dispatchEvent|setTimeout|requestAnimationFrame/);
 });

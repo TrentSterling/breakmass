@@ -3,6 +3,7 @@
 // Camera placement uses the existing QA API; mouse actions use CDP, keys use DOM events.
 import {authoredViews,viewBoundary} from './ui-boundaries.mjs';
 import {readFuelWaitTrace,traceFuelWait} from './fuel-wait-trace.mjs';
+import {readHandChainProgress,waitForHandChain} from './hand-chain-wait.mjs';
 import {launch, sleep, until} from './cdp.mjs';
 import {mkdirSync, writeFileSync} from 'node:fs';
 import {resolve} from 'node:path';
@@ -10,7 +11,7 @@ import {pathToFileURL} from 'node:url';
 const before=process.argv.includes('--before');
 const file=process.argv.slice(2).find(x=>!x.startsWith('--'))||'index.html';
 const out=resolve(process.env.EVIDENCE_DIR||'tools/out/blast-contract');mkdirSync(out,{recursive:true});
-const checks=[],samples=[],boundaries=[],fuelWaits=[];
+const checks=[],samples=[],boundaries=[],fuelWaits=[],handChainWaits=[];
 const views=authoredViews(file);
 const page=await launch({port:Number(process.env.PORT||9785),width:1280,height:720});
 const check=(ok,name,details)=>{checks.push({name,passed:!!ok,details});console.log((ok?'PASS ':'FAIL ')+name);if(!ok)throw Error(name);};
@@ -67,10 +68,10 @@ try{
   await page.eval('BREAKMASS.orbitForTest(.65,1.2)'); // Clear the intervening wall and throw down at the cluster.
   await aim([fuel.position.x+fuel.dims[0]*.125,fuel.position.y+fuel.dims[1]*.125,fuel.position.z+fuel.dims[2]*.125]);
   await tap('Digit5');if(!await page.eval('document.getElementById("magnet-latch").checked'))await tap('KeyK');
-  await traceFuelWait(since=>page.eval(`(${readFuelWaitTrace.toString()})(${JSON.stringify(since)})`),fuelWaits,async()=>{
+  await traceFuelWait(since=>page.eval(`(${readFuelWaitTrace.toString()})(${JSON.stringify(since)})`),fuelWaits,async start=>{
     await click();check((await state()).grab?.id===36,'God Hand picks up original fuel drum',await state());
     await tap('KeyX');
-    await until(()=>page.eval('BREAKMASS.stats.barrels>=2'),{timeout:20000,label:'hand-triggered fuel chain'});
+    await waitForHandChain(()=>page.eval(`(${readHandChainProgress.toString()})()`),handChainWaits,start);
   });
   const handChain=await state();samples.push({case:'valid hand chain',chain:handChain});
   check(!handChain.score.missionTower&&handChain.score.handsContract.status==='ready','hand-triggered explosions stay eligible before tank topple',handChain.score);
@@ -82,5 +83,5 @@ try{
   check(!page.logs.some(x=>/EXCEPTION/.test(x)),'no uncaught browser exceptions');
 }catch(error){console.error(error);checks.push({name:error.message,passed:false});process.exitCode=1;await page.shot(out+'/failure.png').catch(()=>{});}
 finally{
-  writeFileSync(out+'/report.json',JSON.stringify({before,file,scope:'Actual workers and tool input. Existing QA camera placement, CDP mouse and DOM keys. No direct explosion or contract mutation.',checks,samples,boundaries,fuelWaits,logs:page.logs},null,2));page.kill();
+  writeFileSync(out+'/report.json',JSON.stringify({before,file,scope:'Actual workers and tool input. Existing QA camera placement, CDP mouse and DOM keys. No direct explosion or contract mutation.',checks,samples,boundaries,fuelWaits,handChainWaits,logs:page.logs},null,2));page.kill();
 }

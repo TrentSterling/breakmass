@@ -34,7 +34,7 @@ export async function traceFuelWait(read,receipts,action,{snapshotMs=5000,
   try{
     if(!Number.isFinite(snapshotMs)||snapshotMs<=0)throw Error('Invalid fuel trace snapshot watchdog');
     r.start=await capture(null);r.actionStartedAt=now();
-    await action();r.actionPassed=true;
+    await action(r.start);r.actionPassed=true;
   }catch(error){failure=error;r.actionError=String(error.stack||error);}
   finally{
     r.actionFinishedAt=now();
@@ -42,7 +42,7 @@ export async function traceFuelWait(read,receipts,action,{snapshotMs=5000,
     r.finishedAt=now();
     if(r.end){r.observedTicks=r.end.tick-r.start.tick;r.observedWallMs=r.end.at-r.start.at;}
     // Includes snapshot overhead; actionStartedAt/actionFinishedAt bound the
-    // unchanged acquisition + throw + until. No diagnostic read is inserted
+    // acquisition + throw + progress wait. No diagnostic read is inserted
     // while holding the drum. History timestamps show actual progress.
     r.passed=!failure;
   }
