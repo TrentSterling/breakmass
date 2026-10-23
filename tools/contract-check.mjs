@@ -21,6 +21,7 @@ async function retry(){
   await page.eval("document.getElementById('help-toggle').click();document.getElementById('retry-hands').click()");
   check(await page.eval("document.getElementById('confirm-reset').open"),'retry opens confirmation');
   await rebuildBoundary(page,'retryHandsContract',[],boundaries,'contract retry rebuild',60000);
+  await until(async()=>{const s=await state();return s.ready&&s.score.shotCount===0&&s.score.handsContract?.status==='ready';},{timeout:60000,label:'retry rebuild'});
   await viewBoundary(page,views.district.tank,boundaries,'contract retry tank view');
 }
 try{

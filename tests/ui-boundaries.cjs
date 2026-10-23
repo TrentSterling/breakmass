@@ -117,3 +117,56 @@ test('production native-DOM probe serializes and runs its authored-view observer
   // The production probe intentionally retains its event recorder until page teardown.
   h.listeners.clear();h.idle();
 });
+
+// Run the actual contract retry and polling code with deterministic elapsed time.
+// Rebuild/view observers deliberately succeed independently of score state, as
+// they did in the reviewer's stale-shot counterexample. No browser is launched.
+const contractSource=fs.readFileSync(path.join(__dirname,'../tools/contract-check.mjs'),'utf8');
+const retrySource=contractSource.slice(contractSource.indexOf('async function retry(){'),contractSource.indexOf('\ntry{'));
+const freshWait="  await until(async()=>{const s=await state();return s.ready&&s.score.shotCount===0&&s.score.handsContract?.status==='ready';},{timeout:60000,label:'retry rebuild'});";
+const untilSource=fs.readFileSync(path.join(__dirname,'../tools/cdp.mjs'),'utf8').match(/export (async function until\([\s\S]*?\n\})/)[1];
+const retryState=(shotCount=0,status='ready',ready=true)=>({ready,score:{shotCount,handsContract:{status}}});
+function retryHarness(states,{source=retrySource,rebuild=async()=>{},view=async()=>{}}={}){
+  let now=0,reads=0;const events=[],budgets=[];
+  const context=vm.createContext({Date:{now:()=>now},sleep:async ms=>{now+=ms;},
+    page:{eval:async()=>true},boundaries:[],views:{district:{tank:views.district.tank}},
+    check:(ok,name)=>assert.ok(ok,name),state:async()=>{events.push('state');return states[Math.min(reads++,states.length-1)];},
+    rebuildBoundary:async()=>{events.push('rebuild');await rebuild();events.push('rebuilt');},
+    viewBoundary:async()=>{events.push('view');await view();events.push('published');}});
+  const poll=vm.runInContext('('+untilSource+')',context);
+  context.until=(fn,options)=>{budgets.push({...options});return poll(fn,options);};
+  return {run:vm.runInContext('('+source+')',context),events,budgets,get now(){return now;},get reads(){return reads;}};
+}
+test('retry fresh-state gate rejects the stale-shot double that passed without it',async()=>{
+  assert.equal(retrySource.split(freshWait).length,2,'exact original gate appears once');
+  const old=retryHarness([retryState(7)],{source:retrySource.replace(freshWait,'')});
+  await old.run();assert.equal(old.reads,0);assert.deepEqual(old.events,['rebuild','rebuilt','view','published']);
+  const fixed=retryHarness([retryState(7)]);
+  await assert.rejects(fixed.run(),/timeout waiting for retry rebuild/);
+  assert.equal(fixed.now,60000);assert.equal(fixed.reads,240);assert.ok(!fixed.events.includes('view'));
+  assert.deepEqual(fixed.budgets,[{timeout:60000,label:'retry rebuild'}]);
+});
+for(const status of ['complete','failed','unavailable',null,undefined])test('retry rejects stale contract status '+String(status),async()=>{
+  const stale=retryState();stale.score.handsContract=status===undefined?undefined:{status};
+  const h=retryHarness([stale]);await assert.rejects(h.run(),/timeout waiting for retry rebuild/);
+  assert.equal(h.now,60000);assert.equal(h.reads,240);assert.ok(!h.events.includes('view'));
+});
+test('retry rejects not-ready state even with zero shots and a ready contract',async()=>{
+  const h=retryHarness([retryState(0,'ready',false)]);await assert.rejects(h.run(),/timeout waiting for retry rebuild/);
+  assert.equal(h.now,60000);assert.ok(!h.events.includes('view'));
+});
+test('retry accepts only a single observation satisfying all original fresh-state conditions',async()=>{
+  const h=retryHarness([retryState(0,'ready',false),retryState(7),retryState(0,'complete'),retryState()]);
+  await h.run();assert.equal(h.reads,4);assert.equal(h.now,750);
+  assert.deepEqual(h.events,['rebuild','rebuilt','state','state','state','state','view','published']);
+});
+test('fresh state still cannot bypass native rebuild or authored view completion',async()=>{
+  const rebuilding=deferred(),publishing=deferred(),h=retryHarness([retryState()],{rebuild:()=>rebuilding.promise,view:()=>publishing.promise});
+  let done=false;const result=h.run().then(()=>{done=true;});await flush();assert.equal(h.reads,0);assert.equal(done,false);
+  rebuilding.resolve();await flush();assert.equal(h.reads,1);assert.equal(h.events.at(-1),'view');assert.equal(done,false);
+  publishing.resolve();await result;assert.equal(done,true);assert.equal(h.events.at(-1),'published');
+});
+test('a rejected view remains failed after the fresh-state gate passes',async()=>{
+  const h=retryHarness([retryState()],{view:async()=>{throw Error('wrong authored view');}});
+  await assert.rejects(h.run(),/wrong authored view/);assert.equal(h.reads,1);assert.ok(!h.events.includes('published'));
+});
