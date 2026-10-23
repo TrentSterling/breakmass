@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --test tests/about-contract.cjs tests/hands-contract.cjs tests/reset-confirmation.cjs
+      - run: node --test tests/about-contract.cjs tests/hands-contract.cjs tests/reset-confirmation.cjs tests/qa-progress.cjs
       - run: npm install --no-save --package-lock=false playwright@1.58.2
       - run: npx playwright install --with-deps chromium
       - run: node tests/about-browser.cjs

@@ -4473,10 +4473,46 @@ boot().catch(error=>{
   const nextFrame=()=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('No animation frame; keep the QA tab visible')),5000);requestAnimationFrame(t=>{clearTimeout(timer);resolve(t);});});
   async function frames(n=2){for(let i=0;i<n;i++)await nextFrame();}
   async function waitFor(fn,label,ms=15000){const start=performance.now();while(!fn()){if(cancelled)throw Error('QA cancelled');if(performance.now()-start>ms)throw Error(label+' timed out after '+ms+' ms');await sleep(30);}return performance.now()-start;}
+  // QA-only observation: never step physics or alter the render/worker scheduler.
+  // Hosted pair 39916638721: twist needs 33 ticks, rain 37 at the observed origin.
+  // 60 ticks allows completion/commit; the 30 m, -28 m/s slam gets 120 ticks.
+  // At 433-733 ms median frames these need tens of wall seconds, not 12-20 s.
+  const simulationBudgets=Object.freeze({twist:{ticks:60,wallMs:60000},rain:{ticks:60,wallMs:60000},slam:{ticks:120,wallMs:120000}});
+  async function waitForSimulation(predicate,label,budget,read,receipt){
+    const start=read(),at=performance.now();let previous=start.tick;
+    Object.assign(receipt,{label,budget:{...budget},start:{...start,wallAt:at},passed:false});
+    try{
+      if(!Number.isInteger(budget.ticks)||budget.ticks<=0||!Number.isFinite(budget.wallMs)||budget.wallMs<=0)throw Error('Invalid QA simulation budget');
+      for(;;){
+        const state=read(),now=performance.now();receipt.end={...state,wallAt:now};
+        receipt.elapsedTicks=state.tick-start.tick;receipt.elapsedWallMs=now-at;
+        if(cancelled)throw Error('QA cancelled');
+        if(!state.ready||state.error)throw Error(label+': runtime unavailable: '+(state.error||'not ready'));
+        if(!Number.isInteger(start.tick)||!Number.isInteger(state.tick)||state.tick<previous||state.epoch!==start.epoch)throw Error(label+': simulation clock changed epoch or moved backwards');
+        previous=state.tick;
+        const wallExpired=()=>Error(label+': wall watchdog expired after '+budget.wallMs+' ms ('+receipt.elapsedTicks+' ticks)');
+        const ticksExpired=()=>Error(label+': simulation budget exhausted after '+budget.ticks+' ticks');
+        // A completion first observed beyond either limit cannot turn a timeout green.
+        if(receipt.elapsedWallMs>budget.wallMs)throw wallExpired();
+        if(receipt.elapsedTicks>budget.ticks)throw ticksExpired();
+        const value=predicate();receipt.end.wallAt=performance.now();receipt.elapsedWallMs=receipt.end.wallAt-at;
+        if(receipt.elapsedWallMs>budget.wallMs)throw wallExpired();
+        if(value){receipt.passed=true;return value;}
+        if(receipt.elapsedWallMs>=budget.wallMs)throw wallExpired();
+        if(receipt.elapsedTicks>=budget.ticks)throw ticksExpired();
+        await sleep(30);
+      }
+    }catch(error){receipt.error=String(error.stack||error);throw error;}
+  }
+  function targetGroundFracture(traces,target){
+    return traces.find(t=>t.id>target.afterTraceId&&t.entity===target.entity&&t.root===target.root&&
+      t.contactAt>=target.launchedAt&&t.otherId==='ground'&&t.accepted===true&&t.status==='drawn'&&
+      Number.isFinite(t.commitAt)&&Number.isFinite(t.visibleAt)&&t.fragments>0);
+  }
   async function run({reset=true}={}){
     if(running)return last;running=true;cancelled=false;host.hidden=false;stop.hidden=false;stop.textContent='Stop QA';stop.onclick=()=>cancelled=true;
     const report={version:'0.13.5',started:new Date().toISOString(),url:location.href,scope:'Actual loaded game; real WebGL2, Rapier/WASM and physics/voxel workers. Programmatic DOM input, not native OS pointer-lock validation.',passed:false,tests:[],screenshots:[],samples:[],errors:[]};last=report;window.BREAKMASS_QA.last=report;
-    let F,canvas,sampleTimer,oldSound,oldShake;const captured=[];
+    let F,canvas,sampleTimer,oldSound,oldShake,qaEpoch=0,activeTest;const captured=[];
     const captureError=e=>{const text=e.error?.stack||e.reason?.stack||e.message||String(e.reason);captured.push(String(text));};
     addEventListener('error',captureError);addEventListener('unhandledrejection',captureError);
     const assert=(ok,msg)=>{if(!ok)throw Error(msg);};
@@ -4499,7 +4535,13 @@ boot().catch(error=>{
     function mass(rootId){return F.inspect().filter(e=>e.rootId===rootId).reduce((n,e)=>n+e.count,0);}
     function snap(name){const image=F.captureFrame();assert(image.startsWith('data:image/png;base64,'),'Capture did not produce a PNG');report.screenshots.push({name,image,stats:F.stats,time:performance.now()});}
     async function quiet(ms=20000){return waitFor(()=>{const q=F.liveQueue;return !q.commits&&!q.voxelPending&&!q.objects.some(e=>e.pending||e.queued||e.needsConnectivity);},'Damage queue drain',ms);}
-    async function test(name,fn){if(cancelled)throw Error('QA cancelled');say(name);const item={name,passed:false,startedMs:performance.now()};report.tests.push(item);try{item.details=await fn();assert(!F.liveQueue.errors,F.liveQueue.errors);item.passed=true;}catch(e){item.error=String(e.stack||e);release();F?.stopForInterface();}item.durationMs=performance.now()-item.startedMs;}
+    async function physicsWait(predicate,label,budget,snapshot=()=>({})){
+      const receipt={startState:snapshot()};(activeTest.waits??=[]).push(receipt);
+      const read=()=>({tick:Math.round(F.stats.simTime*60),simTime:F.stats.simTime,frameAt:F.stats.t,epoch:qaEpoch,ready:F.ready,error:F.liveQueue.errors});
+      try{return await waitForSimulation(predicate,label,budget,read,receipt);}
+      finally{receipt.endState=snapshot();}
+    }
+    async function test(name,fn){if(cancelled)throw Error('QA cancelled');say(name);const item={name,passed:false,startedMs:performance.now()};report.tests.push(item);activeTest=item;try{item.details=await fn();assert(!F.liveQueue.errors,F.liveQueue.errors);item.passed=true;}catch(e){item.error=String(e.stack||e);release();F?.stopForInterface();}finally{activeTest=null;item.durationMs=performance.now()-item.startedMs;}}
     try{
       say('Waiting for the actual game runtime…');
       await waitFor(()=>window.BREAKMASS_BOOT?.error||window.BREAKMASS_BOOT?.stage==='ready','Real runtime startup',65000);
@@ -4507,7 +4549,7 @@ boot().catch(error=>{
       F=window.BREAKMASS;canvas=$('view');assert(F?.ready&&canvas,'The game is not ready');assert(F.physicsMode==='worker','This QA run requires the threaded solver, not comparison mode');
       report.runtime=F.runtimeInfo();oldSound=$('sound').checked;oldShake=$('shake-toggle').checked;$('sound').checked=false;$('shake-toggle').checked=false;$('shake-toggle').dispatchEvent(new Event('change'));
       window.BREAKMASS_UI.close();F.stopForInterface();F.pause(false);
-      if(reset){if(F.scenePreset!=='district')await F.changeScene('district');else await F.reset();await frames(8);}
+      if(reset){qaEpoch++;if(F.scenePreset!=='district')await F.changeScene('district');else await F.reset();await frames(8);}
       report.initialObjects=F.inspect().length;report.initialVoxels=F.inspect().reduce((n,e)=>n+e.count,0);
       sampleTimer=setInterval(()=>{if(report.samples.length<3000)report.samples.push({at:performance.now(),...F.stats});},100);
       await test('Target every authored object through the actual material index',async()=>{const r=F.checkInteractionTargets();assert(r.passed,JSON.stringify(r.failures));snap('01-district-before');return r;});
@@ -4531,17 +4573,21 @@ boot().catch(error=>{
         await waitFor(()=>F.grab&&!F.grab.anchored,'Tall-building yank',15000);
         const held=F.grab,releaseMs=performance.now()-t;release();F.clearGrabTarget();
         const body=F.inspect().find(e=>e.id===held.id);assert(body,'Released piece disappeared');const breaks=F.impactDiagnostics.impactShatters;
-        F.setBodyMotion(body.id,[body.position.x,30,body.position.z],[0,-28,0]);
-        await waitFor(()=>F.impactDiagnostics.impactShatters>breaks,'Actual Rapier ground-impact fracture',20000);await quiet();snap('04-slam-rubble');
-        return {releaseMs,impact:F.impactDiagnostics,fragments:F.inspect().filter(e=>e.rootId===target.rootId).length};
+        assert(body.rootId===target.rootId,'Released body belongs to another structure');
+        const impactTarget={entity:body.id,root:target.rootId,afterTraceId:Math.max(0,...F.impactDiagnostics.audit.traces.map(t=>t.id)),launchedAt:performance.now(),position:[body.position.x,30,body.position.z],velocity:[0,-28,0]};
+        assert(F.setBodyMotion(body.id,impactTarget.position,impactTarget.velocity),'Controlled ground-slam launch failed');
+        const impactState=()=>({target:impactTarget,body:F.inspect().find(e=>e.id===body.id)||null,impactShatters:F.impactDiagnostics.impactShatters,traces:F.impactDiagnostics.audit.traces});
+        const targetImpact=await physicsWait(()=>F.impactDiagnostics.impactShatters>breaks&&targetGroundFracture(F.impactDiagnostics.audit.traces,impactTarget),'Actual Rapier target ground-impact fracture',simulationBudgets.slam,impactState);
+        await quiet();snap('04-slam-rubble');
+        return {releaseMs,targetImpact,impact:F.impactDiagnostics,fragments:F.inspect().filter(e=>e.rootId===target.rootId).length};
       });
       await test('God Hand twist: torsion shears the water tank off its legs',async()=>{
-        await F.reset();F.pause(false);await frames(6);await quiet();
+        qaEpoch++;await F.reset();F.pause(false);await frames(6);await quiet();
         const tank=F.inspect().find(e=>e.id===2);assert(tank?.anchored,'Water tank missing or already loose');await aimEntity(2);
         const probe=F.materialProbe(2);assert(probe&&F.grabAt(2,probe.local,[0,1,0]),'Tank grip failed');
         F.setGrabTarget(probe.point); // Hold the reach still: only torsion may charge.
         const rips=F.pullDiagnostics.magnetRips,t=performance.now();F.setTwist(1);
-        try{await waitFor(()=>F.pullDiagnostics.magnetRips>rips,'Twist shear rip',15000);}finally{F.setTwist(0);}
+        try{await physicsWait(()=>F.pullDiagnostics.magnetRips>rips,'Twist shear rip',simulationBudgets.twist,()=>({grip:F.grab,twist:F.twistState,magnetRips:F.pullDiagnostics.magnetRips}));}finally{F.setTwist(0);}
         const chargeMs=performance.now()-t;
         await waitFor(()=>F.grab&&!F.grab.anchored,'Sheared section stays in the grip',10000);
         const held=F.grab,state=F.twistState,spun=F.inspect().find(x=>x.id===held.id);
@@ -4552,7 +4598,7 @@ boot().catch(error=>{
         return {chargeMs,heldId:held.id,twistRips:state.twistRips,angularVelocity,lastPull:F.pullDiagnostics.lastPull};
       });
       await test('God Hand crush: fractures around the grip and pulls the pieces inward',async()=>{
-        await F.reset();F.pause(false);await frames(6);await quiet();
+        qaEpoch++;await F.reset();F.pause(false);await frames(6);await quiet();
         const target=F.inspect().find(e=>e.anchored&&/Northstar/.test(e.name));assert(target,'Northstar missing');await aimEntity(target.id);
         const probe=F.materialProbe(target.id);assert(probe&&F.grabAt(target.id,probe.local,[0,1,0]),'Grip failed');F.setGrabTarget(probe.point);
         const shatters=F.impactDiagnostics.impactShatters,crushes=F.twistState.crushes,t=performance.now();
@@ -4566,7 +4612,7 @@ boot().catch(error=>{
         return {commitMs,pieces:pieces.length,crushes:F.twistState.crushes-crushes,fracture};
       });
       await test('Sustained powered rockets commit progressive cuts and drain after ceasefire',async()=>{
-        await F.reset();F.pause(false);await frames(6);const root=F.inspect().find(e=>/Northstar/.test(e.name)).id,before=mass(root),samples=[];F.selectTool(2);
+        qaEpoch++;await F.reset();F.pause(false);await frames(6);const root=F.inspect().find(e=>/Northstar/.test(e.name)).id,before=mass(root),samples=[];F.selectTool(2);
         for(let shot=0;shot<12;shot++){
           const live=F.inspect().filter(e=>e.rootId===root&&e.count>24).sort((a,b)=>b.count-a.count)[0];if(!live)break;
           await aimEntity(live.id);F.selectTool(2);await press(25);await sleep(330);samples.push({shot,voxels:mass(root),surfaceCommits:F.liveQueue.surfaceCommits,pending:F.liveQueue.objects.reduce((n,e)=>n+e.queued,0)});
@@ -4583,7 +4629,8 @@ boot().catch(error=>{
       });
       await test('Bomb-rain trigger launches a volley through the normal input path',async()=>{
         const target=F.inspect().filter(e=>e.anchored&&e.count>500).sort((a,b)=>b.count-a.count)[0];await aimEntity(target.id);F.selectTool(7);const fired=F.stats.rainFired;
-        await press(50);await waitFor(()=>F.stats.rainFired-fired>=10,'Ten falling charges',12000);release();F.clearRain();await quiet(30000);
+        try{await press(50);await physicsWait(()=>F.stats.rainFired-fired>=10,'Ten falling charges',simulationBudgets.rain,()=>({firedBefore:fired,rainFired:F.stats.rainFired,rainPending:F.stats.rainPending}));}finally{release();F.clearRain();}
+        await quiet(30000);
         snap('06-bomb-rain');return {launched:F.stats.rainFired-fired,rockets:F.rocketDiagnostics};
       });
       await test('Drawing + WASD fly camera continue during an injected 250 ms physics-worker stall',async()=>{
@@ -4594,7 +4641,7 @@ boot().catch(error=>{
       });
       await test('Real Rapier, transferred voxel worker and WebGL smoke suite',async()=>{const r=await F.runSelfTests({save:false});assert(r?.passed,r?.error||'Smoke checks did not complete');return r;});
       await test('Reset removes stale transactions and restores every starting object',async()=>{
-        await F.reset();await frames(8);const audit=F.checkInteractionTargets();assert(audit.passed,'Targeting broken after reset');assert(F.inspect().length===report.initialObjects,'Reset did not restore object count');
+        qaEpoch++;await F.reset();await frames(8);const audit=F.checkInteractionTargets();assert(audit.passed,'Targeting broken after reset');assert(F.inspect().length===report.initialObjects,'Reset did not restore object count');
         assert(F.inspect().reduce((n,e)=>n+e.count,0)===report.initialVoxels,'Reset did not restore material');assert(!F.grab,'A stale grip survived reset');return {audit,objects:F.inspect().length};
       });
       assert(!captured.length,'Uncaught runtime errors: '+captured.join('\n'));
